@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BD9807F72CC796090033C727 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9807F62CC796090033C727 /* WidgetKit.framework */; };
+		BD9807F92CC796090033C727 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9807F82CC796090033C727 /* SwiftUI.framework */; };
+		BD98080A2CC7960B0033C727 /* CountdownWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BD9807F42CC796090033C727 /* CountdownWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		BD92FC222CC73FE700D3FC20 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,13 +27,47 @@
 			remoteGlobalIDString = BD92FC0E2CC73FE500D3FC20;
 			remoteInfo = countie;
 		};
+		BD9808082CC7960B0033C727 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD92FC072CC73FE500D3FC20 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BD9807F32CC796090033C727;
+			remoteInfo = CountdownWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BD98080F2CC7960B0033C727 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				BD98080A2CC7960B0033C727 /* CountdownWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		BD92FC0F2CC73FE500D3FC20 /* Countie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Countie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD92FC212CC73FE700D3FC20 /* countieTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = countieTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD92FC2B2CC73FE700D3FC20 /* countieUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = countieUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD9807F42CC796090033C727 /* CountdownWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CountdownWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD9807F62CC796090033C727 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		BD9807F82CC796090033C727 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		BD98080B2CC7960B0033C727 /* Exceptions for "CountdownWidget" folder in "CountdownWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = BD9807F32CC796090033C727 /* CountdownWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		BD92FC112CC73FE500D3FC20 /* countie */ = {
@@ -43,6 +83,14 @@
 		BD92FC2E2CC73FE700D3FC20 /* countieUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = countieUITests;
+			sourceTree = "<group>";
+		};
+		BD9807FA2CC796090033C727 /* CountdownWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BD98080B2CC7960B0033C727 /* Exceptions for "CountdownWidget" folder in "CountdownWidgetExtension" target */,
+			);
+			path = CountdownWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -69,6 +117,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BD9807F12CC796090033C727 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD9807F92CC796090033C727 /* SwiftUI.framework in Frameworks */,
+				BD9807F72CC796090033C727 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -78,6 +135,8 @@
 				BD92FC112CC73FE500D3FC20 /* countie */,
 				BD92FC242CC73FE700D3FC20 /* countieTests */,
 				BD92FC2E2CC73FE700D3FC20 /* countieUITests */,
+				BD9807FA2CC796090033C727 /* CountdownWidget */,
+				BD9807F52CC796090033C727 /* Frameworks */,
 				BD92FC102CC73FE500D3FC20 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,8 +147,18 @@
 				BD92FC0F2CC73FE500D3FC20 /* Countie.app */,
 				BD92FC212CC73FE700D3FC20 /* countieTests.xctest */,
 				BD92FC2B2CC73FE700D3FC20 /* countieUITests.xctest */,
+				BD9807F42CC796090033C727 /* CountdownWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BD9807F52CC796090033C727 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BD9807F62CC796090033C727 /* WidgetKit.framework */,
+				BD9807F82CC796090033C727 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -102,10 +171,12 @@
 				BD92FC0B2CC73FE500D3FC20 /* Sources */,
 				BD92FC0C2CC73FE500D3FC20 /* Frameworks */,
 				BD92FC0D2CC73FE500D3FC20 /* Resources */,
+				BD98080F2CC7960B0033C727 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				BD9808092CC7960B0033C727 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				BD92FC112CC73FE500D3FC20 /* countie */,
@@ -163,6 +234,28 @@
 			productReference = BD92FC2B2CC73FE700D3FC20 /* countieUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		BD9807F32CC796090033C727 /* CountdownWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BD98080C2CC7960B0033C727 /* Build configuration list for PBXNativeTarget "CountdownWidgetExtension" */;
+			buildPhases = (
+				BD9807F02CC796090033C727 /* Sources */,
+				BD9807F12CC796090033C727 /* Frameworks */,
+				BD9807F22CC796090033C727 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				BD9807FA2CC796090033C727 /* CountdownWidget */,
+			);
+			name = CountdownWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = CountdownWidgetExtension;
+			productReference = BD9807F42CC796090033C727 /* CountdownWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -184,6 +277,9 @@
 						CreatedOnToolsVersion = 16.1;
 						TestTargetID = BD92FC0E2CC73FE500D3FC20;
 					};
+					BD9807F32CC796090033C727 = {
+						CreatedOnToolsVersion = 16.1;
+					};
 				};
 			};
 			buildConfigurationList = BD92FC0A2CC73FE500D3FC20 /* Build configuration list for PBXProject "countie" */;
@@ -203,6 +299,7 @@
 				BD92FC0E2CC73FE500D3FC20 /* countie */,
 				BD92FC202CC73FE700D3FC20 /* countieTests */,
 				BD92FC2A2CC73FE700D3FC20 /* countieUITests */,
+				BD9807F32CC796090033C727 /* CountdownWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -223,6 +320,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		BD92FC292CC73FE700D3FC20 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BD9807F22CC796090033C727 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,6 +357,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BD9807F02CC796090033C727 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -265,6 +376,11 @@
 			isa = PBXTargetDependency;
 			target = BD92FC0E2CC73FE500D3FC20 /* countie */;
 			targetProxy = BD92FC2C2CC73FE700D3FC20 /* PBXContainerItemProxy */;
+		};
+		BD9808092CC7960B0033C727 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BD9807F32CC796090033C727 /* CountdownWidgetExtension */;
+			targetProxy = BD9808082CC7960B0033C727 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -518,6 +634,60 @@
 			};
 			name = Release;
 		};
+		BD98080D2CC7960B0033C727 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WB66W4QJ7C;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CountdownWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CountdownWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nabilridhwan.countie.CountdownWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BD98080E2CC7960B0033C727 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WB66W4QJ7C;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CountdownWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CountdownWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nabilridhwan.countie.CountdownWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -553,6 +723,15 @@
 			buildConfigurations = (
 				BD92FC3C2CC73FE700D3FC20 /* Debug */,
 				BD92FC3D2CC73FE700D3FC20 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BD98080C2CC7960B0033C727 /* Build configuration list for PBXNativeTarget "CountdownWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BD98080D2CC7960B0033C727 /* Debug */,
+				BD98080E2CC7960B0033C727 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
