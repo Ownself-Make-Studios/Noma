@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import WidgetKit
 
 @main
 struct countieApp: App {
@@ -26,6 +27,10 @@ struct countieApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .task{
+                    WidgetCenter.shared.reloadAllTimelines()
+                }
+            
         }
         .modelContainer(sharedModelContainer)
     }

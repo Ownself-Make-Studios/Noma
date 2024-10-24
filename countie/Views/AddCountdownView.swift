@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct AddCountdownView: View {
     @Environment(\.modelContext) private var modelContext
@@ -35,6 +36,9 @@ struct AddCountdownView: View {
         print(item)
         
         modelContext.insert(item)
+        
+//        Reload all widget timelines
+        WidgetCenter.shared.reloadAllTimelines()
         dismiss()
     }
     

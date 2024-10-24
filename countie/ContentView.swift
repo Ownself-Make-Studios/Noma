@@ -60,7 +60,7 @@ struct ContentView: View {
                 }
                 ToolbarItem {
                     Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
+                        Label("Add", systemImage: "plus")
                     }
                 }
             }.navigationTitle("Countie")
@@ -91,5 +91,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: CountdownItem.self, inMemory: true)
+        .modelContainer(for: CountdownItem.self)
 }

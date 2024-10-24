@@ -51,6 +51,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BD6211F72CC9DAE30034DAB8 /* CountdownWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CountdownWidgetExtension.entitlements; sourceTree = "<group>"; };
 		BD92FC0F2CC73FE500D3FC20 /* Countie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Countie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD92FC212CC73FE700D3FC20 /* countieTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = countieTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD92FC2B2CC73FE700D3FC20 /* countieUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = countieUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,11 +68,22 @@
 			);
 			target = BD9807F32CC796090033C727 /* CountdownWidgetExtension */;
 		};
+		BD9808112CC797B10033C727 /* Exceptions for "countie" folder in "CountdownWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+				CountdownItem.swift,
+			);
+			target = BD9807F32CC796090033C727 /* CountdownWidgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		BD92FC112CC73FE500D3FC20 /* countie */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BD9808112CC797B10033C727 /* Exceptions for "countie" folder in "CountdownWidgetExtension" target */,
+			);
 			path = countie;
 			sourceTree = "<group>";
 		};
@@ -132,6 +144,7 @@
 		BD92FC062CC73FE500D3FC20 = {
 			isa = PBXGroup;
 			children = (
+				BD6211F72CC9DAE30034DAB8 /* CountdownWidgetExtension.entitlements */,
 				BD92FC112CC73FE500D3FC20 /* countie */,
 				BD92FC242CC73FE700D3FC20 /* countieTests */,
 				BD92FC2E2CC73FE700D3FC20 /* countieUITests */,
@@ -509,6 +522,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = countie/countie.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"countie/Preview Content\"";
@@ -538,6 +552,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = countie/countie.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"countie/Preview Content\"";
@@ -639,6 +654,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = CountdownWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WB66W4QJ7C;
@@ -666,6 +682,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = CountdownWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WB66W4QJ7C;
