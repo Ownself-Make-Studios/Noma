@@ -11,27 +11,16 @@ import WidgetKit
 
 @main
 struct countieApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            CountdownItem.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
+    
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .task{
+                .onAppear{
                     WidgetCenter.shared.reloadAllTimelines()
                 }
             
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(CountieModelContainer.sharedModelContainer)
     }
 }

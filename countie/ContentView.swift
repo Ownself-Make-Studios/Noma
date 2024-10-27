@@ -10,46 +10,47 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [CountdownItem] = []
+    @Query(sort: \CountdownItem.date, order: .reverse) private var items: [CountdownItem] = []
     
     @State private var showAddModal = false
     
     var body: some View {
         NavigationSplitView {
-//            HStack{
-//                Image("CountieLogo")
-//                    .resizable()
-//                    .frame(width: 50, height: 50)
-//               
-//                Text("Countie")
-//                    .font(.largeTitle)
-//                    .bold()
-//            }
+            //            HStack{
+            //                Image("CountieLogo")
+            //                    .resizable()
+            //                    .frame(width: 50, height: 50)
+            //
+            //                Text("Countie")
+            //                    .font(.largeTitle)
+            //                    .bold()
+            //            }
             
-//            Text("Hello ") + Text("Nabil, ").bold() + Text("you have \(items.count) items today. Let's get started!")
-//            
+            //            Text("Hello ") + Text("Nabil, ").bold() + Text("you have \(items.count) items today. Let's get started!")
+            //
             if items.isEmpty {
                 
-                VStack(spacing: 8){
-                     Image("CountieLogo")
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                
-                    Text("No Countdown Yet :(")
-                        .bold()
-                        .font(.system(size: 28))
-                    Text("Add a countdown by tapping the plus button!")
-                        .font(.subheadline)
-                }.padding()
+                ContentUnavailableView(
+                    "No Countdowns Yet :(",
+                    systemImage: "calendar",
+                    description: Text("Add a countdown by tapping the plus button!"))
             }
             
             
             List {
+                
+                
                 ForEach(items) { item in
-                    VStack(alignment:.leading){
-                        Text(item.name)
-                        Text("\(item.daysLeft)")
-                            .font(.caption)
+                    NavigationLink {
+                        Text("Hello there!")
+                    } label: {
+                        VStack(alignment:.leading){
+                            Text(item.name)
+                            Text(item.formattedDateString)
+                                .font(.caption)
+                            Text("\(item.timeRemainingString)")
+                                .font(.caption2)
+                        }
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -91,5 +92,6 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: CountdownItem.self)
+        .modelContainer(CountieModelContainer.sharedModelContainer)
+    //        .modelContainer(for: CountdownItem.self, inMemory: false)
 }

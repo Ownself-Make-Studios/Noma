@@ -25,8 +25,8 @@ struct CountdownWidgetControl: ControlWidget {
                 Label(isRunning ? "On" : "Off", systemImage: "timer")
             }
         }
-        .displayName("Timer")
-        .description("A an example control that runs a timer.")
+//        .displayName("Timer")
+//        .description("A an example control that runs a timer.")
     }
 }
 

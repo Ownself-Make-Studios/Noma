@@ -13,6 +13,6 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
     static var description: IntentDescription { "Access your countdowns from a widget!" }
 
     // An example configurable parameter.
-    @Parameter(title: "Favorite Emoji", default: "😃")
-    var favoriteEmoji: String
+//    @Parameter(title: "Favorite Emoji", default: "😃")
+//    var favoriteEmoji: String
 }

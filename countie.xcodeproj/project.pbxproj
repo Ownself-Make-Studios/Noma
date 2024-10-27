@@ -72,7 +72,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets.xcassets,
-				CountdownItem.swift,
+				Model/CountdownItem.swift,
+				Model/ModelContainer.swift,
 			);
 			target = BD9807F32CC796090033C727 /* CountdownWidgetExtension */;
 		};
