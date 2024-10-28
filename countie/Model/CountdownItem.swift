@@ -10,10 +10,12 @@ import SwiftData
 import AppIntents
 
 @Model
-final class CountdownItem {
+final class CountdownItem: ObservableObject{
     @Attribute(.unique) var id: UUID = UUID()
     @Attribute var name: String
     @Attribute var date: Date
+    
+    public static var DemoItem = CountdownItem(name: "Demo Item", date: Date.now)
     
     init(name: String, date: Date) {
         self.name = name

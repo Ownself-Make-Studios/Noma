@@ -12,7 +12,7 @@ import SwiftUI
 struct CountdownWidgetBundle: WidgetBundle {
     var body: some Widget {
         CountdownWidget()
-        CountdownWidgetControl()
-        CountdownWidgetLiveActivity()
+//        CountdownWidgetControl()
+//        CountdownWidgetLiveActivity()
     }
 }

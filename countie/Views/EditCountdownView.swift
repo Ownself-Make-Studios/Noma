@@ -1,21 +1,20 @@
 //
-//  AddCountdownView.swift
+//  EditCountdownView.swift
 //  countie
 //
-//  Created by Nabil Ridhwan on 22/10/24.
+//  Created by Nabil Ridhwan on 28/10/24.
 //
 
 import SwiftUI
 import WidgetKit
 
-struct AddCountdownView: View {
+struct EditCountdownView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
-
-    @State var name: String = "";
     
-    // Initial state is the current date for the start of day (12am)
-    @State var date: Date = Calendar.current.startOfDay(for: Date.now);
+    @ObservedObject var countdownItem: CountdownItem;
+    @State var name: String = ""
+    @State var date: Date = Date.now
     
     @State var hasTime: Bool = false;
     
@@ -25,21 +24,20 @@ struct AddCountdownView: View {
         name.isEmpty
     }
     
-    func handleAddItem(){
-        print("Adding item")
-        print(name)
-        print(date)
-        print(selectedColor)
+    func handleEditCountdownItem(){
+        countdownItem.name = name;
+        countdownItem.date = date;
         
-        let item: CountdownItem = CountdownItem(name: name, date: date)
-        
-        print(item)
-        
-        modelContext.insert(item)
         try? modelContext.save()
         
-//        Reload all widget timelines
+        // Dismiss window
+        dismissWindow()
+    }
+    
+    func dismissWindow(){
+        // Reload all widget timelines
         WidgetCenter.shared.reloadAllTimelines()
+        
         dismiss()
     }
     
@@ -55,35 +53,36 @@ struct AddCountdownView: View {
                     DatePicker("Date", selection: $date, displayedComponents: hasTime ? [.date, .hourAndMinute] : [.date])
                 }
                 
-//                Section("Reminders"){
-//                    DatePicker("Remind me on...", selection: $date, displayedComponents: hasTime ? [.date, .hourAndMinute] : [.date])
-//                }
-//                
-//                Section("Customization"){
-//                    ColorPicker("Color", selection: $selectedColor)
-//                }
             }
-            .navigationTitle("Add Countdown")
+            .navigationTitle("Edit Countdown")
             .toolbar{
-                Button("Add") {
-                    handleAddItem()
+                Button("Save") {
+                    handleEditCountdownItem()
                 }.disabled(isSubmitDisabled)
             }
             
         }
         .onChange(of: hasTime){
             _, new in
-            
             if(!new){
                 // Remove time from date
                 let dateWithoutTime = Calendar.current.startOfDay(for: date)
                 date = dateWithoutTime
             }
         }
+        .onAppear{
+            name = countdownItem.name
+            date = countdownItem.date
+        }
     }
 }
 
 #Preview {
-    AddCountdownView()
-        .modelContainer(for: CountdownItem.self, inMemory: true)
+    EditCountdownView(
+        countdownItem: CountdownItem.DemoItem
+    )
+        .modelContainer(
+            for: CountdownItem.self,
+            inMemory: true
+        )
 }

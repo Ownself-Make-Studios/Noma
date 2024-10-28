@@ -24,7 +24,6 @@ struct Provider: AppIntentTimelineProvider {
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         
-        
         let items = await getCountdownItems()
         
         // Generate a timeline consisting of 24 entries an hour apart, starting from the current date.
@@ -36,17 +35,18 @@ struct Provider: AppIntentTimelineProvider {
         //            entries.append(entry)
         //        }
         
-        print("hello world")
+        print("Renewing Timeline")
         print(items)
         
-        
-        // If there is no countdowns, set it to never refresh EVER
+           // If there is no countdowns, set it to never refresh EVER
         if(items.isEmpty){
             return Timeline(entries: [], policy: .never)
         }
         
-        
-        var entries: [SimpleEntry] = [
+        print(items.first!.name)
+        print(items.first!.date)
+
+        let entries: [SimpleEntry] = [
             SimpleEntry(date: .now, configuration: configuration, countdownItem: items.first),
         ]
         
@@ -94,7 +94,13 @@ struct CountdownWidget: Widget {
                 .containerBackground(.fill.tertiary, for: .widget)
                 .modelContainer(CountieModelContainer.sharedModelContainer)
         }
-        .supportedFamilies([.accessoryRectangular, .systemMedium, .systemLarge])
+        .supportedFamilies(
+            [
+                .accessoryRectangular,
+                .systemSmall,
+                .systemMedium,
+                .systemLarge
+            ])
     }
 }
 
