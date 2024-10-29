@@ -10,15 +10,15 @@ import SwiftData
 import AppIntents
 
 @Model
-final class CountdownItem: ObservableObject{
+class CountdownItem: ObservableObject{
     @Attribute(.unique) var id: UUID = UUID()
     @Attribute var name: String
+    @Attribute var includeTime: Bool = false
     @Attribute var date: Date
     
-    public static var DemoItem = CountdownItem(name: "Demo Item", date: Date.now.addingTimeInterval(86400))
-    
-    init(name: String, date: Date) {
+    init(name: String, includeTime: Bool, date: Date) {
         self.name = name
+        self.includeTime = includeTime
         self.date = date
     }
     
@@ -81,3 +81,6 @@ final class CountdownItem: ObservableObject{
     }
 }
 
+extension CountdownItem {
+    public static var DemoItem = CountdownItem(name: "Demo Item", includeTime: true, date: Date.now.addingTimeInterval(86400))
+}

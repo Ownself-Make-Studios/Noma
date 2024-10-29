@@ -31,7 +31,10 @@ struct AddCountdownView: View {
         print(date)
         print(selectedColor)
         
-        let item: CountdownItem = CountdownItem(name: name, date: date)
+        let item: CountdownItem = CountdownItem(
+            name: name,
+            includeTime: hasTime,
+            date: date)
         
         print(item)
         

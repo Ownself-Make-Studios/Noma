@@ -72,6 +72,7 @@ struct EditCountdownView: View {
         }
         .onAppear{
             name = countdownItem.name
+            hasTime = countdownItem.includeTime
             date = countdownItem.date
         }
     }
