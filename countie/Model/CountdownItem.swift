@@ -15,7 +15,7 @@ final class CountdownItem: ObservableObject{
     @Attribute var name: String
     @Attribute var date: Date
     
-    public static var DemoItem = CountdownItem(name: "Demo Item", date: Date.now)
+    public static var DemoItem = CountdownItem(name: "Demo Item", date: Date.now.addingTimeInterval(86400))
     
     init(name: String, date: Date) {
         self.name = name

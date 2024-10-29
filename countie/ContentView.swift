@@ -30,21 +30,15 @@ struct ContentView: View {
                         destination: EditCountdownView(countdownItem: item)
                     )
                     {
-                        VStack(alignment:.leading){
-                            Text(item.name)
-                            Text(item.formattedDateString)
-                                .font(.caption)
-                            Text("\(item.timeRemainingString)")
-                                .font(.caption2)
-                        }
+                        CountdownListItemView(item: item)
                     }
                 }
                 .onDelete(perform: deleteItems)
             }
             .toolbar {
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    EditButton()
-//                }
+                //                ToolbarItem(placement: .navigationBarTrailing) {
+                //                    EditButton()
+                //                }
                 ToolbarItem {
                     Button(action: addItem) {
                         Label("Add", systemImage: "plus")
@@ -52,8 +46,8 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("Countie")
-//            .searchable(text: $searchText)
-
+            //            .searchable(text: $searchText)
+            
         }
         .navigationTitle("Countie")
         .sheet(isPresented: $showAddModal) {

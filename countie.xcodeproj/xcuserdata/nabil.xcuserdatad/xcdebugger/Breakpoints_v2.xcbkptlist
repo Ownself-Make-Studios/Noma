@@ -18,36 +18,22 @@
             endingLineNumber = "25"
             landmarkName = "timeline(for:in:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "342C03AD-76FA-4E7E-A152-4E5404633FD4 - a268eec5dcbdd902"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "CountdownWidgetExtension.Provider.timeline(for: CountdownWidgetExtension.ConfigurationAppIntent, in: WidgetKit.TimelineProviderContext) async -&gt; WidgetKit.Timeline&lt;CountdownWidgetExtension.SimpleEntry&gt;"
-                  moduleName = "CountdownWidgetExtension.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nabil/Documents/programming/countie/CountdownWidget/CountdownWidget.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "25"
-                  endingLineNumber = "25">
-               </Location>
-               <Location
-                  uuid = "342C03AD-76FA-4E7E-A152-4E5404633FD4 - cc0125ec3404f506"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(1) suspend resume partial function for CountdownWidgetExtension.Provider.timeline(for: CountdownWidgetExtension.ConfigurationAppIntent, in: WidgetKit.TimelineProviderContext) async -&gt; WidgetKit.Timeline&lt;CountdownWidgetExtension.SimpleEntry&gt;"
-                  moduleName = "CountdownWidgetExtension.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nabil/Documents/programming/countie/CountdownWidget/CountdownWidget.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "25"
-                  endingLineNumber = "25">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6F23B077-D5C6-4534-B4B7-C556FA55F0BA"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "countie/Views/CountdownListItemView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "timeRemaining(until:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
