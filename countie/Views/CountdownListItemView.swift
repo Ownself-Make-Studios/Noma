@@ -15,9 +15,6 @@ struct CountdownListItemView: View {
     @State private var currentTime = Date()
     @State private var timerCancellable: Cancellable?
     
-    
-    
-    
     func timeRemaining(until endDate: Date) -> String {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: currentTime, to: endDate)
@@ -56,20 +53,29 @@ struct CountdownListItemView: View {
         let minutes = (Int(remainingTime) % 3600) / 60
         let seconds = Int(remainingTime) % 60
         
-        VStack(alignment:.leading){
-            Text(item.name)
-            Text(item.formattedDateString)
-                .font(.caption)
-            //            Text("\(item.timeRemainingString)")
-            //                .font(.caption2)
+        HStack{
             
-            if item.date > currentTime {
-                Text(timeRemaining(until: item.date))
-                    .font(.caption2)
-            }else {
-                Text("Passed")
+            Text(item.emoji ?? "")
+                .font(.headline)
+                .padding(8)
+            
+            VStack(alignment: .leading){
+                Text(item.name)
+                Text(item.formattedDateString)
+                    .font(.caption)
+                //            Text("\(item.timeRemainingString)")
+                //                .font(.caption2)
+                
+                if item.date > currentTime {
+                    Text(timeRemaining(until: item.date))
+                        .font(.caption2)
+                }else {
+                    Text(item.timeRemainingString)
+                        .font(.caption2)
+                }
             }
         }
+        
         .onAppear{
             // Start the timer when the view appears
             
@@ -88,6 +94,6 @@ struct CountdownListItemView: View {
 
 #Preview {
     CountdownListItemView(
-        item: .DemoItem
+        item: .SamplePastTimer
     )
 }

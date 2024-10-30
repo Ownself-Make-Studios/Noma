@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD719E9A2CD1E2B400478683 /* EmojiPicker in Frameworks */ = {isa = PBXBuildFile; productRef = BD719E992CD1E2B400478683 /* EmojiPicker */; };
 		BD9807F72CC796090033C727 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9807F62CC796090033C727 /* WidgetKit.framework */; };
 		BD9807F92CC796090033C727 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9807F82CC796090033C727 /* SwiftUI.framework */; };
 		BD98080A2CC7960B0033C727 /* CountdownWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BD9807F42CC796090033C727 /* CountdownWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BDBDCC162CD1DE9D008EEFF2 /* EmojiPicker in Frameworks */ = {isa = PBXBuildFile; productRef = BDBDCC152CD1DE9D008EEFF2 /* EmojiPicker */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +115,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDBDCC162CD1DE9D008EEFF2 /* EmojiPicker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,6 +137,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD719E9A2CD1E2B400478683 /* EmojiPicker in Frameworks */,
 				BD9807F92CC796090033C727 /* SwiftUI.framework in Frameworks */,
 				BD9807F72CC796090033C727 /* WidgetKit.framework in Frameworks */,
 			);
@@ -197,6 +201,7 @@
 			);
 			name = countie;
 			packageProductDependencies = (
+				BDBDCC152CD1DE9D008EEFF2 /* EmojiPicker */,
 			);
 			productName = countie;
 			productReference = BD92FC0F2CC73FE500D3FC20 /* Countie.app */;
@@ -265,6 +270,7 @@
 			);
 			name = CountdownWidgetExtension;
 			packageProductDependencies = (
+				BD719E992CD1E2B400478683 /* EmojiPicker */,
 			);
 			productName = CountdownWidgetExtension;
 			productReference = BD9807F42CC796090033C727 /* CountdownWidgetExtension.appex */;
@@ -305,6 +311,9 @@
 			);
 			mainGroup = BD92FC062CC73FE500D3FC20;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				BDBDCC142CD1DE9D008EEFF2 /* XCRemoteSwiftPackageReference "EmojiPicker" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BD92FC102CC73FE500D3FC20 /* Products */;
 			projectDirPath = "";
@@ -755,6 +764,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BDBDCC142CD1DE9D008EEFF2 /* XCRemoteSwiftPackageReference "EmojiPicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Kelvas09/EmojiPicker.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BD719E992CD1E2B400478683 /* EmojiPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BDBDCC142CD1DE9D008EEFF2 /* XCRemoteSwiftPackageReference "EmojiPicker" */;
+			productName = EmojiPicker;
+		};
+		BDBDCC152CD1DE9D008EEFF2 /* EmojiPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BDBDCC142CD1DE9D008EEFF2 /* XCRemoteSwiftPackageReference "EmojiPicker" */;
+			productName = EmojiPicker;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BD92FC072CC73FE500D3FC20 /* Project object */;
 }
