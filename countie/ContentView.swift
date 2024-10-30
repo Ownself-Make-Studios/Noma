@@ -11,9 +11,51 @@ import WidgetKit
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query() private var items: [CountdownItem] = []
+    @State private var items: [CountdownItem] = []
     @State private var showAddModal = false
     @State private var searchText = ""
+    
+    @AppStorage("filterPast") private var filterPast = true
+    
+    private func handleFilterClick(){
+        filterPast.toggle()
+    }
+    
+    private func addItem() {
+        showAddModal = true
+    }
+    
+    private func deleteItems(offsets: IndexSet) {
+        withAnimation {
+            for index in offsets {
+                modelContext.delete(items[index])
+            }
+            
+            WidgetCenter.shared.reloadAllTimelines()
+        }
+    }
+    
+    private func fetchItems(){
+        
+        let now = Date.now
+        
+        var descriptor = FetchDescriptor<CountdownItem>(
+            
+            sortBy: [
+                SortDescriptor(\.date, order: .forward)
+            ]
+        )
+        
+        if filterPast {
+            descriptor.predicate = #Predicate<CountdownItem> {
+                $0.date >= now
+            }
+        }
+        
+        let fetchedItems = try? modelContext.fetch(descriptor)
+        
+        items = fetchedItems ?? []
+    }
     
     var body: some View {
         NavigationStack {
@@ -36,9 +78,12 @@ struct ContentView: View {
                 .onDelete(perform: deleteItems)
             }
             .toolbar {
-                //                ToolbarItem(placement: .navigationBarTrailing) {
-                //                    EditButton()
-                //                }
+                ToolbarItem {
+                    Button(action: handleFilterClick) {
+                        Label("Filter", systemImage: filterPast ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                    }
+                }
+                
                 ToolbarItem {
                     Button(action: addItem) {
                         Label("Add", systemImage: "plus")
@@ -53,23 +98,17 @@ struct ContentView: View {
         .sheet(isPresented: $showAddModal) {
             AddCountdownView()
         }
-    }
-    
-    private func addItem() {
-        showAddModal = true
-    }
-    
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+        .onChange(of: filterPast) { _, _ in
+            withAnimation{
+                fetchItems()
             }
-            
-            WidgetCenter.shared.reloadAllTimelines()
         }
-        
-        
+        .task{
+            fetchItems()
+        }
     }
+    
+    
 }
 
 #Preview {
