@@ -10,24 +10,26 @@ import SwiftData
 
 struct CountdownWidgetEntryView : View {
     var entry: Provider.Entry
-    @Query var model: [CountdownItem]
     
     var body: some View {
         HStack{
-            Text(model[0].emoji ?? "")
-                .padding(4)
-                .font(.headline)
             
-            VStack(alignment: .leading) {
-                if(model.isEmpty){
-                    Text("No countdowns :(")
-                }else{
-                    Text(model[0].name)
+            if let countdownItem = entry.countdownItem {
+                Text(countdownItem.emoji ?? "")
+                    .padding(4)
+                    .font(.headline)
+                
+                VStack(alignment: .leading) {
+                    
+                    Text(countdownItem.name)
                         .font(.headline)
                     
-                    Text(model[0].timeRemainingString)
+                    Text(countdownItem.timeRemainingString)
                         .font(.caption)
                 }
+                
+            }else{
+                Text("No countdowns :(")
             }
         }
     }
