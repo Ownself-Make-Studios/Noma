@@ -79,7 +79,10 @@ struct AddCountdownView: View {
                 }
                 
                 Toggle("Include Time", isOn: $hasTime)
-                DatePicker("Date", selection: $date, displayedComponents: hasTime ? [.date, .hourAndMinute] : [.date])
+                DatePicker("Date",
+                           selection: $date,
+                           in: Date.now...,
+                           displayedComponents: hasTime ? [.date, .hourAndMinute] : [.date])
                 //                }
                 
                 //                Section("Reminders"){
