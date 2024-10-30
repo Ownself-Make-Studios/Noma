@@ -117,7 +117,7 @@ extension ConfigurationAppIntent {
     SimpleEntry(
         date: .now,
         configuration: .defaultIntent,
-        countdownItem: nil
+        countdownItem: .SampleFutureTimer
     )
     
     

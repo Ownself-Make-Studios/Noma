@@ -16,13 +16,11 @@ struct CountdownWidgetEntryView : View {
             
             if let countdownItem = entry.countdownItem {
                 Text(countdownItem.emoji ?? "")
-                    .padding(4)
-                    .font(.headline)
+                    .font(.system(size: 20))
                 
-                VStack(alignment: .leading) {
-                    
+                VStack(alignment: .leading, spacing: 2) {
                     Text(countdownItem.name)
-                        .font(.headline)
+                        .bold()
                     
                     Text(countdownItem.timeRemainingString)
                         .font(.caption)
