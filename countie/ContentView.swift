@@ -15,7 +15,7 @@ struct ContentView: View {
     @State private var showAddModal = false
     @State private var searchText = ""
     
-    @AppStorage("filterPast") private var filterPast = true
+    @AppStorage("filterPast") private var filterPast = false
     
     private func handleFilterClick(){
         filterPast.toggle()

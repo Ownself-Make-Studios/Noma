@@ -75,7 +75,7 @@ struct CountdownListItemView: View {
                 }
             }
         }
-        
+        .opacity(item.date > currentTime ? 1 : 0.5)
         .onAppear{
             // Start the timer when the view appears
             
