@@ -18,11 +18,14 @@ class CountdownItem: ObservableObject{
     @Attribute var includeTime: Bool = false
     @Attribute var date: Date
     
-    init(emoji: String?, name: String, includeTime: Bool, date: Date) {
+    @Attribute var calendarEventIdentifier: String?
+
+    init(emoji: String?, name: String, includeTime: Bool, date: Date, calendarEventIdentifier: String? = nil) {
         self.emoji = emoji
         self.name = name
         self.includeTime = includeTime
         self.date = date
+        self.calendarEventIdentifier = calendarEventIdentifier
     }
     
     /**

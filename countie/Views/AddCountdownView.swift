@@ -52,8 +52,6 @@ struct AddCountdownView: View {
     
     var body: some View {
         NavigationStack{
-            
-            
             // A square box with an emoji icon that when clicked open the emoji keyboard
             RoundedRectangle(cornerRadius: 24)
                 .fill(Color.gray.opacity(0.3))

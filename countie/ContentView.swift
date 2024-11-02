@@ -8,12 +8,20 @@
 import SwiftUI
 import SwiftData
 import WidgetKit
+import EventKit
+import EventKitUI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var items: [CountdownItem] = []
     @State private var showAddModal = false
+    @State private var showCalendarModal = false
     @State private var searchText = ""
+    
+    private var eventViewController = EKEventViewController()
+    
+    @State private var events: [EKEvent] = []
+    @State private var calendars: [EKCalendar] = []
     
     @AppStorage("filterPast") private var filterPast = false
     
@@ -85,8 +93,23 @@ struct ContentView: View {
                 }
                 
                 ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add", systemImage: "plus")
+                    Menu {
+                        Button(action: {
+                            showCalendarModal = true
+                        }) {
+                            Label("Add from calendar", systemImage: "calendar.badge.plus")
+                        }
+                        
+                        Button{
+                            showAddModal = true
+                        } label: {
+                            Label("Add new countdown", systemImage: "plus")
+                        }
+                        
+                    } label: {
+                        Button{} label: {
+                            Label("Add", systemImage: "plus")
+                        }
                     }
                 }
             }
@@ -98,6 +121,18 @@ struct ContentView: View {
         .sheet(isPresented: $showAddModal) {
             AddCountdownView()
         }
+        .sheet(isPresented: $showCalendarModal) {
+            NavigationView{
+                CalendarEventsView(
+                    events: events,
+                    calendars: calendars,
+                    onSelectEvent: {
+                        print($0.title)
+                    }
+                )
+            }
+            .navigationTitle("Add from Calendar")
+        }
         .onChange(of: filterPast) { _, _ in
             withAnimation{
                 fetchItems()
@@ -105,6 +140,20 @@ struct ContentView: View {
         }
         .task{
             fetchItems()
+            CalendarStore.requestPermission()
+            
+            calendars = CalendarStore.store.calendars(for: .event)
+            
+            let predicate = CalendarStore.store.predicateForEvents(withStart: Date.now, end: Date.distantFuture, calendars: nil)
+            
+            let events = CalendarStore.store.events(matching: predicate)
+            
+            self.events = events
+            events.forEach { event in
+                print(event.title)
+                print(event.startDate)
+                print(event.endDate)
+            }
         }
     }
     
