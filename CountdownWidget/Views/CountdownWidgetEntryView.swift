@@ -12,15 +12,15 @@ struct CountdownWidgetEntryView : View {
     var entry: Provider.Entry
     
     var body: some View {
-        HStack{
-            
+        HStack(spacing: 6) {
             if let countdownItem = entry.countdownItem {
                 Text(countdownItem.emoji ?? "")
                     .font(.system(size: 20))
                 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(countdownItem.name)
-                        .bold()
+                        .font(.system(size: 16))
+                        .lineLimit(2)
                     
                     Text(countdownItem.timeRemainingString)
                         .font(.caption)
@@ -30,5 +30,6 @@ struct CountdownWidgetEntryView : View {
                 Text("No countdowns :(")
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

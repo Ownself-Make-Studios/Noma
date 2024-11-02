@@ -16,29 +16,36 @@ struct CalendarEventsView: View {
     
     var body: some View {
         List(events, id: \.eventIdentifier) { event in
-                NavigationLink {
-                    AddCountdownView(
-                        name: event.title,
-                        hasTime: true
-                        
-                    )
-                } label: {
-                    HStack{
-                        Rectangle()
-                            .fill(Color(event.calendar.cgColor))
-                            .frame(width: 10, height: 10)
-                            .cornerRadius(5)
-                        
-                        VStack(alignment: .leading){
-                            Text(event.title)
-                                .font(.headline)
-                            
-                            Text(event.startDate.formatted())
-                                .font(.subheadline)
-                        }
-                    }
+            NavigationLink {
+                event.isAllDay ? AddCountdownView(
+                    name: event.title,
                     
+                    date: event.startDate,
+                    hasTime: false
+                ) :
+                AddCountdownView(
+                    name: event.title,
+                    date: event.startDate,
+                    hasTime: true
+                    
+                )
+            } label: {
+                HStack{
+                    Rectangle()
+                        .fill(Color(event.calendar.cgColor))
+                        .frame(width: 10, height: 10)
+                        .cornerRadius(5)
+                    
+                    VStack(alignment: .leading){
+                        Text(event.title)
+                            .font(.headline)
+                        
+                        Text(event.startDate.formatted())
+                            .font(.subheadline)
+                    }
                 }
+                
+            }
             
         }
         
