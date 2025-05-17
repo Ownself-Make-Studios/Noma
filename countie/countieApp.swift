@@ -17,7 +17,7 @@ struct countieApp: App {
         WindowGroup {
             ContentView()
                 .onAppear{
-                    WidgetCenter.shared.reloadAllTimelines()
+                    WidgetCenter.shared.reloadTimelines(ofKind: "CountdownWidget", )
                 }
             
         }

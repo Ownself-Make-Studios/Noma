@@ -13,42 +13,50 @@ struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
         SimpleEntry(
             date: Date(),
-            configuration: ConfigurationAppIntent(),
             countdownItem: nil)
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: configuration,
-                    countdownItem: nil)
+        SimpleEntry(date: Date(),
+                    countdownItem:
+                .init(emoji: nil, name: "Happy Pie Day!", includeTime: false, date: .now.addingTimeInterval(
+                    60 * 60 * 24 * 3
+                ))
+        )
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         
         let items = await getCountdownItems()
         
-        // Generate a timeline consisting of 24 entries an hour apart, starting from the current date.
-        
-        //        let currentDate = Date()
-        //        for hourOffset in 0 ..< 24 {
-        //            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-        //            let entry = SimpleEntry(date: entryDate, configuration: configuration)
-        //            entries.append(entry)
-        //        }
-        
         print("Renewing Timeline")
         print(items)
         
-           // If there is no countdowns, set it to never refresh EVER
-        if(items.isEmpty){
-            return Timeline(entries: [], policy: .never)
-        }
+        // If there is no countdowns, set it to refresh NEVER
+//        if(items.isEmpty){
+//            return Timeline(entries: [], policy: .never)
+//        }
         
         print(items.first!.name)
         print(items.first!.date)
-
-        let entries: [SimpleEntry] = [
-            SimpleEntry(date: .now, configuration: configuration, countdownItem: items.first),
-        ]
+        
+        var entries: [SimpleEntry] = []
+        
+        if(items.isEmpty){
+            entries = [
+                SimpleEntry(date: .now, countdownItem: nil),
+            ]
+        }else{
+            items.forEach { item in
+                entries.append(
+                    .init(date: item.date, countdownItem: item)
+                )
+                    
+            }
+//            entries = [
+//                SimpleEntry(date: .now, countdownItem: items.first),
+//            ]
+        }
         
         // Refresh every after 1 hour
         return Timeline(entries: entries, policy: .after(.now.addingTimeInterval(3600)))
@@ -82,7 +90,6 @@ struct Provider: AppIntentTimelineProvider {
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
-    let configuration: ConfigurationAppIntent
     let countdownItem: CountdownItem?
 }
 
@@ -90,9 +97,15 @@ struct CountdownWidget: Widget {
     let kind: String = "CountdownWidget"
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
+            
             CountdownWidgetEntryView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
-                .modelContainer(CountieModelContainer.sharedModelContainer)
+                .containerBackground(
+                    .fill.tertiary,
+                    for: .widget
+                )
+                .modelContainer(
+                    CountieModelContainer.sharedModelContainer
+                )
         }
         .supportedFamilies(
             [
@@ -105,7 +118,6 @@ struct CountdownWidget: Widget {
 }
 
 extension ConfigurationAppIntent {
-    
     fileprivate static var defaultIntent: ConfigurationAppIntent {
         return ConfigurationAppIntent()
     }
@@ -116,7 +128,6 @@ extension ConfigurationAppIntent {
 } timeline: {
     SimpleEntry(
         date: .now,
-        configuration: .defaultIntent,
         countdownItem: .SampleFutureTimer
     )
     

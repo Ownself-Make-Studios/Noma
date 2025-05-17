@@ -9,6 +9,9 @@ import SwiftUI
 import WidgetKit
 import EmojiPicker
 
+
+
+
 struct AddCountdownView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
@@ -21,6 +24,7 @@ struct AddCountdownView: View {
     @State var date: Date = Calendar.current.startOfDay(for: Date.now);
     
     @State var hasTime: Bool = false;
+    @State var reminders: [CountdownReminder] = [];
     
     @State var selectedColor: Color = .red
     
@@ -46,7 +50,7 @@ struct AddCountdownView: View {
         try? modelContext.save()
         
         //        Reload all widget timelines
-        WidgetCenter.shared.reloadAllTimelines()
+        WidgetCenter.shared.reloadTimelines(ofKind: "CountdownWidget", )
         dismiss()
     }
     
@@ -64,6 +68,7 @@ struct AddCountdownView: View {
                 .onTapGesture {
                     showEmojiPicker.toggle()
                 }
+                .padding(.vertical, 12)
             
             Form{
                 
@@ -90,8 +95,100 @@ struct AddCountdownView: View {
                 //                Section("Customization"){
                 //                    ColorPicker("Color", selection: $selectedColor)
                 //                }
+                
+                //                A section for reminders which lists down a select option for 1 day, 1 week, 1 month, 1 year and custom date. It has a button at the bottom to add a new reminder. The user can set multiple reminders for an event
+                Section("Reminders") {
+                    
+                    ForEach(reminders, id: \.date){ reminder in
+                        HStack{
+                            Text(reminder.label)
+                            //                            Spacer()
+                            //                            Text(reminder.date, style: .date)
+                        }
+                    }
+                    .onDelete { indexSet in
+                        reminders.remove(atOffsets: indexSet)
+                    }
+                    
+                    Menu("Add Reminder"){
+                        
+                        Button("5 mins before"){
+                            reminders.append(
+                                CountdownReminder.FIVE_MIN
+                            )
+                        }
+                        
+                        Button("10 mins before")
+                        {
+                            reminders.append(
+                                CountdownReminder.TEN_MIN
+                            )
+                        }
+                        
+                        Button("15 mins before")
+                        {
+                            reminders.append(
+                                CountdownReminder.FIFTEEN_MIN
+                            )
+                        }
+                        
+                        Button("30 mins before")
+                        {
+                            reminders.append(
+                                CountdownReminder.THIRTY_MIN
+                            )
+                            
+                            
+                            
+                        }
+                        
+                        Button("1 hour before")
+                        {
+                            reminders.append(
+                                CountdownReminder.ONE_HOUR
+                            )
+                        }
+                        
+                        Button("2 hours before")
+                        {
+                            reminders.append(
+                                CountdownReminder.TWO_HOUR
+                            )
+                        }
+                        
+                        Button("1 day before"){
+                            reminders.append(
+                                CountdownReminder.ONE_DAY
+                            )
+                        }
+                        
+                        Button("2 days before"){
+                            reminders.append(
+                                CountdownReminder.TWO_DAY
+                            )
+                        }
+                        
+                        Button("Custom...")
+                        {}
+                    }
+                    
+                    //                    Button("Add Reminder"){
+                    //                        reminders.append(
+                    //                            Reminder(timing: "5 minutes before", date: Date.now)
+                    //                        )
+                    //                    }
+                    
+                }
             }
             .navigationTitle("New Countdown")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+            }
             .toolbar{
                 Button("Add") {
                     handleAddItem()

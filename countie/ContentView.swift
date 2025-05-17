@@ -34,13 +34,15 @@ struct ContentView: View {
     }
     
     private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-            
-            WidgetCenter.shared.reloadAllTimelines()
+        
+        for index in offsets {
+            modelContext.delete(items[index])
         }
+        
+        print("Deleted item")
+        try? modelContext.save()
+        
+        WidgetCenter.shared.reloadTimelines(ofKind: "CountdownWidget", )
     }
     
     private func fetchItems(){
@@ -120,6 +122,14 @@ struct ContentView: View {
         .navigationTitle("Countie")
         .sheet(isPresented: $showAddModal) {
             AddCountdownView()
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            showCalendarModal = false
+                        }
+                    }
+                    
+                }
         }
         .sheet(isPresented: $showCalendarModal) {
             NavigationView{
@@ -127,9 +137,17 @@ struct ContentView: View {
                     events: events,
                     calendars: calendars,
                     onSelectEvent: {
-                        print($0.title)
+                        print($0.title ?? "Can't get event name")
                     }
                 )
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            showCalendarModal = false
+                        }
+                    }
+                    
+                }
             }
             .navigationTitle("Add from Calendar")
         }
@@ -149,11 +167,6 @@ struct ContentView: View {
             let events = CalendarStore.store.events(matching: predicate)
             
             self.events = events
-            events.forEach { event in
-                print(event.title)
-                print(event.startDate)
-                print(event.endDate)
-            }
         }
     }
     

@@ -84,6 +84,7 @@
 			membershipExceptions = (
 				Assets.xcassets,
 				Model/CountdownItem.swift,
+				Model/CountdownReminder.swift,
 				Model/ModelContainer.swift,
 			);
 			target = BD9807F32CC796090033C727 /* CountdownWidgetExtension */;
@@ -694,7 +695,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nabilridhwan.countie.CountdownWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nabilridhwan.countie.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -722,7 +723,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nabilridhwan.countie.CountdownWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nabilridhwan.countie.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;

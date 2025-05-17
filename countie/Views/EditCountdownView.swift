@@ -40,7 +40,7 @@ struct EditCountdownView: View {
     
     func dismissWindow(){
         // Reload all widget timelines
-        WidgetCenter.shared.reloadAllTimelines()
+        WidgetCenter.shared.reloadTimelines(ofKind: "CountdownWidget", )
         
         dismiss()
     }
