@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CountdownReminder {
+struct CountdownReminder: Hashable {
     var label: String
     var date: Date
     var valueInSeconds: Int {

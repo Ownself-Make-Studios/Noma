@@ -17,7 +17,7 @@ struct AddCountdownView: View {
     @Environment(\.dismiss) var dismiss
     
     @State var emoji: Emoji?;
-    @State var name: String = "";
+    @State var name: String = ""
     @State var showEmojiPicker: Bool = false;
     
     // Initial state is the current date for the start of day (12am)
@@ -28,9 +28,14 @@ struct AddCountdownView: View {
     
     @State var selectedColor: Color = .red
     
+    // Simplified: Selected reminder for the picker
+    @State private var selectedReminder: CountdownReminder = .FIVE_MIN
+    
     var isSubmitDisabled: Bool {
         name.isEmpty
     }
+    
+    var onAdd: (() -> Void)? = nil
     
     func handleAddItem(){
         print("Adding item")
@@ -52,23 +57,29 @@ struct AddCountdownView: View {
         //        Reload all widget timelines
         WidgetCenter.shared.reloadTimelines(ofKind: "CountdownWidget", )
         dismiss()
+        onAdd?()
     }
     
     var body: some View {
         NavigationStack{
             // A square box with an emoji icon that when clicked open the emoji keyboard
-            RoundedRectangle(cornerRadius: 24)
-                .fill(Color.gray.opacity(0.3))
-                .frame(width: 100, height: 100)
-                .overlay(
-                    Text(emoji?.value ?? "")
-                        .font(.system(size: 50))
-                        .foregroundColor(.white)
-                )
-                .onTapGesture {
-                    showEmojiPicker.toggle()
-                }
-                .padding(.vertical, 12)
+            VStack(spacing: 4) {
+                RoundedRectangle(cornerRadius: 24)
+                    .fill(Color.gray.opacity(0.3))
+                    .frame(width: 100, height: 100)
+                    .overlay(
+                        Text(emoji?.value ?? "")
+                            .font(.system(size: 50))
+                            .foregroundColor(.white)
+                    )
+                    .onTapGesture {
+                        showEmojiPicker.toggle()
+                    }
+                Text("Tap to select emoji")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.vertical, 12)
             
             Form{
                 
@@ -77,9 +88,7 @@ struct AddCountdownView: View {
                 //                        TextField("Emoji", text: $emoji)
                 //                    }
                 //
-                LabeledContent("Name"){
-                    TextField("My Birthday", text: $name)
-                }
+                TextField("Name of Countdown", text: $name)
                 
                 Toggle("Include Time", isOn: $hasTime)
                 DatePicker("Date",
@@ -98,86 +107,48 @@ struct AddCountdownView: View {
                 
                 //                A section for reminders which lists down a select option for 1 day, 1 week, 1 month, 1 year and custom date. It has a button at the bottom to add a new reminder. The user can set multiple reminders for an event
                 Section("Reminders") {
-                    
-                    ForEach(reminders, id: \.date){ reminder in
-                        HStack{
+                    // Show reminders in chronological order
+                    ForEach(reminders.sorted(by: { $0.date < $1.date }), id: \.date) { reminder in
+                        HStack {
                             Text(reminder.label)
-                            //                            Spacer()
-                            //                            Text(reminder.date, style: .date)
                         }
                     }
                     .onDelete { indexSet in
                         reminders.remove(atOffsets: indexSet)
                     }
-                    
-                    Menu("Add Reminder"){
-                        
-                        Button("5 mins before"){
-                            reminders.append(
-                                CountdownReminder.FIVE_MIN
-                            )
+
+                    // Only show picker options that haven't been added yet
+                    let availableReminders = [
+                        CountdownReminder.FIVE_MIN,
+                        CountdownReminder.TEN_MIN,
+                        CountdownReminder.FIFTEEN_MIN,
+                        CountdownReminder.THIRTY_MIN,
+                        CountdownReminder.ONE_HOUR,
+                        CountdownReminder.TWO_HOUR,
+                        CountdownReminder.ONE_DAY,
+                        CountdownReminder.TWO_DAY
+                    ].filter { !reminders.contains($0) }
+
+                    if !availableReminders.isEmpty {
+                        Picker("Reminder", selection: $selectedReminder) {
+                            ForEach(availableReminders, id: \.date) { reminder in
+                                Text(reminder.label).tag(reminder)
+                            }
                         }
-                        
-                        Button("10 mins before")
-                        {
-                            reminders.append(
-                                CountdownReminder.TEN_MIN
-                            )
+                        Button("Add Reminder") {
+                            if !reminders.contains(selectedReminder) {
+                                reminders.append(selectedReminder)
+                                reminders.sort { $0.date < $1.date }
+                                // Update selectedReminder to next available, if any
+                                if let next = availableReminders.first(where: { $0 != selectedReminder }) {
+                                    selectedReminder = next
+                                }
+                            }
                         }
-                        
-                        Button("15 mins before")
-                        {
-                            reminders.append(
-                                CountdownReminder.FIFTEEN_MIN
-                            )
-                        }
-                        
-                        Button("30 mins before")
-                        {
-                            reminders.append(
-                                CountdownReminder.THIRTY_MIN
-                            )
-                            
-                            
-                            
-                        }
-                        
-                        Button("1 hour before")
-                        {
-                            reminders.append(
-                                CountdownReminder.ONE_HOUR
-                            )
-                        }
-                        
-                        Button("2 hours before")
-                        {
-                            reminders.append(
-                                CountdownReminder.TWO_HOUR
-                            )
-                        }
-                        
-                        Button("1 day before"){
-                            reminders.append(
-                                CountdownReminder.ONE_DAY
-                            )
-                        }
-                        
-                        Button("2 days before"){
-                            reminders.append(
-                                CountdownReminder.TWO_DAY
-                            )
-                        }
-                        
-                        Button("Custom...")
-                        {}
+                    } else {
+                        Text("All reminders added")
+                            .foregroundColor(.secondary)
                     }
-                    
-                    //                    Button("Add Reminder"){
-                    //                        reminders.append(
-                    //                            Reminder(timing: "5 minutes before", date: Date.now)
-                    //                        )
-                    //                    }
-                    
                 }
             }
             .navigationTitle("New Countdown")

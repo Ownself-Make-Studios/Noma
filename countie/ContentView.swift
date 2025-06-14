@@ -13,7 +13,7 @@ import EventKitUI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @State private var items: [CountdownItem] = []
+    @State private var countdowns: [CountdownItem] = []
     @State private var showAddModal = false
     @State private var showCalendarModal = false
     @State private var searchText = ""
@@ -36,16 +36,16 @@ struct ContentView: View {
     private func deleteItems(offsets: IndexSet) {
         
         for index in offsets {
-            modelContext.delete(items[index])
+            modelContext.delete(countdowns[index])
         }
         
         print("Deleted item")
         try? modelContext.save()
         
-        WidgetCenter.shared.reloadTimelines(ofKind: "CountdownWidget", )
+        WidgetCenter.shared.reloadTimelines(ofKind: "CountdownWidget")
     }
     
-    private func fetchItems(){
+    private func fetchCountdowns(){
         
         let now = Date.now
         
@@ -64,37 +64,32 @@ struct ContentView: View {
         
         let fetchedItems = try? modelContext.fetch(descriptor)
         
-        items = fetchedItems ?? []
+        countdowns = fetchedItems ?? []
     }
     
     var body: some View {
         NavigationStack {
-            if items.isEmpty {
-                ContentUnavailableView(
-                    "No Countdowns Yet :(",
-                    systemImage: "calendar",
-                    description: Text("Add a countdown by tapping the plus button!"))
-            }
-            
-            List {
-                ForEach(items) { item in
-                    NavigationLink(
-                        destination: EditCountdownView(countdownItem: item)
-                    )
-                    {
-                        CountdownListItemView(item: item)
-                    }
+            VStack{
+                
+                if countdowns.isEmpty {
+                    ContentUnavailableView(
+                        "No Countdowns Yet :(",
+                        systemImage: "calendar",
+                        description: Text("Add a countdown by tapping the plus button!"))
                 }
-                .onDelete(perform: deleteItems)
+                
+                CountdownListView(
+                    countdowns: countdowns,
+                    onDelete: deleteItems
+                )
+                
             }
             .toolbar {
-                ToolbarItem {
+                ToolbarItemGroup(placement: .bottomBar) {
                     Button(action: handleFilterClick) {
                         Label("Filter", systemImage: filterPast ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
                     }
-                }
-                
-                ToolbarItem {
+                    Spacer()
                     Menu {
                         Button(action: {
                             showCalendarModal = true
@@ -102,24 +97,22 @@ struct ContentView: View {
                             Label("Add from calendar", systemImage: "calendar.badge.plus")
                         }
                         
-                        Button{
+                        Button(action: {
                             showAddModal = true
-                        } label: {
-                            Label("Add new countdown", systemImage: "plus")
+                        }) {
+                            Label("Custom", systemImage: "plus")
+                                .labelStyle(.titleAndIcon)
                         }
                         
                     } label: {
-                        Button{} label: {
-                            Label("Add", systemImage: "plus")
-                        }
+                        Label("Add Countdown", systemImage: "plus")
+                            .labelStyle(.titleAndIcon)
                     }
                 }
+                
             }
             .navigationTitle("Countie")
-            //            .searchable(text: $searchText)
-            
         }
-        .navigationTitle("Countie")
         .sheet(isPresented: $showAddModal) {
             AddCountdownView()
                 .toolbar {
@@ -136,8 +129,9 @@ struct ContentView: View {
                 CalendarEventsView(
                     events: events,
                     calendars: calendars,
-                    onSelectEvent: {
-                        print($0.title ?? "Can't get event name")
+                    onSelectEvent: { _ in
+                        showAddModal = false
+                        showCalendarModal = false
                     }
                 )
                 .toolbar {
@@ -153,11 +147,17 @@ struct ContentView: View {
         }
         .onChange(of: filterPast) { _, _ in
             withAnimation{
-                fetchItems()
+                fetchCountdowns()
+            }
+        }
+        .onChange(of: showAddModal) { oldValue, newValue in
+            if oldValue == true && newValue == false {
+                // AddCountdownView was dismissed
+                fetchCountdowns()
             }
         }
         .task{
-            fetchItems()
+            fetchCountdowns()
             CalendarStore.requestPermission()
             
             calendars = CalendarStore.store.calendars(for: .event)
