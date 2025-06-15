@@ -61,7 +61,7 @@ struct CountdownQuery: EntityQuery {
 
 struct ConfigurationAppIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource { "Countdown Widget" }
-    static var description: IntentDescription { "Access your countdowns from a widget!" }
+    static var description: IntentDescription { "Access your countdowns from this widget!" }
     
     @Parameter(title: "Show Specific Countdown", default: false)
     var showSpecificCountdown: Bool?

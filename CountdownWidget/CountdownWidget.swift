@@ -17,11 +17,16 @@ struct Provider: AppIntentTimelineProvider {
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        SimpleEntry(date: Date(),
-                    countdownItem:
-                .init(emoji: nil, name: "Happy Pie Day!", includeTime: false, date: .now.addingTimeInterval(
-                    60 * 60 * 24 * 3
-                ))
+        
+        var countdownItem: CountdownItem? = await getLatestActiveCountdown()
+        
+        if countdownItem == nil {
+            countdownItem = .init(emoji: "🎉", name: "Welcome to Countie!", includeTime: false, date: .now.addingTimeInterval(60 * 60 * 24 * 3))
+        }
+        
+        return SimpleEntry(
+            date: Date(),
+            countdownItem: countdownItem,
         )
     }
     
@@ -39,9 +44,9 @@ struct Provider: AppIntentTimelineProvider {
         
         print("Renewing Timeline")
         // If there is no countdowns, set it to refresh NEVER
-//        if(items.isEmpty){
-//            return Timeline(entries: [], policy: .never)
-//        }
+        //        if(items.isEmpty){
+        //            return Timeline(entries: [], policy: .never)
+        //        }
         
         var entries: [SimpleEntry] = []
         
@@ -50,7 +55,7 @@ struct Provider: AppIntentTimelineProvider {
                 SimpleEntry(date: item.date, countdownItem: item)
             ]
         }
-
+        
         // Refresh every after 1 hour
         return Timeline(entries: entries, policy: .after(.now.addingTimeInterval(3600)))
     }
@@ -76,7 +81,7 @@ struct Provider: AppIntentTimelineProvider {
         let items = try? modelContainer.mainContext.fetch(descriptor)
         return items?.first
     }
-
+    
     // Fetch the latest countdown that has not passed
     @MainActor
     private func getLatestActiveCountdown() -> CountdownItem? {
@@ -110,12 +115,13 @@ struct CountdownWidget: Widget {
                     CountieModelContainer.sharedModelContainer
                 )
         }
+        .configurationDisplayName("Countdown Widget")
+        .description("Keep track of your countdowns with this widget!")
         .supportedFamilies(
             [
                 .accessoryRectangular,
                 .systemSmall,
                 .systemMedium,
-                .systemLarge
             ])
     }
 }
