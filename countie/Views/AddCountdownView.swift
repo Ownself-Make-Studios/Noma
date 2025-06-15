@@ -29,7 +29,7 @@ struct AddCountdownView: View {
     @State private var selectedReminder: CountdownReminder = .FIVE_MIN
     
     var isSubmitDisabled: Bool {
-        name.isEmpty
+        name.isEmpty && emoji.isEmpty
     }
     
     var onAdd: (() -> Void)? = nil
