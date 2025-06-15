@@ -8,8 +8,6 @@
 import SwiftUI
 import SwiftData
 import WidgetKit
-import EventKit
-import EventKitUI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
@@ -22,10 +20,6 @@ struct ContentView: View {
     
     private func handleFilterClick(){
         filterPast.toggle()
-    }
-    
-    private func addItem() {
-        showAddModal = true
     }
     
     private func deleteItems(offsets: IndexSet) {
@@ -153,7 +147,7 @@ struct ContentView: View {
             }
         }
         .onChange(of: showAddModal) { oldValue, newValue in
-            if oldValue == true && newValue == false {
+            if oldValue != newValue && newValue == false {
                 // AddCountdownView was dismissed
                 fetchCountdowns()
             }
