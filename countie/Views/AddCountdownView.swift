@@ -7,18 +7,15 @@
 
 import SwiftUI
 import WidgetKit
-import EmojiPicker
-
-
-
 
 struct AddCountdownView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     
-    @State var emoji: Emoji?;
+    @State var emoji: String = ""
     @State var name: String = ""
-    @State var showEmojiPicker: Bool = false;
+    @State var showEmojiAlert: Bool = false
+    @State var emojiText: String = ""
     
     // Initial state is the current date for the start of day (12am)
     @State var date: Date = Calendar.current.startOfDay(for: Date.now);
@@ -44,10 +41,11 @@ struct AddCountdownView: View {
         print(selectedColor)
         
         let item: CountdownItem = CountdownItem(
-            emoji: emoji?.value,
+            emoji: emoji,
             name: name,
             includeTime: hasTime,
-            date: date)
+            date: date
+        )
         
         print(item)
         
@@ -68,12 +66,13 @@ struct AddCountdownView: View {
                     .fill(Color.gray.opacity(0.3))
                     .frame(width: 100, height: 100)
                     .overlay(
-                        Text(emoji?.value ?? "")
+                        Text(emoji)
                             .font(.system(size: 50))
                             .foregroundColor(.white)
                     )
                     .onTapGesture {
-                        showEmojiPicker.toggle()
+                        showEmojiAlert = true
+                        emojiText = emoji
                     }
                 Text("Tap to select emoji")
                     .font(.caption)
@@ -164,14 +163,27 @@ struct AddCountdownView: View {
                 Button("Add") {
                     handleAddItem()
                 }.disabled(isSubmitDisabled)
-            }.sheet(isPresented: $showEmojiPicker){
-                NavigationView{
-                    
-                    EmojiPickerView(selectedEmoji: $emoji)
-                        .navigationTitle("Select Emoji")
-                        .navigationBarTitleDisplayMode(.inline)
+            }
+            .alert("Enter Emoji", isPresented: $showEmojiAlert) {
+                TextField("Emoji", text: $emojiText)
+                    .onChange(of: emojiText) { _, newValue in
+                        // Limit to 1 character
+                        if newValue.count > 1 {
+                            emojiText = String(newValue.prefix(1))
+                        }
+                    }
+                Button("OK") {
+                    if emojiText.isSingleEmoji {
+                        emoji = emojiText
+                    } else {
+                        // Optionally show an error or ignore input
+                        // For now, just clear the emoji if not valid
+                        emoji = ""
+                    }
                 }
-                
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("Please enter a single emoji.")
             }
             
         }
@@ -184,6 +196,20 @@ struct AddCountdownView: View {
                 date = dateWithoutTime
             }
         }
+    }
+}
+
+// Emoji validation extension
+extension String {
+    var isSingleEmoji: Bool {
+        count == 1 && first?.isEmoji == true
+    }
+}
+
+extension Character {
+    var isEmoji: Bool {
+        unicodeScalars.first?.properties.isEmojiPresentation == true ||
+        unicodeScalars.first?.properties.isEmoji == true
     }
 }
 

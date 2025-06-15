@@ -8,7 +8,6 @@
 import Foundation
 import SwiftData
 import AppIntents
-import EmojiPicker
 
 @Model
 class CountdownItem: ObservableObject{
