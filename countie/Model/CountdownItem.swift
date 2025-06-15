@@ -86,6 +86,18 @@ class CountdownItem: ObservableObject{
         dateFormatter.timeStyle = .none
         return dateFormatter.string(from: date)
     }
+    
+    /**
+     Calculates the percentage of time elapsed between countSince and date.
+     Returns a value between 0 (just started) and 1 (fully elapsed or past).
+     */
+    var progress: Double {
+        let totalInterval = date.timeIntervalSince(countSince)
+        let elapsedInterval = Date().timeIntervalSince(countSince)
+        guard totalInterval > 0 else { return 1.0 } // If date is before countSince, consider complete
+        let percent = min(max(elapsedInterval / totalInterval, 0), 1)
+        return percent
+    }
 }
 
 extension CountdownItem {
