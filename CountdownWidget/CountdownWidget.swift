@@ -126,7 +126,7 @@ extension ConfigurationAppIntent {
     }
 }
 
-#Preview(as: .accessoryRectangular) {
+#Preview(as: .systemSmall) {
     CountdownWidget()
 } timeline: {
     SimpleEntry(

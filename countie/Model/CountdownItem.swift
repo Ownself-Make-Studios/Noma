@@ -66,7 +66,7 @@ class CountdownItem: ObservableObject{
         if dateRemainingText.hasPrefix("-") {
             dateRemainingText = "\(dateRemainingText.dropFirst()) ago"
         } else {
-            dateRemainingText = "in \(dateRemainingText)"
+            dateRemainingText = "\(dateRemainingText)"
         }
         
         return dateRemainingText
@@ -84,7 +84,7 @@ class CountdownItem: ObservableObject{
 }
 
 extension CountdownItem {
-    public static var SampleFutureTimer = CountdownItem(emoji: "😊", name: "Demo Item (Future)", includeTime: true, date: Date.now.addingTimeInterval(86400))
+    public static var SampleFutureTimer = CountdownItem(emoji: "😊", name: "Demo Item (Future)", includeTime: true, date: Date.distantFuture)
     
     public static var SamplePastTimer = CountdownItem(emoji: nil, name: "Demo Item (Past)", includeTime: true, date: Date.now.addingTimeInterval(-86400))
 }
