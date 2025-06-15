@@ -27,37 +27,30 @@ struct Provider: AppIntentTimelineProvider {
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         
-        let items = await getCountdownItems()
+        var countdownItem: CountdownItem?
+        
+        if configuration.showSpecificCountdown == true {
+            countdownItem = await getCountdownItem(by: configuration.countdown?.id ?? "")
+        } else {
+            // If no specific countdown is selected, get the latest active countdown
+            countdownItem = await getLatestActiveCountdown()
+        }
+        
         
         print("Renewing Timeline")
-        print(items)
-        
         // If there is no countdowns, set it to refresh NEVER
 //        if(items.isEmpty){
 //            return Timeline(entries: [], policy: .never)
 //        }
         
-        print(items.first!.name)
-        print(items.first!.date)
-        
         var entries: [SimpleEntry] = []
         
-        if(items.isEmpty){
+        if let item = countdownItem {
             entries = [
-                SimpleEntry(date: .now, countdownItem: nil),
+                SimpleEntry(date: item.date, countdownItem: item)
             ]
-        }else{
-            items.forEach { item in
-                entries.append(
-                    .init(date: item.date, countdownItem: item)
-                )
-                    
-            }
-//            entries = [
-//                SimpleEntry(date: .now, countdownItem: items.first),
-//            ]
         }
-        
+
         // Refresh every after 1 hour
         return Timeline(entries: entries, policy: .after(.now.addingTimeInterval(3600)))
     }
@@ -71,20 +64,30 @@ struct Provider: AppIntentTimelineProvider {
         return #Predicate<CountdownItem> { $0.date >= now }
     }
     
-    // Fetch all countdown items
+    // Fetch a countdown by id
     @MainActor
-    private func getCountdownItems() -> [CountdownItem] {
+    private func getCountdownItem(by id: String) -> CountdownItem? {
+        let uuid: UUID = UUID(uuidString: id)!
         let modelContainer = CountieModelContainer.sharedModelContainer
-        
         let descriptor = FetchDescriptor<CountdownItem>(
-            predicate: Provider.predicate(), sortBy: [
-                SortDescriptor(\.date, order: .forward)
-            ]
+            predicate: #Predicate<CountdownItem> { $0.id == uuid },
+            sortBy: [SortDescriptor(\CountdownItem.date, order: .forward)]
         )
-        
         let items = try? modelContainer.mainContext.fetch(descriptor)
-        
-        return items ?? [];
+        return items?.first
+    }
+
+    // Fetch the latest countdown that has not passed
+    @MainActor
+    private func getLatestActiveCountdown() -> CountdownItem? {
+        let modelContainer = CountieModelContainer.sharedModelContainer
+        let now = Date()
+        let descriptor = FetchDescriptor<CountdownItem>(
+            predicate: #Predicate<CountdownItem> { $0.date >= now },
+            sortBy: [SortDescriptor(\CountdownItem.date, order: .forward)]
+        )
+        let items = try? modelContainer.mainContext.fetch(descriptor)
+        return items?.first
     }
 }
 

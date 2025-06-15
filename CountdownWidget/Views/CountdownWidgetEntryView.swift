@@ -27,7 +27,7 @@ struct CountdownWidgetEntryView : View {
                 }
                 
             }else{
-                Text("No countdowns :(")
+                Text("No countdowns to display")
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
