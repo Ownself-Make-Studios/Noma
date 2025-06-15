@@ -28,10 +28,6 @@ struct CountdownListView: View {
             .onDelete(perform: onDelete)
         }
         .searchable(text: $searchText, prompt: "Search countdowns")
-        .onAppear{
-            print("CountdownListView")
-            print(countdowns)
-        }
     }
 }
 
