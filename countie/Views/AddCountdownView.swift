@@ -18,8 +18,10 @@ struct AddCountdownView: View {
     @State var emojiText: String = ""
     
     // Initial state is the current date for the start of day (12am)
-    @State var date: Date = Calendar.current.startOfDay(for: Date.now);
+    @State var countdownDate: Date = Calendar.current.startOfDay(for: Date.now);
     
+    @State var countSinceDate: Date = Calendar.current.startOfDay(for: Date.now);
+
     @State var hasTime: Bool = false;
     @State var reminders: [CountdownReminder] = [];
     
@@ -37,23 +39,27 @@ struct AddCountdownView: View {
     func handleAddItem(){
         print("Adding item")
         print(name)
-        print(date)
+        print(countdownDate)
         print(selectedColor)
+        print(countSinceDate)
         
         let item: CountdownItem = CountdownItem(
             emoji: emoji,
             name: name,
             includeTime: hasTime,
-            date: date
+            date: countdownDate,
         )
+        
+        item.countSince = countSinceDate
         
         print(item)
         
         modelContext.insert(item)
         try? modelContext.save()
         
-        //        Reload all widget timelines
-        WidgetCenter.shared.reloadTimelines(ofKind: "CountdownWidget", )
+        // Reload all widget timelines
+        WidgetCenter.shared.reloadTimelines(ofKind: "CountdownWidget")
+        
         dismiss()
         onAdd?()
     }
@@ -92,10 +98,15 @@ struct AddCountdownView: View {
                     
                 
                 Toggle("Include time", isOn: $hasTime)
-                DatePicker("Date\(hasTime ? " & Time" : "")",
-                           selection: $date,
+                DatePicker("Countdown Date\(hasTime ? " & Time" : "")",
+                           selection: $countdownDate,
                            in: Date.now...,
                            displayedComponents: hasTime ? [.date, .hourAndMinute] : [.date])
+                    
+                     DatePicker("Count since",
+                           selection: $countSinceDate,
+                           displayedComponents: hasTime ? [.date, .hourAndMinute] : [.date])
+                    
                     
                 }
                 
@@ -187,8 +198,8 @@ struct AddCountdownView: View {
             
             if(!newVal){
                 // Remove time from date
-                let dateWithoutTime = Calendar.current.startOfDay(for: date)
-                date = dateWithoutTime
+                let dateWithoutTime = Calendar.current.startOfDay(for: countdownDate)
+                countdownDate = dateWithoutTime
             }
         }
     }

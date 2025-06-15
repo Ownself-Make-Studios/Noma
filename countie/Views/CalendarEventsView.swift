@@ -37,7 +37,7 @@ struct CalendarEventsView: View {
                     NavigationLink {
                         AddCountdownView(
                             name: event.title,
-                            date: event.startDate,
+                            countdownDate: event.startDate,
                             hasTime: !event.isAllDay,
                             onAdd: {
                                 onSelectEvent?(event)

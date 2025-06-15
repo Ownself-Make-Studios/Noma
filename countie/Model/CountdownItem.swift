@@ -17,6 +17,11 @@ class CountdownItem: ObservableObject{
     @Attribute var includeTime: Bool = false
     @Attribute var date: Date
     
+    @Attribute var createdAt: Date = Date.now
+    
+    // This is used to track when the countdown should start counting down from. This is so that we can visualize how long the countdown has been running using a progress bar or etc
+    @Attribute var countSince: Date = Date.now
+
     @Attribute var calendarEventIdentifier: String?
 
     init(emoji: String?, name: String, includeTime: Bool, date: Date, calendarEventIdentifier: String? = nil) {
