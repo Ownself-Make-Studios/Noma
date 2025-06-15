@@ -47,7 +47,8 @@ struct ContentView: View {
         
         print("Deleted item")
 
-        WidgetCenter.shared.reloadTimelines(ofKind: "CountdownWidget")
+        // Ensure widget updates after deletion
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     private func fetchCountdowns(){
