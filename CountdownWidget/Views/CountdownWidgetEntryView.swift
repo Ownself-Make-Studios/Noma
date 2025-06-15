@@ -53,6 +53,23 @@ struct CountdownWidgetSmallView: View {
             Text(countdownItem.timeRemainingString)
                 .font(.caption)
                 .opacity(0.6)
+            Spacer(minLength: 0)
+            
+            HStack(spacing: 6) {
+                LinearProgressView(value: countdownItem.progress, shape: Capsule())
+                    .tint(
+                        LinearGradient(
+                            colors: [.purple, .blue],
+                            startPoint: .leading,
+                            endPoint: .trailing)
+                    )
+                    .frame(height: 9)
+                
+                Text("\(Int(countdownItem.progress * 100))%")
+                    .font(.caption2)
+                    .opacity(0.4)
+                
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -75,6 +92,23 @@ struct CountdownWidgetMediumView: View {
             Text(countdownItem.timeRemainingString)
                 .font(.caption)
                 .opacity(0.6)
+            Spacer(minLength: 0)
+            
+            HStack(spacing: 6) {
+                LinearProgressView(value: countdownItem.progress, shape: Capsule())
+                    .tint(
+                        LinearGradient(
+                            colors: [.purple, .blue],
+                            startPoint: .leading,
+                            endPoint: .trailing)
+                    )
+                    .frame(height: 9)
+                
+                Text("\(Int(countdownItem.progress * 100))%")
+                    .font(.caption2)
+                    .opacity(0.4)
+                
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -97,6 +131,23 @@ struct CountdownWidgetLargeView: View {
             Text(countdownItem.timeRemainingString)
                 .font(.caption)
                 .opacity(0.6)
+            Spacer(minLength: 0)
+            
+            HStack(spacing: 6) {
+                LinearProgressView(value: countdownItem.progress, shape: Capsule())
+                    .tint(
+                        LinearGradient(
+                            colors: [.purple, .blue],
+                            startPoint: .leading,
+                            endPoint: .trailing)
+                    )
+                    .frame(height: 9)
+                
+                Text("\(Int(countdownItem.progress * 100))%")
+                    .font(.caption2)
+                    .opacity(0.4)
+                
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -110,6 +161,7 @@ struct CountdownWidgetAccessoryRectangularView: View {
                 .font(.system(size: 16))
                 .bold()
                 .lineLimit(1)
+            
             Text(countdownItem.timeRemainingString)
                 .font(.caption)
                 .opacity(0.6)
