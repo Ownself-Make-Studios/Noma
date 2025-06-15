@@ -13,7 +13,6 @@ struct CountdownWidgetBundle: WidgetBundle {
     let kind: String = "CountdownWidget"
     var body: some Widget {
         CountdownWidget()
-//        CountdownWidgetControl()
 //        CountdownWidgetLiveActivity()
     }
 }
