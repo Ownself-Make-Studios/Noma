@@ -34,7 +34,7 @@ struct CalendarEventsView: View {
                 }
             } else {
                 List(filteredEvents, id: \.eventIdentifier) { event in
-                    NavigationLink(isActive: .constant(false)) {
+                    NavigationLink {
                         AddCountdownView(
                             name: event.title,
                             date: event.startDate,

@@ -75,18 +75,19 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack{
-                
                 if countdowns.isEmpty {
+                    Spacer(minLength: 0)
                     ContentUnavailableView(
                         "No Countdowns Yet :(",
                         systemImage: "calendar",
                         description: Text("Add a countdown by tapping the plus button!"))
+                    Spacer(minLength: 0)
+                } else {
+                    CountdownListView(
+                        countdowns: countdowns,
+                        onDelete: deleteItems
+                    )
                 }
-                
-                CountdownListView(
-                    countdowns: countdowns,
-                    onDelete: deleteItems
-                )
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -138,6 +139,7 @@ struct ContentView: View {
                     onSelectEvent: { _ in
                         showAddModal = false
                         showCalendarModal = false
+                        fetchCountdowns()
                     }
                 )
                 .toolbar {
