@@ -39,9 +39,14 @@ struct ContentView: View {
             modelContext.delete(countdowns[index])
         }
         
-        print("Deleted item")
+        
         try? modelContext.save()
         
+        // Filter from countdowns
+        fetchCountdowns()
+        
+        print("Deleted item")
+
         WidgetCenter.shared.reloadTimelines(ofKind: "CountdownWidget")
     }
     
@@ -82,14 +87,15 @@ struct ContentView: View {
                     countdowns: countdowns,
                     onDelete: deleteItems
                 )
-                
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button(action: handleFilterClick) {
                         Label("Filter", systemImage: filterPast ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
                     }
+                    
                     Spacer()
+                    
                     Menu {
                         Button(action: {
                             showCalendarModal = true
