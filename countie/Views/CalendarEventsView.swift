@@ -9,8 +9,8 @@ import SwiftUI
 import EventKit
 
 struct CalendarEventsView: View {
-    var events: [EKEvent]
-    var calendars: [EKCalendar]
+    @State private var events: [EKEvent] = []
+    @State private var calendars: [EKCalendar] = []
     var onSelectEvent: ((EKEvent) -> Void)?
     
     @State private var selectedCalendarID: String? = nil
@@ -79,9 +79,18 @@ struct CalendarEventsView: View {
             }
         }
         .searchable(text: $searchText, placement: .toolbar, prompt: "Search events")
+        .task {
+            // Request permission for calendar access
+            CalendarAccessManager.requestPermission()
+            
+            // Fetch calendars and events on appear
+            calendars = CalendarAccessManager.store.calendars(for: .event)
+            let predicate = CalendarAccessManager.store.predicateForEvents(withStart: Date.now, end: Date.distantFuture, calendars: nil)
+            events = CalendarAccessManager.store.events(matching: predicate)
+        }
     }
 }
 
 #Preview {
-    CalendarEventsView(events: [], calendars: [])
+    CalendarEventsView()
 }

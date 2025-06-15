@@ -18,11 +18,6 @@ struct ContentView: View {
     @State private var showCalendarModal = false
     @State private var searchText = ""
     
-    private var eventViewController = EKEventViewController()
-    
-    @State private var events: [EKEvent] = []
-    @State private var calendars: [EKCalendar] = []
-    
     @AppStorage("filterPast") private var filterPast = false
     
     private func handleFilterClick(){
@@ -135,8 +130,6 @@ struct ContentView: View {
         .sheet(isPresented: $showCalendarModal) {
             NavigationView{
                 CalendarEventsView(
-                    events: events,
-                    calendars: calendars,
                     onSelectEvent: { _ in
                         showAddModal = false
                         showCalendarModal = false
@@ -167,15 +160,6 @@ struct ContentView: View {
         }
         .task{
             fetchCountdowns()
-            CalendarStore.requestPermission()
-            
-            calendars = CalendarStore.store.calendars(for: .event)
-            
-            let predicate = CalendarStore.store.predicateForEvents(withStart: Date.now, end: Date.distantFuture, calendars: nil)
-            
-            let events = CalendarStore.store.events(matching: predicate)
-            
-            self.events = events
         }
     }
     
