@@ -60,7 +60,6 @@ struct AddCountdownView: View {
     
     var body: some View {
         NavigationStack{
-            // A square box with an emoji icon that when clicked open the emoji keyboard
             VStack(spacing: 4) {
                 RoundedRectangle(cornerRadius: 24)
                     .fill(Color.gray.opacity(0.3))
@@ -74,7 +73,7 @@ struct AddCountdownView: View {
                         showEmojiAlert = true
                         emojiText = emoji
                     }
-                Text("Tap to select emoji")
+                Text("Tap to set an emoji")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
@@ -89,22 +88,18 @@ struct AddCountdownView: View {
                 //
                 TextField("Name of Countdown", text: $name)
                 
-                Toggle("Include Time", isOn: $hasTime)
-                DatePicker("Date",
+                Section {
+                    
+                
+                Toggle("Include time", isOn: $hasTime)
+                DatePicker("Date\(hasTime ? " & Time" : "")",
                            selection: $date,
                            in: Date.now...,
                            displayedComponents: hasTime ? [.date, .hourAndMinute] : [.date])
-                //                }
+                    
+                }
                 
-                //                Section("Reminders"){
-                //                    DatePicker("Remind me on...", selection: $date, displayedComponents: hasTime ? [.date, .hourAndMinute] : [.date])
-                //                }
-                //
-                //                Section("Customization"){
-                //                    ColorPicker("Color", selection: $selectedColor)
-                //                }
-                
-                //                A section for reminders which lists down a select option for 1 day, 1 week, 1 month, 1 year and custom date. It has a button at the bottom to add a new reminder. The user can set multiple reminders for an event
+                //  A section for reminders which lists down a select option for 1 day, 1 week, 1 month, 1 year and custom date. It has a button at the bottom to add a new reminder. The user can set multiple reminders for an event
                 Section("Reminders") {
                     // Show reminders in chronological order
                     ForEach(reminders.sorted(by: { $0.date < $1.date }), id: \.date) { reminder in
@@ -188,9 +183,9 @@ struct AddCountdownView: View {
             
         }
         .onChange(of: hasTime){
-            _, new in
+            _, newVal in
             
-            if(!new){
+            if(!newVal){
                 // Remove time from date
                 let dateWithoutTime = Calendar.current.startOfDay(for: date)
                 date = dateWithoutTime
