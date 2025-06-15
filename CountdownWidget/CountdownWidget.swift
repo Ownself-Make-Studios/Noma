@@ -11,9 +11,15 @@ import SwiftData
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(
+        var countdownItem: CountdownItem = .init(emoji: "🎉", name: "Welcome to Countie!", includeTime: false, date: .now.addingTimeInterval(60 * 60 * 24 * 3))
+        
+        countdownItem.countSince = Date.now.addingTimeInterval(60 * 60 * 24 * 2) // 2 days ago
+        
+        return SimpleEntry(
             date: Date(),
-            countdownItem: nil)
+            countdownItem: countdownItem,
+            showProgress: true
+        )
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
@@ -27,6 +33,7 @@ struct Provider: AppIntentTimelineProvider {
         return SimpleEntry(
             date: Date(),
             countdownItem: countdownItem,
+            showProgress: configuration.showProgress ?? true
         )
     }
     
@@ -52,7 +59,7 @@ struct Provider: AppIntentTimelineProvider {
         
         if let item = countdownItem {
             entries = [
-                SimpleEntry(date: item.date, countdownItem: item)
+                SimpleEntry(date: item.date, countdownItem: item, showProgress: configuration.showProgress ?? true)
             ]
         }
         
@@ -99,6 +106,7 @@ struct Provider: AppIntentTimelineProvider {
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let countdownItem: CountdownItem?
+    let showProgress: Bool
 }
 
 struct CountdownWidget: Widget {
@@ -137,7 +145,8 @@ extension ConfigurationAppIntent {
 } timeline: {
     SimpleEntry(
         date: .now,
-        countdownItem: .SampleFutureTimer
+        countdownItem: .SampleFutureTimer,
+        showProgress: true
     )
     
     

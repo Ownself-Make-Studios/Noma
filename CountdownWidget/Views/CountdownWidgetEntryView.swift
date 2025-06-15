@@ -18,15 +18,15 @@ struct CountdownWidgetEntryView : View {
             if let countdownItem = entry.countdownItem {
                 switch family {
                 case .systemSmall:
-                    CountdownWidgetSmallView(countdownItem: countdownItem)
+                    CountdownWidgetSmallView(countdownItem: countdownItem, showProgress: entry.showProgress)
                 case .systemMedium:
-                    CountdownWidgetMediumView(countdownItem: countdownItem)
+                    CountdownWidgetMediumView(countdownItem: countdownItem, showProgress: entry.showProgress)
                 case .systemLarge:
-                    CountdownWidgetLargeView(countdownItem: countdownItem)
+                    CountdownWidgetLargeView(countdownItem: countdownItem, showProgress: entry.showProgress)
                 case .accessoryRectangular:
-                    CountdownWidgetAccessoryRectangularView(countdownItem: countdownItem)
+                    CountdownWidgetAccessoryRectangularView(countdownItem: countdownItem, showProgress: entry.showProgress)
                 default:
-                    CountdownWidgetSmallView(countdownItem: countdownItem)
+                    CountdownWidgetSmallView(countdownItem: countdownItem, showProgress: entry.showProgress)
                 }
             } else {
                 Text("No countdowns to display")
@@ -38,6 +38,8 @@ struct CountdownWidgetEntryView : View {
 
 struct CountdownWidgetSmallView: View {
     let countdownItem: CountdownItem
+    let showProgress: Bool
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             if let emoji = countdownItem.emoji, !emoji.isEmpty {
@@ -53,22 +55,24 @@ struct CountdownWidgetSmallView: View {
             Text(countdownItem.timeRemainingString)
                 .font(.caption)
                 .opacity(0.6)
-            Spacer(minLength: 0)
             
-            HStack(spacing: 6) {
-                LinearProgressView(value: countdownItem.progress, shape: Capsule())
-                    .tint(
-                        LinearGradient(
-                            colors: [.purple, .blue],
-                            startPoint: .leading,
-                            endPoint: .trailing)
-                    )
-                    .frame(height: 9)
-                
-                Text("\(Int(countdownItem.progress * 100))%")
-                    .font(.caption2)
-                    .opacity(0.4)
-                
+            if showProgress {
+                Spacer(minLength: 0)
+                HStack(spacing: 6) {
+                    LinearProgressView(value: countdownItem.progress, shape: Capsule())
+                        .tint(
+                            LinearGradient(
+                                colors: [.purple, .blue],
+                                startPoint: .leading,
+                                endPoint: .trailing)
+                        )
+                        .frame(height: 9)
+                    
+                    Text("\(Int(countdownItem.progress * 100))%")
+                        .font(.caption2)
+                        .opacity(0.4)
+                    
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -77,6 +81,8 @@ struct CountdownWidgetSmallView: View {
 
 struct CountdownWidgetMediumView: View {
     let countdownItem: CountdownItem
+    let showProgress: Bool
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             if let emoji = countdownItem.emoji, !emoji.isEmpty {
@@ -92,22 +98,26 @@ struct CountdownWidgetMediumView: View {
             Text(countdownItem.timeRemainingString)
                 .font(.caption)
                 .opacity(0.6)
-            Spacer(minLength: 0)
             
-            HStack(spacing: 6) {
-                LinearProgressView(value: countdownItem.progress, shape: Capsule())
-                    .tint(
-                        LinearGradient(
-                            colors: [.purple, .blue],
-                            startPoint: .leading,
-                            endPoint: .trailing)
-                    )
-                    .frame(height: 9)
+            if showProgress {
                 
-                Text("\(Int(countdownItem.progress * 100))%")
-                    .font(.caption2)
-                    .opacity(0.4)
+                Spacer(minLength: 0)
                 
+                HStack(spacing: 6) {
+                    LinearProgressView(value: countdownItem.progress, shape: Capsule())
+                        .tint(
+                            LinearGradient(
+                                colors: [.purple, .blue],
+                                startPoint: .leading,
+                                endPoint: .trailing)
+                        )
+                        .frame(height: 9)
+                    
+                    Text("\(Int(countdownItem.progress * 100))%")
+                        .font(.caption2)
+                        .opacity(0.4)
+                    
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -116,6 +126,8 @@ struct CountdownWidgetMediumView: View {
 
 struct CountdownWidgetLargeView: View {
     let countdownItem: CountdownItem
+    let showProgress: Bool
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             if let emoji = countdownItem.emoji, !emoji.isEmpty {
@@ -131,22 +143,26 @@ struct CountdownWidgetLargeView: View {
             Text(countdownItem.timeRemainingString)
                 .font(.caption)
                 .opacity(0.6)
-            Spacer(minLength: 0)
             
-            HStack(spacing: 6) {
-                LinearProgressView(value: countdownItem.progress, shape: Capsule())
-                    .tint(
-                        LinearGradient(
-                            colors: [.purple, .blue],
-                            startPoint: .leading,
-                            endPoint: .trailing)
-                    )
-                    .frame(height: 9)
+            if showProgress {
                 
-                Text("\(Int(countdownItem.progress * 100))%")
-                    .font(.caption2)
-                    .opacity(0.4)
+                Spacer(minLength: 0)
                 
+                HStack(spacing: 6) {
+                    LinearProgressView(value: countdownItem.progress, shape: Capsule())
+                        .tint(
+                            LinearGradient(
+                                colors: [.purple, .blue],
+                                startPoint: .leading,
+                                endPoint: .trailing)
+                        )
+                        .frame(height: 9)
+                    
+                    Text("\(Int(countdownItem.progress * 100))%")
+                        .font(.caption2)
+                        .opacity(0.4)
+                    
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -155,6 +171,17 @@ struct CountdownWidgetLargeView: View {
 
 struct CountdownWidgetAccessoryRectangularView: View {
     let countdownItem: CountdownItem
+    let showProgress: Bool
+    
+    // Show time remaining with progress percentage if showProgress is true
+    var timeRemainingString: String {
+        if showProgress {
+            return countdownItem.timeRemainingString + " (\(Int(countdownItem.progress * 100))%)"
+        } else {
+            return countdownItem.timeRemainingString
+        }
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text("\(countdownItem.emoji ?? "") \(countdownItem.name)")
@@ -162,7 +189,7 @@ struct CountdownWidgetAccessoryRectangularView: View {
                 .bold()
                 .lineLimit(1)
             
-            Text(countdownItem.timeRemainingString)
+            Text(timeRemainingString)
                 .font(.caption)
                 .opacity(0.6)
         }

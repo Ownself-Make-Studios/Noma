@@ -66,6 +66,9 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
     @Parameter(title: "Show Specific Countdown", default: false)
     var showSpecificCountdown: Bool?
     
+    @Parameter(title: "Show Progress", default: true)
+    var showProgress: Bool?
+    
     @Parameter(title: "Countdown to Show")
     var countdown: CountdownSelection?
     
@@ -74,11 +77,13 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
     static var parameterSummary: some ParameterSummary {
         When(\ConfigurationAppIntent.$showSpecificCountdown, .equalTo, true) {
             Summary {
+                \.$showProgress
                 \.$showSpecificCountdown
                 \.$countdown
             }
         } otherwise: {
             Summary {
+                \.$showProgress
                 \.$showSpecificCountdown
             }
         }
