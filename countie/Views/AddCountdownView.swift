@@ -12,22 +12,19 @@ struct AddCountdownView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     
+    // Optional countdown to edit
+    var countdownToEdit: CountdownItem? = nil
+    
     @State var emoji: String = ""
     @State var name: String = ""
     @State var showEmojiAlert: Bool = false
     @State var emojiText: String = ""
     
-    // Initial state is the current date for the start of day (12am)
-    @State var countdownDate: Date = Calendar.current.startOfDay(for: Date.now);
-    
-    @State var countSinceDate: Date = Calendar.current.startOfDay(for: Date.now);
-
-    @State var hasTime: Bool = false;
-    @State var reminders: [CountdownReminder] = [];
-    
+    @State var countdownDate: Date = Calendar.current.startOfDay(for: Date.now)
+    @State var countSinceDate: Date = Calendar.current.startOfDay(for: Date.now)
+    @State var hasTime: Bool = false
+    @State var reminders: [CountdownReminder] = []
     @State var selectedColor: Color = .red
-    
-    // Simplified: Selected reminder for the picker
     @State private var selectedReminder: CountdownReminder = .FIVE_MIN
     
     var isSubmitDisabled: Bool {
@@ -36,36 +33,59 @@ struct AddCountdownView: View {
     
     var onAdd: (() -> Void)? = nil
     
-    func handleAddItem(){
-        print("Adding item")
-        print(name)
-        print(countdownDate)
-        print(selectedColor)
-        print(countSinceDate)
+    // MARK: - Init
+    init(countdownToEdit: CountdownItem? = nil, onAdd: (() -> Void)? = nil) {
+        self.countdownToEdit = countdownToEdit
+        self.onAdd = onAdd
+        // _property = State(initialValue:) cannot be set here, must use .onAppear
         
-        let item: CountdownItem = CountdownItem(
-            emoji: emoji,
-            name: name,
-            includeTime: hasTime,
-            date: countdownDate,
-        )
-        
-        item.countSince = countSinceDate
-        
-        print(item)
-        
-        modelContext.insert(item)
-        try? modelContext.save()
-        
-        // Reload all widget timelines
+
+    }
+    
+    //        name: event.title,
+//        countdownDate: event.startDate,
+//        hasTime: !event.isAllDay,
+//        onAdd: {
+//            onSelectEvent?(event)
+//        }
+    
+    init(name: String = "", countdownDate: Date = Calendar.current.startOfDay(for: Date.now), hasTime: Bool = false, onAdd: (() -> Void)? = nil) {
+        self.name = name
+        self.countdownDate = countdownDate
+        self.hasTime = hasTime
+        self.onAdd = onAdd
+    }
+    
+    func handleAddItem() {
+        if let editing = countdownToEdit {
+            // Edit existing
+            editing.emoji = emoji
+            editing.name = name
+            editing.includeTime = hasTime
+            editing.date = countdownDate
+            editing.countSince = countSinceDate
+            // TODO: Save reminders and color if needed
+            try? modelContext.save()
+        } else {
+            // Add new
+            let item: CountdownItem = CountdownItem(
+                emoji: emoji,
+                name: name,
+                includeTime: hasTime,
+                date: countdownDate
+            )
+            item.countSince = countSinceDate
+            // TODO: Save reminders and color if needed
+            modelContext.insert(item)
+            try? modelContext.save()
+        }
         WidgetCenter.shared.reloadTimelines(ofKind: "CountdownWidget")
-        
         dismiss()
         onAdd?()
     }
     
     var body: some View {
-        NavigationStack{
+        NavigationStack {
             VStack(spacing: 4) {
                 RoundedRectangle(cornerRadius: 24)
                     .fill(Color.gray.opacity(0.3))
@@ -85,34 +105,19 @@ struct AddCountdownView: View {
             }
             .padding(.vertical, 12)
             
-            Form{
-                
-                //                Section("Countdown Details"){
-                //                    LabeledContent("Emoji"){
-                //                        TextField("Emoji", text: $emoji)
-                //                    }
-                //
+            Form {
                 TextField("Name of Countdown", text: $name)
-                
                 Section {
-                    
-                
-                Toggle("Include time", isOn: $hasTime)
-                DatePicker("Countdown Date\(hasTime ? " & Time" : "")",
-                           selection: $countdownDate,
-                           in: Date.now...,
-                           displayedComponents: hasTime ? [.date, .hourAndMinute] : [.date])
-                    
-                     DatePicker("Count since",
-                           selection: $countSinceDate,
-                           displayedComponents: hasTime ? [.date, .hourAndMinute] : [.date])
-                    
-                    
+                    Toggle("Include time", isOn: $hasTime)
+                    DatePicker("Countdown Date\(hasTime ? " & Time" : "")",
+                               selection: $countdownDate,
+                               in: Date.now...,
+                               displayedComponents: hasTime ? [.date, .hourAndMinute] : [.date])
+                    DatePicker("Count since",
+                               selection: $countSinceDate,
+                               displayedComponents: hasTime ? [.date, .hourAndMinute] : [.date])
                 }
-                
-                //  A section for reminders which lists down a select option for 1 day, 1 week, 1 month, 1 year and custom date. It has a button at the bottom to add a new reminder. The user can set multiple reminders for an event
                 Section("Reminders") {
-                    // Show reminders in chronological order
                     ForEach(reminders.sorted(by: { $0.date < $1.date }), id: \.date) { reminder in
                         HStack {
                             Text(reminder.label)
@@ -121,8 +126,6 @@ struct AddCountdownView: View {
                     .onDelete { indexSet in
                         reminders.remove(atOffsets: indexSet)
                     }
-
-                    // Only show picker options that haven't been added yet
                     let availableReminders = [
                         CountdownReminder.FIVE_MIN,
                         CountdownReminder.TEN_MIN,
@@ -133,7 +136,6 @@ struct AddCountdownView: View {
                         CountdownReminder.ONE_DAY,
                         CountdownReminder.TWO_DAY
                     ].filter { !reminders.contains($0) }
-
                     if !availableReminders.isEmpty {
                         Picker("Reminder", selection: $selectedReminder) {
                             ForEach(availableReminders, id: \.date) { reminder in
@@ -144,7 +146,6 @@ struct AddCountdownView: View {
                             if !reminders.contains(selectedReminder) {
                                 reminders.append(selectedReminder)
                                 reminders.sort { $0.date < $1.date }
-                                // Update selectedReminder to next available, if any
                                 if let next = availableReminders.first(where: { $0 != selectedReminder }) {
                                     selectedReminder = next
                                 }
@@ -156,7 +157,7 @@ struct AddCountdownView: View {
                     }
                 }
             }
-            .navigationTitle("New Countdown")
+            .navigationTitle(countdownToEdit == nil ? "New Countdown" : "Edit Countdown")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -165,15 +166,14 @@ struct AddCountdownView: View {
                     }
                 }
             }
-            .toolbar{
-                Button("Add") {
+            .toolbar {
+                Button(countdownToEdit == nil ? "Add" : "Save") {
                     handleAddItem()
                 }.disabled(isSubmitDisabled)
             }
             .alert("Enter Emoji", isPresented: $showEmojiAlert) {
                 TextField("Emoji", text: $emojiText)
                     .onChange(of: emojiText) { _, newValue in
-                        // Limit to 1 character
                         if newValue.count > 1 {
                             emojiText = String(newValue.prefix(1))
                         }
@@ -182,8 +182,6 @@ struct AddCountdownView: View {
                     if emojiText.isSingleEmoji {
                         emoji = emojiText
                     } else {
-                        // Optionally show an error or ignore input
-                        // For now, just clear the emoji if not valid
                         emoji = ""
                     }
                 }
@@ -191,13 +189,19 @@ struct AddCountdownView: View {
             } message: {
                 Text("Please enter a single emoji.")
             }
-            
         }
-        .onChange(of: hasTime){
-            _, newVal in
-            
-            if(!newVal){
-                // Remove time from date
+        .onAppear {
+            if let editing = countdownToEdit {
+                emoji = editing.emoji ?? ""
+                name = editing.name
+                hasTime = editing.includeTime
+                countdownDate = editing.date
+                countSinceDate = editing.countSince
+                // TODO: Load reminders and color if needed
+            }
+        }
+        .onChange(of: hasTime) { _, newVal in
+            if !newVal {
                 let dateWithoutTime = Calendar.current.startOfDay(for: countdownDate)
                 countdownDate = dateWithoutTime
             }
