@@ -73,10 +73,22 @@ struct ContentView: View {
                         description: Text("Add a countdown by tapping the plus button!"))
                     Spacer(minLength: 0)
                 } else {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 16) {
+                            ForEach(countdowns) { countdown in
+                                NavigationLink(destination: AddCountdownView(countdownToEdit: countdown)) {
+                                    PinnedCountdownItemView(item: countdown)
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                    
                     CountdownListView(
                         countdowns: countdowns,
                         onDelete: deleteItems
                     )
+                    
                 }
             }
             .toolbar {
