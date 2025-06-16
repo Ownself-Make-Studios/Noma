@@ -22,20 +22,20 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             Form {
-                VStack(spacing: 12) {
-                    Image("AppIcon")
-                        .resizable()
-                        .frame(width: 64, height: 64)
-                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    Text("Countie")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.black)
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                .padding(.vertical, 8)
+//                VStack(spacing: 12) {
+//                    Image("AppIcon")
+//                        .resizable()
+//                        .frame(width: 64, height: 64)
+//                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+//                    Text("Countie")
+//                        .font(.largeTitle)
+//                        .fontWeight(.bold)
+//                        .foregroundColor(.black)
+//                }
+//                .frame(maxWidth: .infinity)
+//                .padding()
+//                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+//                .padding(.vertical, 8)
                 
                 Section(header: Text("Appearance")) {
                     Toggle(isOn: $isDarkMode) {
