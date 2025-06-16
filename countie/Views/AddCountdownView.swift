@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WidgetKit
+import MCEmojiPicker
 
 struct AddCountdownView: View {
     @Environment(\.modelContext) private var modelContext
@@ -17,8 +18,6 @@ struct AddCountdownView: View {
     
     @State var emoji: String = ""
     @State var name: String = ""
-    @State var showEmojiAlert: Bool = false
-    @State var emojiText: String = ""
     
     @State var countdownDate: Date = Calendar.current.startOfDay(for: Date.now)
     @State var countSinceDate: Date = Calendar.current.startOfDay(for: Date.now)
@@ -26,6 +25,8 @@ struct AddCountdownView: View {
     @State var reminders: [CountdownReminder] = []
     @State var selectedColor: Color = .red
     @State private var selectedReminder: CountdownReminder = .FIVE_MIN
+    
+    @State private var showEmojiPicker: Bool = false
     
     var isSubmitDisabled: Bool {
         name.isEmpty && emoji.isEmpty
@@ -39,15 +40,15 @@ struct AddCountdownView: View {
         self.onAdd = onAdd
         // _property = State(initialValue:) cannot be set here, must use .onAppear
         
-
+        
     }
     
     //        name: event.title,
-//        countdownDate: event.startDate,
-//        hasTime: !event.isAllDay,
-//        onAdd: {
-//            onSelectEvent?(event)
-//        }
+    //        countdownDate: event.startDate,
+    //        hasTime: !event.isAllDay,
+    //        onAdd: {
+    //            onSelectEvent?(event)
+    //        }
     
     init(name: String = "", countdownDate: Date = Calendar.current.startOfDay(for: Date.now), hasTime: Bool = false, onAdd: (() -> Void)? = nil) {
         self.name = name
@@ -86,27 +87,52 @@ struct AddCountdownView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 4) {
-                RoundedRectangle(cornerRadius: 24)
-                    .fill(Color.gray.opacity(0.3))
-                    .frame(width: 100, height: 100)
-                    .overlay(
-                        Text(emoji)
-                            .font(.system(size: 50))
-                            .foregroundColor(.white)
-                    )
-                    .onTapGesture {
-                        showEmojiAlert = true
-                        emojiText = emoji
-                    }
-                Text("Tap to set an emoji")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.vertical, 12)
+            //            VStack(spacing: 4) {
+            //                RoundedRectangle(cornerRadius: 24)
+            //                    .fill(Color.gray.opacity(0.3))
+            //                    .frame(width: 100, height: 100)
+            //                    .overlay(
+            //                        Text(emoji)
+            //                            .font(.system(size: 50))
+            //                            .foregroundColor(.white)
+            //                    )
+            //                    .onTapGesture {
+            //                        showEmojiPicker = true
+            //                    }
+            //                    .emojiPicker(isPresented: $showEmojiPicker, selectedEmoji: $emoji)
+            //
+            //                Text("Tap to set an emoji")
+            //                    .font(.caption)
+            //                    .foregroundColor(.secondary)
+            //            }
+            //            .padding(.vertical, 12)
             
             Form {
-                TextField("Name of Countdown", text: $name)
+                HStack(spacing: 10){
+                    
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.gray.opacity(0.1))
+                        .frame(width: 40, height: 40)
+                        .overlay(
+                            Group {
+                                if emoji.isEmpty {
+                                    Image(systemName: "face.dashed")
+                                        .resizable()
+                                        .frame(width: 24, height: 24)
+                                        .foregroundStyle(.secondary)
+                                } else {
+                                    Text(emoji)
+                                        .font(.system(size: 24))
+                                }
+                            }
+                        )
+                        .onTapGesture {
+                            showEmojiPicker = true
+                        }
+                        .emojiPicker(isPresented: $showEmojiPicker, selectedEmoji: $emoji)
+                    
+                    TextField("Name of Countdown", text: $name)
+                }
                 Section {
                     Toggle("Include time", isOn: $hasTime)
                     DatePicker("Countdown Date\(hasTime ? " & Time" : "")",
@@ -159,35 +185,17 @@ struct AddCountdownView: View {
             }
             .navigationTitle(countdownToEdit == nil ? "New Countdown" : "Edit Countdown")
             .navigationBarTitleDisplayMode(.inline)
-//            .toolbar {
-//                ToolbarItem(placement: .cancellationAction) {
-//                    Button("Cancel") {
-//                        dismiss()
-//                    }
-//                }
-//            }
+            //            .toolbar {
+            //                ToolbarItem(placement: .cancellationAction) {
+            //                    Button("Cancel") {
+            //                        dismiss()
+            //                    }
+            //                }
+            //            }
             .toolbar {
                 Button(countdownToEdit == nil ? "Add" : "Save") {
                     handleAddItem()
                 }.disabled(isSubmitDisabled)
-            }
-            .alert("Enter Emoji", isPresented: $showEmojiAlert) {
-                TextField("Emoji", text: $emojiText)
-                    .onChange(of: emojiText) { _, newValue in
-                        if newValue.count > 1 {
-                            emojiText = String(newValue.prefix(1))
-                        }
-                    }
-                Button("OK") {
-                    if emojiText.isSingleEmoji {
-                        emoji = emojiText
-                    } else {
-                        emoji = ""
-                    }
-                }
-                Button("Cancel", role: .cancel) {}
-            } message: {
-                Text("Please enter a single emoji.")
             }
         }
         .onAppear {
