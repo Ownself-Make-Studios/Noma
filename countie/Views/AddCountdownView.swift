@@ -159,13 +159,13 @@ struct AddCountdownView: View {
             }
             .navigationTitle(countdownToEdit == nil ? "New Countdown" : "Edit Countdown")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
-            }
+//            .toolbar {
+//                ToolbarItem(placement: .cancellationAction) {
+//                    Button("Cancel") {
+//                        dismiss()
+//                    }
+//                }
+//            }
             .toolbar {
                 Button(countdownToEdit == nil ? "Add" : "Save") {
                     handleAddItem()

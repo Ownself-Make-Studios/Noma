@@ -120,16 +120,18 @@ struct ContentView: View {
             .navigationTitle("Countie")
         }
         .sheet(isPresented: $showAddModal) {
-            AddCountdownView()
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Cancel") {
-                            showCalendarModal = false
+            NavigationView{
+                AddCountdownView()
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Cancel") {
+                                showAddModal = false
+                            }
                         }
+                        
                     }
-                    
-                }
-                .interactiveDismissDisabled()
+            }
+            .interactiveDismissDisabled()
         }
         .sheet(isPresented: $showCalendarModal) {
             NavigationView{
