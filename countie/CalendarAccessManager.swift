@@ -20,4 +20,8 @@ struct CalendarAccessManager: Observable {
             }
         }
     }
+    
+    static func event(with identifier: String) -> EKEvent? {
+        return store.event(withIdentifier: identifier)
+    }
 }

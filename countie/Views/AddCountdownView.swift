@@ -8,6 +8,7 @@
 import SwiftUI
 import WidgetKit
 import MCEmojiPicker
+import EventKit
 
 struct AddCountdownView: View {
     @Environment(\.modelContext) private var modelContext
@@ -18,46 +19,39 @@ struct AddCountdownView: View {
     
     @State var emoji: String = ""
     @State var name: String = ""
-    
     @State var countdownDate: Date = Calendar.current.startOfDay(for: Date.now)
     @State var countSinceDate: Date = Calendar.current.startOfDay(for: Date.now)
     @State var hasTime: Bool = false
     @State var reminders: [CountdownReminder] = []
-    @State var selectedColor: Color = .red
     @State private var selectedReminder: CountdownReminder = .FIVE_MIN
     
     @State private var showEmojiPicker: Bool = false
+    @State private var linkedEvent: EKEvent? = nil
+    
+    var onAdd: (() -> Void)? = nil
     
     var isSubmitDisabled: Bool {
         name.isEmpty && emoji.isEmpty
     }
     
-    var onAdd: (() -> Void)? = nil
-    
-    // MARK: - Init
     init(countdownToEdit: CountdownItem? = nil, onAdd: (() -> Void)? = nil) {
         self.countdownToEdit = countdownToEdit
         self.onAdd = onAdd
-        // _property = State(initialValue:) cannot be set here, must use .onAppear
-        
-        
     }
     
-    //        name: event.title,
-    //        countdownDate: event.startDate,
-    //        hasTime: !event.isAllDay,
-    //        onAdd: {
-    //            onSelectEvent?(event)
-    //        }
-    
-    init(name: String = "", countdownDate: Date = Calendar.current.startOfDay(for: Date.now), hasTime: Bool = false, onAdd: (() -> Void)? = nil) {
-        self.name = name
-        self.countdownDate = countdownDate
-        self.hasTime = hasTime
-        self.onAdd = onAdd
+    init(name: String = "",
+         countdownDate: Date = Calendar.current.startOfDay(for: Date.now),
+         hasTime: Bool = false,
+         linkedEvent: EKEvent? = nil,
+         onAdd: (() -> Void)? = nil
+    ) {
+        _name = .init(initialValue: name)
+        _countdownDate = .init(initialValue: countdownDate)
+        _hasTime = .init(initialValue: hasTime)
+        _linkedEvent = .init(initialValue: linkedEvent)
     }
     
-    func handleAddItem() {
+    func handleSaveItem() {
         if let editing = countdownToEdit {
             // Edit existing
             editing.emoji = emoji
@@ -76,7 +70,6 @@ struct AddCountdownView: View {
                 date: countdownDate
             )
             item.countSince = countSinceDate
-            // TODO: Save reminders and color if needed
             modelContext.insert(item)
             try? modelContext.save()
         }
@@ -87,26 +80,6 @@ struct AddCountdownView: View {
     
     var body: some View {
         NavigationStack {
-            //            VStack(spacing: 4) {
-            //                RoundedRectangle(cornerRadius: 24)
-            //                    .fill(Color.gray.opacity(0.3))
-            //                    .frame(width: 100, height: 100)
-            //                    .overlay(
-            //                        Text(emoji)
-            //                            .font(.system(size: 50))
-            //                            .foregroundColor(.white)
-            //                    )
-            //                    .onTapGesture {
-            //                        showEmojiPicker = true
-            //                    }
-            //                    .emojiPicker(isPresented: $showEmojiPicker, selectedEmoji: $emoji)
-            //
-            //                Text("Tap to set an emoji")
-            //                    .font(.caption)
-            //                    .foregroundColor(.secondary)
-            //            }
-            //            .padding(.vertical, 12)
-            
             Form {
                 HStack(spacing: 10){
                     
@@ -133,6 +106,24 @@ struct AddCountdownView: View {
                     
                     TextField("Name of Countdown", text: $name)
                 }
+                
+                if let event = linkedEvent {
+                    Section("Calendar Event"){
+                        HStack {
+                            Circle()
+                                .fill(Color(event.calendar.cgColor))
+                                .frame(width: 10, height: 10)
+                            VStack(alignment: .leading) {
+                                Text(event.title)
+                                    .font(.headline)
+                                Text(event.startDate.formatted())
+                                    .font(.subheadline)
+                            }
+                        }
+                        
+                    }
+                }
+                
                 Section {
                     Toggle("Include time", isOn: $hasTime)
                     DatePicker("Countdown Date\(hasTime ? " & Time" : "")",
@@ -182,19 +173,15 @@ struct AddCountdownView: View {
                             .foregroundColor(.secondary)
                     }
                 }
+                
+                
+                
             }
             .navigationTitle(countdownToEdit == nil ? "New Countdown" : "Edit Countdown")
             .navigationBarTitleDisplayMode(.inline)
-            //            .toolbar {
-            //                ToolbarItem(placement: .cancellationAction) {
-            //                    Button("Cancel") {
-            //                        dismiss()
-            //                    }
-            //                }
-            //            }
             .toolbar {
                 Button(countdownToEdit == nil ? "Add" : "Save") {
-                    handleAddItem()
+                    handleSaveItem()
                 }.disabled(isSubmitDisabled)
             }
         }
@@ -205,7 +192,11 @@ struct AddCountdownView: View {
                 hasTime = editing.includeTime
                 countdownDate = editing.date
                 countSinceDate = editing.countSince
-                // TODO: Load reminders and color if needed
+                
+                if let eventIdentifier = editing.calendarEventIdentifier {
+                    
+                    linkedEvent = CalendarAccessManager.event(with: eventIdentifier)
+                }
             }
         }
         .onChange(of: hasTime) { _, newVal in
@@ -214,20 +205,6 @@ struct AddCountdownView: View {
                 countdownDate = dateWithoutTime
             }
         }
-    }
-}
-
-// Emoji validation extension
-extension String {
-    var isSingleEmoji: Bool {
-        count == 1 && first?.isEmoji == true
-    }
-}
-
-extension Character {
-    var isEmoji: Bool {
-        unicodeScalars.first?.properties.isEmojiPresentation == true ||
-        unicodeScalars.first?.properties.isEmoji == true
     }
 }
 

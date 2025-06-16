@@ -39,9 +39,10 @@ struct CalendarEventsView: View {
                             name: event.title,
                             countdownDate: event.startDate,
                             hasTime: !event.isAllDay,
+                            linkedEvent: event,
                             onAdd: {
                                 onSelectEvent?(event)
-                            }
+                            },
                         )
                     } label: {
                         HStack{
