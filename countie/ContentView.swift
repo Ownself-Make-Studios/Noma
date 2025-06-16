@@ -35,7 +35,7 @@ struct ContentView: View {
         fetchCountdowns()
         
         print("Deleted item")
-
+        
         // Ensure widget updates after deletion
         WidgetCenter.shared.reloadAllTimelines()
     }
@@ -80,6 +80,15 @@ struct ContentView: View {
                 }
             }
             .toolbar {
+                
+                ToolbarItem{
+                    
+                    NavigationLink(destination: SettingsView()) {
+                        Label("Settings", systemImage: "gearshape")
+                            .labelStyle(.titleAndIcon)
+                    }
+                }
+                
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button(action: handleFilterClick) {
                         Label("Filter", systemImage: filterPast ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
@@ -120,6 +129,7 @@ struct ContentView: View {
                     }
                     
                 }
+                .interactiveDismissDisabled()
         }
         .sheet(isPresented: $showCalendarModal) {
             NavigationView{
