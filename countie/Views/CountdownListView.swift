@@ -12,6 +12,8 @@ struct CountdownListView: View {
     @State private var searchText: String = ""
     var onDelete: ((IndexSet) -> Void)? = nil
     
+    @State private var selectedCountdown: CountdownItem? = nil
+    
     var filteredCountdowns: [CountdownItem] {
         if searchText.isEmpty {
             return countdowns
@@ -21,13 +23,17 @@ struct CountdownListView: View {
     }
     
     var body: some View {
-        List {
-            ForEach(filteredCountdowns, id: \.id) { countdown in
-                CountdownListItemView(item: countdown)
+        NavigationStack {
+            List {
+                ForEach(filteredCountdowns, id: \.id) { countdown in
+                    NavigationLink(destination: AddCountdownView(countdownToEdit: countdown)) {
+                        CountdownListItemView(item: countdown)
+                    }
+                }
+                .onDelete(perform: onDelete)
             }
-            .onDelete(perform: onDelete)
+            .searchable(text: $searchText, prompt: "Search countdowns")
         }
-        .searchable(text: $searchText, prompt: "Search countdowns")
     }
 }
 
