@@ -127,6 +127,7 @@ struct CountdownWidget: Widget {
         .description("Keep track of your countdowns with this widget!")
         .supportedFamilies(
             [
+                .accessoryInline,
                 .accessoryRectangular,
                 .systemSmall,
                 .systemMedium,

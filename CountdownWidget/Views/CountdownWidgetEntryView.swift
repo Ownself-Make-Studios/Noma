@@ -25,6 +25,8 @@ struct CountdownWidgetEntryView : View {
                     CountdownWidgetLargeView(countdownItem: countdownItem, showProgress: entry.showProgress)
                 case .accessoryRectangular:
                     CountdownWidgetAccessoryRectangularView(countdownItem: countdownItem, showProgress: entry.showProgress)
+                case .accessoryInline:
+                    CountdownWidgetAccessoryInlineView(countdownItem: countdownItem, showProgress: entry.showProgress)
                 default:
                     CountdownWidgetSmallView(countdownItem: countdownItem, showProgress: entry.showProgress)
                 }
@@ -44,11 +46,11 @@ struct CountdownWidgetSmallView: View {
         VStack(alignment: .leading, spacing: 4) {
             if let emoji = countdownItem.emoji, !emoji.isEmpty {
                 Text(emoji)
-                    .font(.system(size: 40))
+                    .font(.title)
                     .frame(height: 44)
             }
             Text(countdownItem.name)
-                .font(.system(size: 16))
+                .font(.headline)
                 .bold()
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
@@ -69,7 +71,7 @@ struct CountdownWidgetSmallView: View {
                         .frame(height: 9)
                     
                     Text("\(countdownItem.progressString)%")
-                        .font(.caption2)
+                        .font(.caption)
                         .opacity(0.4)
                     
                 }
@@ -87,11 +89,11 @@ struct CountdownWidgetMediumView: View {
         VStack(alignment: .leading, spacing: 4) {
             if let emoji = countdownItem.emoji, !emoji.isEmpty {
                 Text(emoji)
-                    .font(.system(size: 40))
+                    .font(.title)
                     .frame(height: 44)
             }
             Text(countdownItem.name)
-                .font(.system(size: 16))
+                .font(.headline)
                 .bold()
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
@@ -114,7 +116,7 @@ struct CountdownWidgetMediumView: View {
                         .frame(height: 9)
                     
                     Text("\(countdownItem.progressString)%")
-                        .font(.caption2)
+                        .font(.caption)
                         .opacity(0.4)
                     
                 }
@@ -132,11 +134,11 @@ struct CountdownWidgetLargeView: View {
         VStack(alignment: .leading, spacing: 4) {
             if let emoji = countdownItem.emoji, !emoji.isEmpty {
                 Text(emoji)
-                    .font(.system(size: 40))
+                    .font(.title)
                     .frame(height: 44)
             }
             Text(countdownItem.name)
-                .font(.system(size: 16))
+                .font(.headline)
                 .bold()
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
@@ -159,7 +161,7 @@ struct CountdownWidgetLargeView: View {
                         .frame(height: 9)
                     
                     Text("\(countdownItem.progressString)%")
-                        .font(.caption2)
+                        .font(.caption)
                         .opacity(0.4)
                     
                 }
@@ -185,7 +187,7 @@ struct CountdownWidgetAccessoryRectangularView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text("\(countdownItem.emoji ?? "") \(countdownItem.name)")
-                .font(.system(size: 16))
+                .font(.body)
                 .bold()
                 .lineLimit(1)
             
@@ -194,5 +196,26 @@ struct CountdownWidgetAccessoryRectangularView: View {
                 .opacity(0.6)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+struct CountdownWidgetAccessoryInlineView: View {
+    let countdownItem: CountdownItem
+    let showProgress: Bool
+    
+    // Show time remaining with progress percentage if showProgress is true
+    var timeRemainingString: String {
+        if showProgress {
+            return countdownItem.timeRemainingString + " (\(countdownItem.progressString)%)"
+        } else {
+            return countdownItem.timeRemainingString
+        }
+    }
+
+    var body: some View {
+        HStack {
+            Text("\(countdownItem.emoji ?? "") \(timeRemainingString)")
+                .font(.body)
+        }
     }
 }
