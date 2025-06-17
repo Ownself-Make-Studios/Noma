@@ -49,6 +49,7 @@ struct AddCountdownView: View {
         _countdownDate = .init(initialValue: countdownDate)
         _hasTime = .init(initialValue: hasTime)
         _linkedEvent = .init(initialValue: linkedEvent)
+        self.onAdd = onAdd
     }
     
     func handleSaveItem() {
@@ -59,7 +60,13 @@ struct AddCountdownView: View {
             editing.includeTime = hasTime
             editing.date = countdownDate
             editing.countSince = countSinceDate
-            // TODO: Save reminders and color if needed
+            
+            if let event = linkedEvent {
+                editing.calendarEventIdentifier = event.eventIdentifier
+            } else {
+                editing.calendarEventIdentifier = nil
+            }
+            
             try? modelContext.save()
         } else {
             // Add new
@@ -70,6 +77,11 @@ struct AddCountdownView: View {
                 date: countdownDate
             )
             item.countSince = countSinceDate
+            
+            if let event = linkedEvent {
+                item.calendarEventIdentifier = event.eventIdentifier
+            }
+            
             modelContext.insert(item)
             try? modelContext.save()
         }
