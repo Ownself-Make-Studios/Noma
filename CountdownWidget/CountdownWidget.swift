@@ -127,6 +127,7 @@ struct CountdownWidget: Widget {
         .description("Keep track of your countdowns with this widget!")
         .supportedFamilies(
             [
+                .accessoryCircular,
                 .accessoryInline,
                 .accessoryRectangular,
                 .systemSmall,
@@ -141,7 +142,7 @@ extension ConfigurationAppIntent {
     }
 }
 
-#Preview(as: .systemSmall) {
+#Preview(as: .accessoryCircular) {
     CountdownWidget()
 } timeline: {
     SimpleEntry(

@@ -27,6 +27,8 @@ struct CountdownWidgetEntryView : View {
                     CountdownWidgetAccessoryRectangularView(countdownItem: countdownItem, showProgress: entry.showProgress)
                 case .accessoryInline:
                     CountdownWidgetAccessoryInlineView(countdownItem: countdownItem, showProgress: entry.showProgress)
+                case .accessoryCircular:
+                    CountdownWidgetAccessoryCircularView(countdownItem: countdownItem)
                 default:
                     CountdownWidgetSmallView(countdownItem: countdownItem, showProgress: entry.showProgress)
                 }
@@ -216,6 +218,21 @@ struct CountdownWidgetAccessoryInlineView: View {
         HStack {
             Text("\(countdownItem.emoji ?? "") \(timeRemainingString)")
                 .font(.body)
+        }
+    }
+}
+
+struct CountdownWidgetAccessoryCircularView: View {
+    let countdownItem: CountdownItem
+
+    var body: some View {
+        ZStack{
+            Gauge(value: countdownItem.progress) {
+                Text("\(Int(countdownItem.progress * 100))%")
+            } currentValueLabel: {
+                Text(countdownItem.emoji ?? "")
+            }
+            .gaugeStyle(.accessoryCircular)
         }
     }
 }
