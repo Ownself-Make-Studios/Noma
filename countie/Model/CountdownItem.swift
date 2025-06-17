@@ -9,6 +9,26 @@ import Foundation
 import SwiftData
 import AppIntents
 
+enum CountdownUnit: String, CaseIterable {
+    case year, month, day, hour, minute
+    
+    var displayName: String {
+        switch self {
+        case .year: return "year"
+        case .month: return "month"
+        case .day: return "day"
+        case .hour: return "hour"
+        case .minute: return "minute"
+        }
+    }
+}
+
+struct BiggestUnit {
+    let value: Int
+    let unit: CountdownUnit
+    var isPast: Bool { value < 0 }
+}
+
 @Model
 class CountdownItem: ObservableObject{
     @Attribute(.unique) var id: UUID = UUID()
@@ -21,9 +41,9 @@ class CountdownItem: ObservableObject{
     
     // This is used to track when the countdown should start counting down from. This is so that we can visualize how long the countdown has been running using a progress bar or etc
     @Attribute var countSince: Date = Date.now
-
+    
     @Attribute var calendarEventIdentifier: String?
-
+    
     init(emoji: String?, name: String, includeTime: Bool, date: Date, calendarEventIdentifier: String? = nil) {
         self.emoji = emoji
         self.name = name
@@ -108,6 +128,62 @@ class CountdownItem: ObservableObject{
      */
     var progressString: String {
         String(format: "%.2f", progress * 100)
+    }
+    
+    
+    
+    /// Returns the biggest (absolute) non-zero unit in the countdown (e.g., 2 years, 3 days, 4 hours, etc.)
+    /// If the event has passed, the value will be negative and isPast will be true.
+    var biggestUnit: BiggestUnit? {
+        let diff = dateDifference
+        if let years = diff.year, years != 0 {
+            return BiggestUnit(value: years, unit: .year)
+        }
+        if let months = diff.month, months != 0 {
+            return BiggestUnit(value: months, unit: .month)
+        }
+        if let days = diff.day, days != 0 {
+            return BiggestUnit(value: days, unit: .day)
+        }
+        if let hours = diff.hour, hours != 0 {
+            return BiggestUnit(value: hours, unit: .hour)
+        }
+        if let minutes = diff.minute, minutes != 0 {
+            return BiggestUnit(value: minutes, unit: .minute)
+        }
+        return nil
+    }
+    
+    /// Returns a short string for the biggest unit (e.g. "2d", "2y", "2h", "2h ago"). Anything below hours is rounded up to hours.
+    var biggestUnitShortString: String {
+        let diff = dateDifference
+        if let years = diff.year, years != 0 {
+            let absValue = abs(years)
+            return years < 0 ? "\(absValue)y ago" : "\(absValue)y"
+        }
+        if let months = diff.month, months != 0 {
+            let absValue = abs(months)
+            return months < 0 ? "\(absValue)m ago" : "\(absValue)m"
+        }
+        if let days = diff.day, days != 0 {
+            let absValue = abs(days)
+            return days < 0 ? "\(absValue)d ago" : "\(absValue)d"
+        }
+        // For hours and below, round up to hours
+        var hours = diff.hour ?? 0
+        let minutes = diff.minute ?? 0
+        if hours == 0 && minutes != 0 {
+            // If there are minutes but no hours, round up to 1 hour (or -1 hour if negative)
+            hours = minutes > 0 ? 1 : -1
+        } else if hours != 0 && minutes != 0 && ((hours > 0 && minutes > 0) || (hours < 0 && minutes < 0)) {
+            // If both hours and minutes are positive or both negative, round up
+            hours += hours > 0 ? 1 : -1
+        }
+        if hours != 0 {
+            let absValue = abs(hours)
+            return hours < 0 ? "\(absValue)h ago" : "\(absValue)h"
+        }
+        return "?"
     }
 }
 
