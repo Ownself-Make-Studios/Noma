@@ -89,6 +89,13 @@
 			);
 			target = BD9807F32CC796090033C727 /* CountdownWidgetExtension */;
 		};
+		BDA1FBFF2E00778F0070455C /* Exceptions for "CountdownWidget" folder in "countie" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Views/LinearProgressView.swift,
+			);
+			target = BD92FC0E2CC73FE500D3FC20 /* countie */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -114,6 +121,7 @@
 		BD9807FA2CC796090033C727 /* CountdownWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				BDA1FBFF2E00778F0070455C /* Exceptions for "CountdownWidget" folder in "countie" target */,
 				BD98080B2CC7960B0033C727 /* Exceptions for "CountdownWidget" folder in "CountdownWidgetExtension" target */,
 			);
 			path = CountdownWidget;

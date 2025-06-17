@@ -27,9 +27,32 @@ struct CountdownListItemView: View {
                     
                     Text(item.formattedDateString)
                         .font(.caption)
+                        .opacity(0.5)
                     
                     Text(item.timeRemainingString)
                         .font(.caption2)
+                        .opacity(0.5)
+                    HStack(spacing: 6) {
+                        
+                        LinearProgressView(value: item.progress, shape: Capsule())
+                            .tint(
+                                LinearGradient(
+                                    colors: [.purple, .blue],
+                                    startPoint: .leading,
+                                    endPoint: .trailing)
+                            )
+                            .frame(height: 9)
+                        
+                        
+                        Text("\(Int(item.progress * 100))%")
+                            .font(.caption2)
+                            .opacity(0.4)
+                        
+                    }
+                    
+                    
+                    
+                    
                 }
             }
         }
