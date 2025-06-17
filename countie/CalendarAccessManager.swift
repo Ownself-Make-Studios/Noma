@@ -24,4 +24,26 @@ struct CalendarAccessManager: Observable {
     static func event(with identifier: String) -> EKEvent? {
         return store.event(withIdentifier: identifier)
     }
+    
+//    static private var eventStoreChangedHandler: (() -> Void)?
+//    static private var observer: NSObjectProtocol?
+//    
+//    static func observeEventStoreChanges(_ handler: @escaping () -> Void) {
+//        // Remove previous observer if any
+//        if let observer = observer {
+//            NotificationCenter.default.removeObserver(observer)
+//        }
+//        eventStoreChangedHandler = handler
+//        observer = NotificationCenter.default.addObserver(forName: .EKEventStoreChanged, object: store, queue: .main) { _ in
+//            handler()
+//        }
+//    }
+//    
+//    static func stopObservingEventStoreChanges() {
+//        if let observer = observer {
+//            NotificationCenter.default.removeObserver(observer)
+//            Self.observer = nil
+//            eventStoreChangedHandler = nil
+//        }
+//    }
 }
