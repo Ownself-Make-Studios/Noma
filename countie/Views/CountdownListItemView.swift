@@ -44,7 +44,7 @@ struct CountdownListItemView: View {
                             .frame(height: 9)
                         
                         
-                        Text("\(Int(item.progress * 100))%")
+                        Text("\(item.progressString)%")
                             .font(.caption2)
                             .opacity(0.4)
                         

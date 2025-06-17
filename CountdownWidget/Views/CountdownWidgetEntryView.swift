@@ -68,7 +68,7 @@ struct CountdownWidgetSmallView: View {
                         )
                         .frame(height: 9)
                     
-                    Text("\(Int(countdownItem.progress * 100))%")
+                    Text("\(countdownItem.progressString)%")
                         .font(.caption2)
                         .opacity(0.4)
                     
@@ -113,7 +113,7 @@ struct CountdownWidgetMediumView: View {
                         )
                         .frame(height: 9)
                     
-                    Text("\(Int(countdownItem.progress * 100))%")
+                    Text("\(countdownItem.progressString)%")
                         .font(.caption2)
                         .opacity(0.4)
                     
@@ -158,7 +158,7 @@ struct CountdownWidgetLargeView: View {
                         )
                         .frame(height: 9)
                     
-                    Text("\(Int(countdownItem.progress * 100))%")
+                    Text("\(countdownItem.progressString)%")
                         .font(.caption2)
                         .opacity(0.4)
                     
@@ -176,7 +176,7 @@ struct CountdownWidgetAccessoryRectangularView: View {
     // Show time remaining with progress percentage if showProgress is true
     var timeRemainingString: String {
         if showProgress {
-            return countdownItem.timeRemainingString + " (\(Int(countdownItem.progress * 100))%)"
+            return countdownItem.timeRemainingString + " (\(countdownItem.progressString)%)"
         } else {
             return countdownItem.timeRemainingString
         }

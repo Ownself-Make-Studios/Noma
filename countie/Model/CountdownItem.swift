@@ -43,12 +43,16 @@ class CountdownItem: ObservableObject{
         )
     }
     
-    // Computed Property for days left
+    /**
+     Computed Property for days left
+     */
     var _daysLeft: Int {
         return dateDifference.day!
     }
     
-    // Computed Property for hours left
+    /**
+     Computed Property for hours left
+     */
     var _hoursLeft: Int {
         return dateDifference.hour!
     }
@@ -96,7 +100,14 @@ class CountdownItem: ObservableObject{
         let elapsedInterval = Date().timeIntervalSince(countSince)
         guard totalInterval > 0 else { return 1.0 } // If date is before countSince, consider complete
         let percent = min(max(elapsedInterval / totalInterval, 0), 1)
-        return percent
+        return percent // Return the raw percent (0...1), rounding only in the view
+    }
+    
+    /**
+     * Returns the progress as a string formatted to 2 decimal places (e.g., "23.34")
+     */
+    var progressString: String {
+        String(format: "%.2f", progress * 100)
     }
 }
 
