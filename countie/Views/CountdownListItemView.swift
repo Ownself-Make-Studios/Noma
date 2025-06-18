@@ -20,47 +20,39 @@ struct CountdownListItemView: View {
     }
     
     var body: some View {
-        VStack{
-            HStack{
-                Text(item.emoji ?? "")
-                    .font(.system(size: 24))
+        VStack(alignment: .leading, spacing: 4){
+            
+            
+            Text("\(item.emoji ?? "") \(item.name)")
+                .bold()
+            
+            Text(item.formattedDateString)
+                .font(.caption)
+                .opacity(0.5)
+            
+            Text(item.getTimeRemainingString(since: currentTime, units: [
+                .year, .month, .day, .hour,.minute,.second
+            ]))
+            .font(.caption2)
+            .opacity(0.5)
+            HStack(spacing: 6) {
                 
-                VStack(alignment: .leading){
-                    Text(item.name)
-                        .bold()
-                    
-                    Text(item.formattedDateString)
-                        .font(.caption)
-                        .opacity(0.5)
-                    
-                    Text(item.getTimeRemainingString(since: currentTime, units: [
-                        .year, .month, .day, .hour,.minute,.second
-                    ]))
+                LinearProgressView(value: item.calculateProgress( since: currentTime), shape: Capsule())
+                    .tint(
+                        LinearGradient(
+                            colors: [.purple, .blue],
+                            startPoint: .leading,
+                            endPoint: .trailing)
+                    )
+                    .frame(height: 4)
+                
+                
+                Text("\(item.progressString)%")
                     .font(.caption2)
-                    .opacity(0.5)
-                    HStack(spacing: 6) {
-                        
-                        LinearProgressView(value: item.calculateProgress( since: currentTime), shape: Capsule())
-                            .tint(
-                                LinearGradient(
-                                    colors: [.purple, .blue],
-                                    startPoint: .leading,
-                                    endPoint: .trailing)
-                            )
-                            .frame(height: 9)
-                        
-                        
-                        Text("\(item.progressString)%")
-                            .font(.caption2)
-                            .opacity(0.4)
-                        
-                    }
-                    
-                    
-                    
-                    
-                }
+                    .opacity(0.4)
+                
             }
+            .padding(.top, 4)
         }
         .opacity(countdownHasEnded ? 0.5 : 1.0)
         .onAppear{
