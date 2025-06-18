@@ -77,6 +77,11 @@ class CountdownItem: ObservableObject{
         return dateDifference.hour!
     }
     
+    func getLeft(unit: Calendar.Component) -> Int {
+        return dateDifference.value(for: unit)!
+    }
+    
+    
     /**
      Returns the time remaining as a String
      https://stackoverflow.com/a/72320725
@@ -99,6 +104,37 @@ class CountdownItem: ObservableObject{
         }
         
         return dateRemainingText
+    }
+   
+    /**
+     Calculates the progress of the countdown since a given date.
+     */
+    func calculateProgress(since: Date = Date()) -> Double {
+        let totalInterval = date.timeIntervalSince(countSince)
+        let elapsedInterval = since.timeIntervalSince(countSince)
+        
+        guard totalInterval > 0 else { return 1.0 } // If date is before since, consider complete
+        let percent = min(max(elapsedInterval / totalInterval, 0), 1)
+        return percent // Return the raw percent (0...1), rounding only in the view
+    }
+        
+    
+    func getTimeRemainingString(since: Date = Date(), units: NSCalendar.Unit = [.year, .month, .day, .hour]) -> String{
+        
+        let dateComponentsFormatter = DateComponentsFormatter()
+        dateComponentsFormatter.allowedUnits = units
+        dateComponentsFormatter.unitsStyle = .full
+        var dateRemainingText = dateComponentsFormatter.string(from: since, to: date)!
+        
+        // Time that has passed will have a minus prefix e.g. -1 day ago
+        if dateRemainingText.hasPrefix("-") {
+            dateRemainingText = "\(dateRemainingText.dropFirst()) ago"
+        } else {
+            dateRemainingText = "\(dateRemainingText)"
+        }
+        
+        return dateRemainingText
+        
     }
     
     /**

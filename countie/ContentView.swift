@@ -14,7 +14,6 @@ struct ContentView: View {
     @State private var countdowns: [CountdownItem] = []
     @State private var showAddModal = false
     @State private var showCalendarModal = false
-    @State private var searchText = ""
     
     @AppStorage("filterPast") private var filterPast = false
     

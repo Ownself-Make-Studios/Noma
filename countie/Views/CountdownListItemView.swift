@@ -15,6 +15,10 @@ struct CountdownListItemView: View {
     @State private var currentTime = Date()
     @State private var timerCancellable: Cancellable?
     
+    var countdownHasEnded: Bool {
+        item.date < currentTime
+    }
+    
     var body: some View {
         VStack{
             HStack{
@@ -29,12 +33,14 @@ struct CountdownListItemView: View {
                         .font(.caption)
                         .opacity(0.5)
                     
-                    Text(item.timeRemainingString)
-                        .font(.caption2)
-                        .opacity(0.5)
+                    Text(item.getTimeRemainingString(since: currentTime, units: [
+                        .year, .month, .day, .hour,.minute,.second
+                    ]))
+                    .font(.caption2)
+                    .opacity(0.5)
                     HStack(spacing: 6) {
                         
-                        LinearProgressView(value: item.progress, shape: Capsule())
+                        LinearProgressView(value: item.calculateProgress( since: currentTime), shape: Capsule())
                             .tint(
                                 LinearGradient(
                                     colors: [.purple, .blue],
@@ -56,7 +62,7 @@ struct CountdownListItemView: View {
                 }
             }
         }
-        .opacity(item.date > currentTime ? 1 : 0.5)
+        .opacity(countdownHasEnded ? 0.5 : 1.0)
         .onAppear{
             // Start the timer when the view appears
             timerCancellable = Timer.publish(every: 1, on: .main, in: .common)
