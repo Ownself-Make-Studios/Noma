@@ -59,10 +59,12 @@ struct CountdownWidgetSmallView: View {
                 .bold()
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
+                .minimumScaleFactor(0.5)
             Text(countdownItem.timeRemainingString)
                 .font(.caption)
                 .opacity(0.6)
-            
+                .minimumScaleFactor(0.5)
+
             if showProgress {
                 Spacer(minLength: 0)
                 HStack(spacing: 6) {
@@ -102,10 +104,12 @@ struct CountdownWidgetMediumView: View {
                 .bold()
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
+                .minimumScaleFactor(0.5)
             Text(countdownItem.timeRemainingString)
                 .font(.caption)
                 .opacity(0.6)
-            
+                .minimumScaleFactor(0.5)
+
             if showProgress {
                 
                 Spacer(minLength: 0)
@@ -147,10 +151,12 @@ struct CountdownWidgetLargeView: View {
                 .bold()
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
+                .minimumScaleFactor(0.5)
             Text(countdownItem.timeRemainingString)
                 .font(.caption)
                 .opacity(0.6)
-            
+                .minimumScaleFactor(0.5)
+
             if showProgress {
                 
                 Spacer(minLength: 0)
@@ -194,11 +200,13 @@ struct CountdownWidgetAccessoryRectangularView: View {
             Text("\(countdownItem.emoji ?? "") \(countdownItem.name)")
                 .font(.body)
                 .bold()
-                .lineLimit(1)
-            
+                .minimumScaleFactor(0.5)
+
             Text(timeRemainingString)
                 .font(.caption)
                 .opacity(0.6)
+                .minimumScaleFactor(0.5)
+
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
