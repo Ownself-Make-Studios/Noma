@@ -227,4 +227,6 @@ extension CountdownItem {
     public static var SampleFutureTimer = CountdownItem(emoji: "😊", name: "Demo Item (Future)", includeTime: true, date: Date.distantFuture)
     
     public static var SamplePastTimer = CountdownItem(emoji: nil, name: "Demo Item (Past)", includeTime: true, date: Date.now.addingTimeInterval(-86400))
+    
+    public static var Graduation = CountdownItem(emoji: "🎓", name: "Graduation", includeTime: false, date: Date.now.addingTimeInterval(60 * 60 * 24 * 30)) // 30 days from now
 }
