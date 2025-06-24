@@ -30,14 +30,16 @@ struct CountdownListItemView: View {
                 .font(.caption)
                 .opacity(0.5)
             
-            Text(item.getTimeRemainingString(since: currentTime, units: [
-                .year, .month, .day, .hour,.minute,.second
-            ]))
-            .font(.caption2)
-            .opacity(0.5)
+            Text(
+                countdownHasEnded ?
+                item.timeRemainingPassedString :
+                item.timeRemainingString
+            )
+                .font(.caption2)
+                .opacity(0.5)
             HStack(spacing: 6) {
                 
-                LinearProgressView(value: item.calculateProgress( since: currentTime), shape: Capsule())
+                LinearProgressView(value: item.progress, shape: Capsule())
                     .tint(
                         LinearGradient(
                             colors: [.purple, .blue],
@@ -56,12 +58,22 @@ struct CountdownListItemView: View {
         }
         .opacity(countdownHasEnded ? 0.5 : 1.0)
         .onAppear{
-            // Start the timer when the view appears
-            timerCancellable = Timer.publish(every: 1, on: .main, in: .common)
-                .autoconnect()
-                .sink { input in
-                    currentTime = input
-                }
+            
+            if(!countdownHasEnded){
+                // Start the timer when the view appears
+                timerCancellable = Timer.publish(every: 1, on: .main, in: .common)
+                    .autoconnect()
+                    .sink { input in
+                        currentTime = input
+                    }
+            }else{
+                 // Start the timer when the view appears
+                timerCancellable = Timer.publish(every: 1 * 60 * 60, on: .main, in: .common)
+                    .autoconnect()
+                    .sink { input in
+                        currentTime = input
+                    }
+            }
         }
         .onDisappear {
             // Cancel the timer when the view disappears to prevent memory leaks
