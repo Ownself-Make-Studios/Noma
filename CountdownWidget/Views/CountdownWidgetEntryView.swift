@@ -60,7 +60,7 @@ struct CountdownWidgetSmallView: View {
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
                 .minimumScaleFactor(0.5)
-            Text(countdownItem.timeRemainingString)
+            Text(countdownItem.timeRemainingWidgetString)
                 .font(.caption)
                 .opacity(0.6)
                 .minimumScaleFactor(0.5)
@@ -105,7 +105,7 @@ struct CountdownWidgetMediumView: View {
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
                 .minimumScaleFactor(0.5)
-            Text(countdownItem.timeRemainingString)
+            Text(countdownItem.timeRemainingWidgetString)
                 .font(.caption)
                 .opacity(0.6)
                 .minimumScaleFactor(0.5)
@@ -152,7 +152,7 @@ struct CountdownWidgetLargeView: View {
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
                 .minimumScaleFactor(0.5)
-            Text(countdownItem.timeRemainingString)
+            Text(countdownItem.timeRemainingWidgetString)
                 .font(.caption)
                 .opacity(0.6)
                 .minimumScaleFactor(0.5)
@@ -187,11 +187,11 @@ struct CountdownWidgetAccessoryRectangularView: View {
     let showProgress: Bool
     
     // Show time remaining with progress percentage if showProgress is true
-    var timeRemainingString: String {
+    var timeRemainingWidgetString: String {
         if showProgress {
-            return countdownItem.timeRemainingString + " (\(countdownItem.progressString)%)"
+            return countdownItem.timeRemainingWidgetString + " (\(countdownItem.progressString)%)"
         } else {
-            return countdownItem.timeRemainingString
+            return countdownItem.timeRemainingWidgetString
         }
     }
     
@@ -202,7 +202,7 @@ struct CountdownWidgetAccessoryRectangularView: View {
                 .bold()
                 .minimumScaleFactor(0.5)
 
-            Text(timeRemainingString)
+            Text(timeRemainingWidgetString)
                 .font(.caption)
                 .opacity(0.6)
                 .minimumScaleFactor(0.5)
@@ -217,17 +217,17 @@ struct CountdownWidgetAccessoryInlineView: View {
     let showProgress: Bool
     
     // Show time remaining with progress percentage if showProgress is true
-    var timeRemainingString: String {
+    var timeRemainingWidgetString: String {
         if showProgress {
-            return countdownItem.timeRemainingString + " (\(countdownItem.progressString)%)"
+            return countdownItem.timeRemainingWidgetString + " (\(countdownItem.progressString)%)"
         } else {
-            return countdownItem.timeRemainingString
+            return countdownItem.timeRemainingWidgetString
         }
     }
 
     var body: some View {
         HStack {
-            Text("\(countdownItem.emoji ?? "") \(timeRemainingString)")
+            Text("\(countdownItem.emoji ?? "") \(timeRemainingWidgetString)")
                 .font(.body)
         }
     }
@@ -237,7 +237,7 @@ struct CountdownWidgetAccessoryCircularView: View {
     let countdownItem: CountdownItem
     let showProgress: Bool
     
-    var timeRemainingString: String {
+    var timeRemainingWidgetString: String {
         if showProgress {
             "\(Int(countdownItem.progress * 100))%"
         }else{
@@ -249,7 +249,7 @@ struct CountdownWidgetAccessoryCircularView: View {
     var body: some View {
         ZStack{
             Gauge(value: countdownItem.progress) {
-                Text(timeRemainingString)
+                Text(timeRemainingWidgetString)
             } currentValueLabel: {
                 Text(countdownItem.emoji ?? "")
             }
