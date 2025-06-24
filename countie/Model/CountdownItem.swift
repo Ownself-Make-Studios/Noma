@@ -63,53 +63,37 @@ class CountdownItem: ObservableObject{
         )
     }
     
-    /**
-     Computed Property for days left
-     */
-    var _daysLeft: Int {
-        return dateDifference.day!
-    }
-    
-    /**
-     Computed Property for hours left
-     */
-    var _hoursLeft: Int {
-        return dateDifference.hour!
-    }
-    
-    func getLeft(unit: Calendar.Component) -> Int {
+    private func getLeft(unit: Calendar.Component) -> Int {
         return dateDifference.value(for: unit)!
     }
     
     
     /**
-     Returns the time remaining as a String
-     https://stackoverflow.com/a/72320725
+     Returns the time remaining as a String for widget (which goes up to days and hours)
+     */
+    var timeRemainingWidgetString: String {
+        return getTimeRemainingString(since: Date.now, units: [.day, .hour])
+    }
+    
+    /**
+     Returns the time remaining as a String for widget (which goes up to years, months, days, hours, minutes and seconds)
      */
     var timeRemainingString: String {
-        if (_daysLeft == 0 && _hoursLeft == 0){
-            return "Now"
-        }
-        
-        let dateComponentsFormatter = DateComponentsFormatter()
-        dateComponentsFormatter.allowedUnits = [.year, .month, .day, .hour]
-        dateComponentsFormatter.unitsStyle = .full
-        var dateRemainingText = dateComponentsFormatter.string(from: Date.now, to: date)!
-        
-        // Time that has passed will have a minus prefix e.g. -1 day ago
-        if dateRemainingText.hasPrefix("-") {
-            dateRemainingText = "\(dateRemainingText.dropFirst()) ago"
-        } else {
-            dateRemainingText = "\(dateRemainingText)"
-        }
-        
-        return dateRemainingText
+        return getTimeRemainingString(since: Date.now, units: [.year, .month, .day, .hour, .minute, .second])
     }
+    
+        /**
+     Returns the time remaining as a String for widget (which goes up to years, months, days, hours, minutes and seconds)
+     */
+    var timeRemainingPassedString: String {
+        return getTimeRemainingString(since: Date.now, units: [.day, .hour])
+    }
+    
    
     /**
      Calculates the progress of the countdown since a given date.
      */
-    func calculateProgress(since: Date = Date()) -> Double {
+    private func calculateProgress(since: Date = Date()) -> Double {
         let totalInterval = date.timeIntervalSince(countSince)
         let elapsedInterval = since.timeIntervalSince(countSince)
         
@@ -119,7 +103,7 @@ class CountdownItem: ObservableObject{
     }
         
     
-    func getTimeRemainingString(since: Date = Date(), units: NSCalendar.Unit = [.year, .month, .day, .hour]) -> String{
+    private func getTimeRemainingString(since: Date = Date(), units: NSCalendar.Unit = [.year, .month, .day, .hour]) -> String{
         
         let dateComponentsFormatter = DateComponentsFormatter()
         dateComponentsFormatter.allowedUnits = units
