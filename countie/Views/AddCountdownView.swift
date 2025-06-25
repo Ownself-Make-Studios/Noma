@@ -22,6 +22,7 @@ struct AddCountdownView: View {
     @State var countdownDate: Date = Calendar.current.startOfDay(for: Date.now)
     @State var countSinceDate: Date = Calendar.current.startOfDay(for: Date.now)
     @State var hasTime: Bool = false
+    @State var updateCountdownWhenEventChanges: Bool = false
     @State var reminders: [CountdownReminder] = []
     @State private var selectedReminder: CountdownReminder = .FIVE_MIN
     
@@ -92,22 +93,24 @@ struct AddCountdownView: View {
     
     var body: some View {
         NavigationStack {
+            
+            
             Form {
-                HStack(spacing: 10){
-                    
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.gray.opacity(0.1))
-                        .frame(width: 40, height: 40)
+                HStack {
+                    Spacer()
+                    Circle()
+                        .fill(Color.gray.opacity(0.2))
+                        .frame(width: 120)
                         .overlay(
                             Group {
                                 if emoji.isEmpty {
                                     Image(systemName: "face.dashed")
                                         .resizable()
-                                        .frame(width: 24, height: 24)
+                                        .frame(width: 42, height: 42)
                                         .foregroundStyle(.secondary)
                                 } else {
                                     Text(emoji)
-                                        .font(.system(size: 24))
+                                        .font(.system(size: 42))
                                 }
                             }
                         )
@@ -115,8 +118,12 @@ struct AddCountdownView: View {
                             showEmojiPicker = true
                         }
                         .emojiPicker(isPresented: $showEmojiPicker, selectedEmoji: $emoji)
-                    
-                    TextField("Name of Countdown", text: $name)
+                    Spacer()
+                }
+                .listRowBackground(Color.clear)
+                
+                Section("Name"){
+                    TextField("Graduation, Anniversary, etc.", text: $name)
                 }
                 
                 if let event = linkedEvent {
@@ -133,10 +140,16 @@ struct AddCountdownView: View {
                             }
                         }
                         
+                        Button("Unlink Event") {
+                        }
+                        
+                        Toggle("Update countdown when event changes", isOn: $updateCountdownWhenEventChanges)
+                            .disabled(true) // Disable this for now, as we don't have the logic implemented yet
+                        
                     }
                 }
                 
-                Section {
+                Section("Countdown Settings") {
                     Toggle("Include time", isOn: $hasTime)
                     DatePicker("Countdown Date\(hasTime ? " & Time" : "")",
                                selection: $countdownDate,
@@ -145,46 +158,18 @@ struct AddCountdownView: View {
                     DatePicker("Count since",
                                selection: $countSinceDate,
                                displayedComponents: hasTime ? [.date, .hourAndMinute] : [.date])
+                    Text("Progress will be calculated from the date selected in \"Count Since\".")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
                 }
-                Section("Reminders") {
-                    ForEach(reminders.sorted(by: { $0.date < $1.date }), id: \.date) { reminder in
-                        HStack {
-                            Text(reminder.label)
-                        }
-                    }
-                    .onDelete { indexSet in
-                        reminders.remove(atOffsets: indexSet)
-                    }
-                    let availableReminders = [
-                        CountdownReminder.FIVE_MIN,
-                        CountdownReminder.TEN_MIN,
-                        CountdownReminder.FIFTEEN_MIN,
-                        CountdownReminder.THIRTY_MIN,
-                        CountdownReminder.ONE_HOUR,
-                        CountdownReminder.TWO_HOUR,
-                        CountdownReminder.ONE_DAY,
-                        CountdownReminder.TWO_DAY
-                    ].filter { !reminders.contains($0) }
-                    if !availableReminders.isEmpty {
-                        Picker("Reminder", selection: $selectedReminder) {
-                            ForEach(availableReminders, id: \.date) { reminder in
-                                Text(reminder.label).tag(reminder)
-                            }
-                        }
-                        Button("Add Reminder") {
-                            if !reminders.contains(selectedReminder) {
-                                reminders.append(selectedReminder)
-                                reminders.sort { $0.date < $1.date }
-                                if let next = availableReminders.first(where: { $0 != selectedReminder }) {
-                                    selectedReminder = next
-                                }
-                            }
-                        }
-                    } else {
-                        Text("All reminders added")
-                            .foregroundColor(.secondary)
-                    }
-                }
+                
+                
+                
+                //                Section("Reminders") {
+                //                    Button("Add Reminder"){
+                //
+                //                    }
+                //                }
                 
                 
                 
@@ -196,6 +181,7 @@ struct AddCountdownView: View {
                     handleSaveItem()
                 }.disabled(isSubmitDisabled)
             }
+            
         }
         .onAppear {
             if let editing = countdownToEdit {
