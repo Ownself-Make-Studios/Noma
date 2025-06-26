@@ -58,8 +58,18 @@ struct Provider: AppIntentTimelineProvider {
         var entries: [SimpleEntry] = []
         
         if let item = countdownItem {
+            
+            var entry: SimpleEntry =  SimpleEntry(date: item.date, countdownItem: item, showProgress: configuration.showProgress ?? true)
+            
+            // Set relevance based on the first countdown date
+            let timeInterval = abs(item.date.timeIntervalSince(.now))
+            // The closer to now, the higher the score (1.0 at event time, approaches 0 as it gets further)
+            let score = 1.0 / (1.0 + timeInterval / 3600.0) // decay per hour
+            entry.relevance = TimelineEntryRelevance(score: Float(score), duration: item.date.timeIntervalSinceNow)
+            
+            
             entries = [
-                SimpleEntry(date: item.date, countdownItem: item, showProgress: configuration.showProgress ?? true)
+               entry
             ]
         }
         
@@ -107,6 +117,7 @@ struct SimpleEntry: TimelineEntry {
     let date: Date
     let countdownItem: CountdownItem?
     let showProgress: Bool
+    var relevance: TimelineEntryRelevance? = nil
 }
 
 struct CountdownWidget: Widget {
