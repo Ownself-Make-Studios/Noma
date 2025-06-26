@@ -3,6 +3,21 @@
 # Countie
 > Track Life’s Milestones, One Countdown at a Time
 
+<!-- screenshot images -->
+<table>
+<thead>
+<td>Home Page</td>
+<td>Add New Countdown</td>
+<td>Widget Preview</td>
+</thead>
+  <tr>
+    <td><img src=".screenshots/home_page.png" alt="Home Page" width="100"/></td>
+    <td><img src=".screenshots/add_new_countdown.png" alt="Add new countdown" width="100"/></td>
+<td><img src=".screenshots/widget_preview.png" alt="Home screen widgets" width="100"/></td>
+  </tr>
+</table>
+
+
 ## Features
 - **Lock Screen and Home Screen Widgets**: Keep track of your countdowns right on your lock and home screen. 
 - **Multiple widget countdowns**: Add multiple widgets for different countdowns.
