@@ -30,7 +30,8 @@ struct BiggestUnit {
 }
 
 @Model
-class CountdownItem: ObservableObject{
+class CountdownItem{
+    
     @Attribute(.unique) var id: UUID = UUID()
     @Attribute var emoji: String?
     @Attribute var name: String
@@ -72,7 +73,12 @@ class CountdownItem: ObservableObject{
      Returns the time remaining as a String for widget (which goes up to days and hours)
      */
     var timeRemainingWidgetString: String {
-        return getTimeRemainingString(since: Date.now, units: [.day, .hour])
+        //        return getTimeRemainingString(since: Date.now, units: [.day, .hour])
+        return getTimeRemainingString(since: Date.now, units: [.day, .hour], unitsStyle: .abbreviated)
+    }
+    
+    var timeRemainingWidgetShortString: String {
+        return getTimeRemainingString(since: Date.now, units: [.day, .hour], unitsStyle: .abbreviated)
     }
     
     /**
@@ -82,14 +88,14 @@ class CountdownItem: ObservableObject{
         return getTimeRemainingString(since: Date.now, units: [.year, .month, .day, .hour, .minute, .second])
     }
     
-        /**
+    /**
      Returns the time remaining as a String for widget (which goes up to years, months, days, hours, minutes and seconds)
      */
     var timeRemainingPassedString: String {
         return getTimeRemainingString(since: Date.now, units: [.day, .hour])
     }
     
-   
+    
     /**
      Calculates the progress of the countdown since a given date.
      */
@@ -101,13 +107,13 @@ class CountdownItem: ObservableObject{
         let percent = min(max(elapsedInterval / totalInterval, 0), 1)
         return percent // Return the raw percent (0...1), rounding only in the view
     }
-        
     
-    private func getTimeRemainingString(since: Date = Date(), units: NSCalendar.Unit = [.year, .month, .day, .hour]) -> String{
+    
+    private func getTimeRemainingString(since: Date = Date(), units: NSCalendar.Unit = [.year, .month, .day, .hour], unitsStyle: DateComponentsFormatter.UnitsStyle = .full) -> String{
         
         let dateComponentsFormatter = DateComponentsFormatter()
         dateComponentsFormatter.allowedUnits = units
-        dateComponentsFormatter.unitsStyle = .full
+        dateComponentsFormatter.unitsStyle = unitsStyle
         var dateRemainingText = dateComponentsFormatter.string(from: since, to: date)!
         
         // Time that has passed will have a minus prefix e.g. -1 day ago
