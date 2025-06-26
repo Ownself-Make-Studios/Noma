@@ -14,7 +14,7 @@ struct MultipleCountdownWidgetEntryView : View {
     var entry: Provider.Entry
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .trailing, spacing: 0) {
 //            Rectangle()
 //                .fill(
 //                    LinearGradient(colors: [Color.pink, Color.red], startPoint: .top, endPoint: .bottom)
@@ -43,18 +43,18 @@ struct MultipleCountdownWidgetEntryView : View {
                     
                     Spacer()
                     
-                    LinearProgressView(value: countdownItem.progress, shape: Capsule())
-                        .tint(
-                            LinearGradient(
-                                colors: [.purple, .blue],
-                                startPoint: .leading,
-                                endPoint: .trailing)
-                        )
-                        .frame(width: 40, height: 10)
+//                    LinearProgressView(value: countdownItem.progress, shape: Capsule())
+//                        .tint(
+//                            LinearGradient(
+//                                colors: [.purple, .blue],
+//                                startPoint: .leading,
+//                                endPoint: .trailing)
+//                        )
+//                        .frame(width: 40, height: 10)
                     
                     
                     Text(
-                        "\(countdownItem.timeRemainingWidgetString) (\(countdownItem.progressString)%)"
+                        "\(countdownItem.timeRemainingWidgetString)"
                     )
                         .opacity(0.5)
                         .font(.caption2)

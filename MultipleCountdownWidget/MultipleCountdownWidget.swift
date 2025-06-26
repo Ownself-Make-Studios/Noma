@@ -115,16 +115,17 @@ struct MultipleCountdownWidget: Widget {
             
         }
         .contentMarginsDisabled()
-        .configurationDisplayName("Multiple Countdowns Widget")
-        .description("Keep track of up to 3 of your upcoming countdowns with this widget!")
+        .configurationDisplayName("Multiple Countdowns")
+        .description("Keep track of 4 of your upcoming countdowns!")
         .supportedFamilies(
             [
+                .systemSmall,
                 .systemMedium,
             ])
     }
 }
 
-#Preview(as: .systemMedium) {
+#Preview(as: .systemSmall) {
     MultipleCountdownWidget()
 } timeline: {
     SimpleEntry(

@@ -86,7 +86,7 @@ struct AddCountdownView: View {
             modelContext.insert(item)
             try? modelContext.save()
         }
-        WidgetCenter.shared.reloadTimelines(ofKind: "CountdownWidget")
+        WidgetCenter.shared.reloadAllTimelines()
         dismiss()
         onAdd?()
     }

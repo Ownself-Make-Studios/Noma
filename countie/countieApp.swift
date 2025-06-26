@@ -16,9 +16,9 @@ struct countieApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .onAppear{
-                    WidgetCenter.shared.reloadTimelines(ofKind: "CountdownWidget", )
-                }
+//                .onAppear{
+//                    WidgetCenter.shared.reloadTimelines(ofKind: "CountdownWidget", )
+//                }
             
         }
         .modelContainer(CountieModelContainer.sharedModelContainer)
