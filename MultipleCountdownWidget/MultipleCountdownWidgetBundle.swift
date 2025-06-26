@@ -10,6 +10,7 @@ import SwiftUI
 
 @main
 struct MultipleCountdownWidgetBundle: WidgetBundle {
+    let kind: String = "MultipleCountdownWidget"
     var body: some Widget {
         MultipleCountdownWidget()
     }

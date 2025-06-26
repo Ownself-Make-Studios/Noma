@@ -8,11 +8,7 @@
 import WidgetKit
 import AppIntents
 
-struct ConfigurationAppIntent: WidgetConfigurationIntent {
-    static var title: LocalizedStringResource { "Configuration" }
-    static var description: IntentDescription { "This is an example widget." }
-
-    // An example configurable parameter.
-    @Parameter(title: "Favorite Emoji", default: "😃")
-    var favoriteEmoji: String
+struct MultipleCountdownConfigurationAppIntent: WidgetConfigurationIntent {
+    static var title: LocalizedStringResource { "Show latest countdowns" }
+    static var description: IntentDescription { "This widget shows the latest countdowns" }
 }
