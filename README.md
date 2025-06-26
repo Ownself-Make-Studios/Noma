@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/nabilridhwan/Countie-iOS/main/countie/Assets.xcassets/AppIcon.appiconset/normal_icon.png" alt="Countie Logo" width="80"/>
+<img src="https://raw.githubusercontent.com/nabilridhwan/Countie-iOS/main/countie/Assets.xcassets/AppIcon.appiconset/dark.png" alt="Countie Logo" width="80"/>
 
 # Countie
 > Track Life’s Milestones, One Countdown at a Time
