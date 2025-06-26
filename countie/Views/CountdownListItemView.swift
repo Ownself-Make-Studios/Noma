@@ -10,7 +10,7 @@ import Combine
 
 struct CountdownListItemView: View {
     
-    @ObservedObject var item: CountdownItem
+    @State var item: CountdownItem
     
     @State private var currentTime = Date()
     @State private var timerCancellable: Cancellable?
