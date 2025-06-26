@@ -10,14 +10,14 @@ import SwiftUI
 struct Welcome: View {
     var body: some View {
         
-        VStack(alignment: .center, spacing: 8){
+        VStack(alignment: .center, spacing: 30){
             
             Image(
-                systemName: "timer.circle"
+                "CountieLogo"
             )
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(width: 100, height: 100)
+            .frame(width: 200, height: 200)
             
             VStack {
                 Text("Welcome to Countie")
