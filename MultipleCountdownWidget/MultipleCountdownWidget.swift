@@ -40,11 +40,24 @@ struct Provider: AppIntentTimelineProvider {
         var entries: [SimpleEntry] = []
         
         let countdowns = await getLatestCountdowns()
+        let now = Date()
         
         if let safeCountdowns = countdowns {
-            for countdown in safeCountdowns {
-                entries.append(SimpleEntry(date: countdown.date, countdowns: safeCountdowns))
+            var entry =
+            SimpleEntry(
+                date: Date(),
+                countdowns: safeCountdowns
+            )
+            
+            // Set relevance based on the first countdown date
+            if let firstCountdown = safeCountdowns.first {
+                let timeInterval = abs(firstCountdown.date.timeIntervalSince(now))
+                // The closer to now, the higher the score (1.0 at event time, approaches 0 as it gets further)
+                let score = 1.0 / (1.0 + timeInterval / 3600.0) // decay per hour
+                entry.relevance = TimelineEntryRelevance(score: Float(score), duration: firstCountdown.date.timeIntervalSinceNow)
             }
+            
+            entries.append(entry)
         }else{
             return Timeline(entries: entries, policy: .never)
         }
@@ -86,6 +99,7 @@ struct Provider: AppIntentTimelineProvider {
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let countdowns: [CountdownItem]
+    var relevance: TimelineEntryRelevance? = nil
 }
 
 struct MultipleCountdownWidget: Widget {
