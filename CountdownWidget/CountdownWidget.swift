@@ -11,7 +11,7 @@ import SwiftData
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        var countdownItem: CountdownItem = .init(emoji: "🎉", name: "Welcome to Countie!", includeTime: false, date: .now.addingTimeInterval(60 * 60 * 24 * 3))
+        let countdownItem: CountdownItem = .init(emoji: "🎉", name: "Welcome to Countie!", includeTime: false, date: .now.addingTimeInterval(60 * 60 * 24 * 3))
         
         countdownItem.countSince = Date.now.addingTimeInterval(60 * 60 * 24 * 2) // 2 days ago
         
@@ -133,12 +133,6 @@ struct CountdownWidget: Widget {
                 .systemSmall,
                 .systemMedium,
             ])
-    }
-}
-
-extension ConfigurationAppIntent {
-    fileprivate static var defaultIntent: ConfigurationAppIntent {
-        return ConfigurationAppIntent()
     }
 }
 
