@@ -25,9 +25,41 @@ struct CountdownListView: View {
     var body: some View {
         NavigationStack {
             List {
+                
+                Section("Pinned"){
+                    ScrollView(.horizontal, showsIndicators: false){
+                        
+                        LazyHStack{
+                            ForEach(filteredCountdowns, id: \..id) { countdown in
+                                NavigationLink(destination: AddCountdownView(countdownToEdit: countdown)) {
+                                    CountdownListItemView(item: countdown)
+                                        .frame(maxWidth: 200)
+                                    
+                                        .padding()
+                                       
+                                }
+                                .buttonStyle(.plain)
+                                 .contextMenu {
+                                            Button("Pin") {
+                                                handlePin(countdown.id)
+                                            }
+                                        }
+                                
+                            }
+//                            .onDelete(perform: onDelete)
+                        }
+                    }
+                }
+                
+                
                 ForEach(filteredCountdowns, id: \.id) { countdown in
                     NavigationLink(destination: AddCountdownView(countdownToEdit: countdown)) {
                         CountdownListItemView(item: countdown)
+                    }
+                    .contextMenu {
+                        Button("Pin") {
+                            handlePin(countdown.id)
+                        }
                     }
                 }
                 .onDelete(perform: onDelete)
@@ -35,13 +67,18 @@ struct CountdownListView: View {
             .searchable(text: $searchText, prompt: "Search countdowns")
         }
     }
+    
+    func handlePin(_ id: UUID) {
+        // Pin or unpin logic goes here
+        print(id.uuidString)
+    }
 }
 
 #Preview {
     CountdownListView(
         countdowns: [
             CountdownItem.SamplePastTimer,
-            CountdownItem.SampleFutureTimer,
+            CountdownItem.Graduation,
             CountdownItem.SampleFutureTimer,
             CountdownItem.SampleFutureTimer,
             CountdownItem.SampleFutureTimer,
