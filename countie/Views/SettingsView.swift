@@ -18,6 +18,7 @@ enum ChangeCountdownWhenCalendarEventChangedOption: String, CaseIterable, Identi
 
 struct SettingsView: View {
     @AppStorage("isDarkMode") private var isDarkMode: Bool = false
+    @AppStorage("showProgress") private var showProgress: Bool = true
     @AppStorage("defaultCountSinceBehavior") private var defaultCountSinceBehaviorRaw: String = DefaultCountSinceBehavior.now.rawValue
     @AppStorage("defaultCountdownTimeToggle") private var defaultCountdownTimeToggle: Bool = false
     @AppStorage("changeCountdownWhenCalendarEventChanged") private var changeCountdownWhenCalendarEventChangedRaw: String = ChangeCountdownWhenCalendarEventChangedOption.change.rawValue
@@ -51,7 +52,18 @@ struct SettingsView: View {
                     Toggle(isOn: $isDarkMode) {
                         Label("Dark Mode", systemImage: "moon.fill")
                     }
+                    
+                    Toggle(isOn: $showProgress) {
+                        Label("Show Progress", systemImage: "clock.badge.questionmark.fill")
+                    }
+                    
+                    Text("Progress shows how much time has passed since \"Count Since\" date.")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
                 }
+                
+                
+                
                 Section(header: Text("Default Behaviors")) {
                     Picker("Count since behavior", selection: $defaultCountSinceBehaviorRaw) {
                         ForEach(DefaultCountSinceBehavior.allCases) { behavior in

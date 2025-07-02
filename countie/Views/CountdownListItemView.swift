@@ -10,6 +10,7 @@ import Combine
 
 struct CountdownListItemView: View {
     
+    @AppStorage("showProgress") private var showProgress: Bool = true
     @State var item: CountdownItem
     
     @State private var currentTime = Date()
@@ -33,28 +34,32 @@ struct CountdownListItemView: View {
             Text(
                 countdownHasEnded ?
                 item.timeRemainingPassedString :
-                item.timeRemainingString
+                    item.timeRemainingString
             )
-                .font(.caption2)
-                .opacity(0.5)
-            HStack(spacing: 6) {
+            .font(.caption2)
+            .opacity(0.5)
+            
+            showProgress ? (
                 
-                LinearProgressView(value: item.progress, shape: Capsule())
-                    .tint(
-                        LinearGradient(
-                            colors: [.purple, .blue],
-                            startPoint: .leading,
-                            endPoint: .trailing)
-                    )
-                    .frame(height: 4)
-                
-                
-                Text("\(item.progressString)%")
-                    .font(.caption2)
-                    .opacity(0.4)
-                
-            }
-            .padding(.top, 4)
+                HStack(spacing: 6) {
+                    
+                    LinearProgressView(value: item.progress, shape: Capsule())
+                        .tint(
+                            LinearGradient(
+                                colors: [.purple, .blue],
+                                startPoint: .leading,
+                                endPoint: .trailing)
+                        )
+                        .frame(height: 4)
+                    
+                    
+                    Text("\(item.progressString)%")
+                        .font(.caption2)
+                        .opacity(0.4)
+                    
+                }
+                    .padding(.top, 4)
+            ) : nil
         }
         .opacity(countdownHasEnded ? 0.5 : 1.0)
         .onAppear{
@@ -67,7 +72,7 @@ struct CountdownListItemView: View {
                         currentTime = input
                     }
             }else{
-                 // Start the timer when the view appears
+                // Start the timer when the view appears
                 timerCancellable = Timer.publish(every: 1 * 60 * 60, on: .main, in: .common)
                     .autoconnect()
                     .sink { input in

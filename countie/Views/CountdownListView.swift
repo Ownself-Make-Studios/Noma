@@ -26,30 +26,30 @@ struct CountdownListView: View {
         NavigationStack {
             List {
                 
-                Section("Pinned"){
-                    ScrollView(.horizontal, showsIndicators: false){
-                        
-                        LazyHStack{
-                            ForEach(filteredCountdowns, id: \..id) { countdown in
-                                NavigationLink(destination: AddCountdownView(countdownToEdit: countdown)) {
-                                    CountdownListItemView(item: countdown)
-                                        .frame(maxWidth: 200)
-                                    
-                                        .padding()
-                                       
-                                }
-                                .buttonStyle(.plain)
-                                 .contextMenu {
-                                            Button("Pin") {
-                                                handlePin(countdown.id)
-                                            }
-                                        }
-                                
-                            }
-//                            .onDelete(perform: onDelete)
-                        }
-                    }
-                }
+//                Section("Pinned"){
+//                    ScrollView(.horizontal, showsIndicators: false){
+//                        
+//                        LazyHStack{
+//                            ForEach(filteredCountdowns, id: \..id) { countdown in
+//                                NavigationLink(destination: AddCountdownView(countdownToEdit: countdown)) {
+//                                    CountdownListItemView(item: countdown)
+//                                        .frame(maxWidth: 200)
+//                                    
+//                                        .padding()
+//                                       
+//                                }
+//                                .buttonStyle(.plain)
+//                                 .contextMenu {
+//                                            Button("Pin") {
+//                                                handlePin(countdown.id)
+//                                            }
+//                                        }
+//                                
+//                            }
+////                            .onDelete(perform: onDelete)
+//                        }
+//                    }
+//                }
                 
                 
                 ForEach(filteredCountdowns, id: \.id) { countdown in
