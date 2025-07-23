@@ -74,18 +74,19 @@ class CountdownItem{
      */
     var timeRemainingWidgetString: String {
         //        return getTimeRemainingString(since: Date.now, units: [.day, .hour])
-        return getTimeRemainingString(since: Date.now, units: [.day, .hour], unitsStyle: .abbreviated)
+        return getTimeRemainingString(since: Date.now, units: [.day], unitsStyle: .abbreviated)
     }
     
-    var timeRemainingWidgetShortString: String {
-        return getTimeRemainingString(since: Date.now, units: [.day, .hour], unitsStyle: .abbreviated)
-    }
+//    var timeRemainingWidgetShortString: String {
+//        return getTimeRemainingString(since: Date.now, units: [.day, .hour], unitsStyle: .abbreviated)
+//    }
     
     /**
      Returns the time remaining as a String for widget (which goes up to years, months, days, hours, minutes and seconds)
      */
     var timeRemainingString: String {
-        return getTimeRemainingString(since: Date.now, units: [.year, .month, .day, .hour, .minute, .second])
+//        return getTimeRemainingString(since: Date.now, units: [.year, .month, .day, .hour, .minute, .second])
+        return getTimeRemainingString(since: Date.now, units: [.day])
     }
     
     /**
