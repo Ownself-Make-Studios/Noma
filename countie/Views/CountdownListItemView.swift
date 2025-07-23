@@ -26,7 +26,7 @@ struct CountdownListItemView: View {
             HStack {
                 
                 
-                CircularEmojiView(emoji: item.emoji ?? "", progress: 0.8)
+                CircularEmojiView(emoji: item.emoji ?? "", progress: Float(showProgress ? item.progress : 0))
                     .padding(.trailing, 6)
 
                 VStack(alignment: .leading) {
