@@ -26,50 +26,37 @@ struct CountdownListItemView: View {
             HStack {
                 
                 
-
-                Circle()
-                    .frame(width: 44, height: 44)
-                    .foregroundStyle(.gray.opacity(0.3))
-                    .overlay {
-                        Text("\(item.emoji ?? "")")
-                        
-                        CircularProgressBar(progress: Float(item.progress), color: .gray.opacity(0.3))
-                            .frame(width: 54, height: 54)
-                    }
-                    .padding(.trailing, 4)
+                CircularEmojiView(emoji: item.emoji ?? "", progress: 0.8)
+                    .padding(.trailing, 6)
 
                 VStack(alignment: .leading) {
+                    
 
                     Text("\(item.name)")
 //                        .font(.caption)
+                        .font(.system(size: 15))
                         .bold()
 
                     Text(item.formattedDateString)
                         .font(.caption)
                         .opacity(0.5)
 
-                    showProgress
-                        ? (HStack(spacing: 6) {
-
-                            LinearProgressView(
-                                value: item.progress,
-                                shape: Capsule()
-                            )
-                            .tint(
-                                LinearGradient(
-                                    colors: [.purple, .blue],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
-                            .frame(height: 4)
-
-                            Text("\(item.progressString)%")
-                                .font(.caption2)
-                                .opacity(0.4)
-
-                        }
-                        .padding(.top, 4)) : nil
+//                    showProgress
+//                        ? (HStack(spacing: 6) {
+//
+//                            LinearProgressView(
+//                                value: item.progress,
+//                                shape: Capsule()
+//                            )
+//                            .tint(Color(vibrantDominantColorOf: item.emoji ?? "") ?? .gray.opacity(0.3))
+//                            .frame(height: 4)
+//
+//                            Text("\(item.progressString)%")
+//                                .font(.caption2)
+//                                .opacity(0.4)
+//
+//                        }
+//                        .padding(.top, 4)) : nil
 
                 }
                 
@@ -121,6 +108,6 @@ struct CountdownListItemView: View {
 
 #Preview {
     CountdownListItemView(
-        item: .SampleFutureTimer
+        item: .Graduation
     )
 }

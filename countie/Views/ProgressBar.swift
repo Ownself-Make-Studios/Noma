@@ -20,7 +20,7 @@ struct CircularProgressBar: View {
             
             Circle()
                 .trim(from: 0.0, to: CGFloat(min(self.progress, 1.0)))
-                .stroke(style: StrokeStyle(lineWidth: 4.0, lineCap: .round, lineJoin: .round))
+                .stroke(style: StrokeStyle(lineWidth: 2.7, lineCap: .round, lineJoin: .round))
                 .foregroundColor (color).rotationEffect (Angle(degrees: 270))
         }
         

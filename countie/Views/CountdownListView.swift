@@ -55,6 +55,8 @@ struct CountdownListView: View {
                 ForEach(filteredCountdowns, id: \.id) { countdown in
                     NavigationLink(destination: AddCountdownView(countdownToEdit: countdown)) {
                         CountdownListItemView(item: countdown)
+                            .padding(.vertical, 4)
+                            
                     }
                     .contextMenu {
                         Button("Pin") {

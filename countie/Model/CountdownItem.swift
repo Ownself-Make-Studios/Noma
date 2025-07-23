@@ -133,7 +133,7 @@ class CountdownItem{
      */
     var formattedDateString: String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
+        dateFormatter.dateStyle = .long
         dateFormatter.timeStyle = .none
         return dateFormatter.string(from: date)
     }
