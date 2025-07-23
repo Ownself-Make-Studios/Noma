@@ -53,6 +53,8 @@ struct SettingsView: View {
                         Label("Dark Mode", systemImage: "moon.fill")
                     }
                     
+                    VStack(spacing: 10){
+                        
                     Toggle(isOn: $showProgress) {
                         Label("Show Progress", systemImage: "clock.badge.questionmark.fill")
                     }
@@ -60,28 +62,31 @@ struct SettingsView: View {
                     Text("Progress shows how much time has passed since \"Count Since\" date.")
                         .font(.footnote)
                         .foregroundColor(.secondary)
-                }
-                
-                
-                
-                Section(header: Text("Default Behaviors")) {
-                    Picker("Count since behavior", selection: $defaultCountSinceBehaviorRaw) {
-                        ForEach(DefaultCountSinceBehavior.allCases) { behavior in
-                            Text(behavior.rawValue).tag(behavior)
-                        }
-                    }
-                    
-                    Picker("Change countdown when calendar event changes", selection: $changeCountdownWhenCalendarEventChangedRaw) {
-                        ForEach(ChangeCountdownWhenCalendarEventChangedOption.allCases) { option in
-                            Text(option.rawValue).tag(option.rawValue)
-                        }
-                    }
-                    
-                    Toggle(isOn: $defaultCountdownTimeToggle) {
-                        Text("Include time by default")
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity)
                     }
                 }
                 
+                
+                
+//                Section(header: Text("Default Behaviors")) {
+//                    Picker("Count since behavior", selection: $defaultCountSinceBehaviorRaw) {
+//                        ForEach(DefaultCountSinceBehavior.allCases) { behavior in
+//                            Text(behavior.rawValue).tag(behavior)
+//                        }
+//                    }
+//                    
+//                    Picker("Change countdown when calendar event changes", selection: $changeCountdownWhenCalendarEventChangedRaw) {
+//                        ForEach(ChangeCountdownWhenCalendarEventChangedOption.allCases) { option in
+//                            Text(option.rawValue).tag(option.rawValue)
+//                        }
+//                    }
+//                    
+//                    Toggle(isOn: $defaultCountdownTimeToggle) {
+//                        Text("Include time by default")
+//                    }
+//                }
+//                
                 Section(header: Text("Support & Feedback")) {
                     Link(destination: URL(string: "https://github.com/your-repo/issues/new?template=bug_report.md")!) {
                         Label("Submit Bug Issue", systemImage: "ladybug.circle")
@@ -89,9 +94,9 @@ struct SettingsView: View {
                     Link(destination: URL(string: "mailto:support@yourapp.com")!) {
                         Label("Contact Developers", systemImage: "envelope.fill")
                     }
-                    Text("Tip: You can long-press a countdown to quickly edit or delete it!")
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
+//                    Text("Tip: You can long-press a countdown to quickly edit or delete it!")
+//                        .font(.footnote)
+//                        .foregroundColor(.secondary)
                 }
             }
             .navigationTitle("Settings")
