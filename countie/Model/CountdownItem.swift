@@ -74,7 +74,7 @@ class CountdownItem{
      */
     var timeRemainingWidgetString: String {
         //        return getTimeRemainingString(since: Date.now, units: [.day, .hour])
-        return getTimeRemainingString(since: Date.now, units: [.day], unitsStyle: .abbreviated)
+        return getTimeRemainingString(since: Date.now, units: [.day])
     }
     
 //    var timeRemainingWidgetShortString: String {

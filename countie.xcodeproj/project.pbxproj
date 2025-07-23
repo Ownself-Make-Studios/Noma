@@ -98,7 +98,10 @@
 				Assets.xcassets,
 				Model/CountdownItem.swift,
 				Model/CountdownReminder.swift,
+				Model/EmojiDominantColor.swift,
 				Model/ModelContainer.swift,
+				Views/CircularEmojiView.swift,
+				Views/CircularProgressBar.swift,
 			);
 			target = BD9807F32CC796090033C727 /* CountdownWidgetExtension */;
 		};
