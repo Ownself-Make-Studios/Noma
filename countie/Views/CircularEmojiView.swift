@@ -26,7 +26,7 @@ struct CircularEmojiView: View {
                     .font(.system(size: emojiSize))
                 
                 CircularProgressBar(
-                    progress: 0.8,
+                    progress: progress,
                     color: Color(vibrantDominantColorOf: emoji) ?? .gray.opacity(0.8),
                     lineWidth: lineWidth
                 )
