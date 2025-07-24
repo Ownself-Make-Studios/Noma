@@ -28,15 +28,15 @@ struct CountdownListView: View {
                 
 //                Section("Pinned"){
 //                    ScrollView(.horizontal, showsIndicators: false){
-//                        
+//
 //                        LazyHStack{
 //                            ForEach(filteredCountdowns, id: \..id) { countdown in
 //                                NavigationLink(destination: AddCountdownView(countdownToEdit: countdown)) {
 //                                    CountdownListItemView(item: countdown)
 //                                        .frame(maxWidth: 200)
-//                                    
+//
 //                                        .padding()
-//                                       
+//
 //                                }
 //                                .buttonStyle(.plain)
 //                                 .contextMenu {
@@ -44,7 +44,7 @@ struct CountdownListView: View {
 //                                                handlePin(countdown.id)
 //                                            }
 //                                        }
-//                                
+//
 //                            }
 ////                            .onDelete(perform: onDelete)
 //                        }
@@ -53,7 +53,11 @@ struct CountdownListView: View {
                 
                 
                 ForEach(filteredCountdowns, id: \.id) { countdown in
-                    NavigationLink(destination: AddCountdownView(countdownToEdit: countdown)) {
+                    NavigationLink(
+                        destination:
+//                            AddCountdownView(countdownToEdit: countdown)
+                        CountdownDetailView(countdown: countdown),
+                    ) {
                         CountdownListItemView(item: countdown)
                             .padding(.vertical, 4)
                             

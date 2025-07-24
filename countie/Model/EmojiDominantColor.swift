@@ -52,11 +52,11 @@ extension UIImage {
 }
 
 extension UIColor {
-    func vibrant(saturationMultiplier: CGFloat = 1.7, brightnessMultiplier: CGFloat = 2) -> UIColor {
+    func vibrant(saturationMultiplier: CGFloat = 0.5, brightnessMultiplier: CGFloat = 1.8) -> UIColor {
         var hue: CGFloat = 0
         var saturation: CGFloat = 0
         var brightness: CGFloat = 0
-        var alpha: CGFloat = 0
+        var alpha: CGFloat = 1
         if self.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) {
             let newSaturation = min(saturation * saturationMultiplier, 1.0)
             let newBrightness = min(brightness * brightnessMultiplier, 1.0)

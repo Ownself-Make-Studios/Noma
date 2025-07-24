@@ -147,7 +147,7 @@ struct CountdownWidget: Widget {
     }
 }
 
-#Preview(as: .systemSmall) {
+#Preview(as: .accessoryRectangular) {
     CountdownWidget()
 } timeline: {
     SimpleEntry(

@@ -109,7 +109,7 @@ struct CountdownWidgetSmallView: View {
             //            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-//        .background(.red)
+        //        .background(.red)
     }
 }
 
@@ -221,26 +221,42 @@ struct CountdownWidgetAccessoryRectangularView: View {
 
     // Show time remaining with progress percentage if showProgress is true
     var timeRemainingWidgetString: String {
-        if showProgress {
-            return countdownItem.timeRemainingWidgetString
-                + " (\(countdownItem.progressString)%)"
-        } else {
-            return countdownItem.timeRemainingWidgetString
-        }
+        return countdownItem.timeRemainingWidgetString
+//        if showProgress {
+//            return countdownItem.timeRemainingWidgetString
+//                + " (\(countdownItem.progressString)%)"
+//        } else {
+//            return countdownItem.timeRemainingWidgetString
+//        }
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text("\(countdownItem.emoji ?? "") \(countdownItem.name)")
-                .font(.body)
-                .bold()
-                .minimumScaleFactor(0.5)
+        HStack {
+            HStack {
+                CircularEmojiView(
+                    emoji: countdownItem.emoji ?? "",
+                    progress: showProgress ? Float(countdownItem.progress) : 0,
+                    width: 38
+                )
+            }
+            .padding(.trailing, 4)
 
-            Text(timeRemainingWidgetString)
-                .font(.caption)
-                .opacity(0.6)
-                .minimumScaleFactor(0.5)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("\(countdownItem.name)")
+                    .font(.body)
+                    .bold()
+                    .minimumScaleFactor(0.5)
 
+                Text(timeRemainingWidgetString)
+                    .font(.caption)
+                    .opacity(0.6)
+                    .minimumScaleFactor(0.5)
+
+            }
+            
+//            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+//            Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
