@@ -32,6 +32,55 @@ struct CountdownListView: View {
         Array(filteredCountdowns.dropFirst())
     }
 
+    // Helper: next 12 months from current date
+    var next12Months: [Date] {
+        let calendar = Calendar.current
+        let now = Date()
+        var months: [Date] = []
+        for offset in 0..<12 {
+            if let month = calendar.date(
+                byAdding: .month,
+                value: offset,
+                to: now
+            ) {
+                let comps = calendar.dateComponents(
+                    [.year, .month],
+                    from: month
+                )
+                if let normalized = calendar.date(from: comps) {
+                    months.append(normalized)
+                }
+            }
+        }
+        return months
+    }
+
+    // Group restOfTheCountdowns by month and year
+    var countdownsByMonth: [Date: [CountdownItem]] {
+        let calendar = Calendar.current
+        return Dictionary(grouping: restOfTheCountdowns) { (item) -> Date in
+            let comps = calendar.dateComponents(
+                [.year, .month],
+                from: item.date
+            )
+            return calendar.date(from: comps) ?? item.date
+        }
+    }
+
+    // Months with countdowns outside the next 12 months
+    var extraMonths: [Date] {
+        let next12 = Set(next12Months)
+        let allMonths = Set(countdownsByMonth.keys)
+        return allMonths.subtracting(next12).sorted()
+    }
+
+    // Formatter for section headers
+    var monthYearFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "LLLL yyyy"
+        return formatter
+    }
+
     var body: some View {
         NavigationStack {
             List {
@@ -49,12 +98,13 @@ struct CountdownListView: View {
 
                         ZStack {
 
+                            // https://stackoverflow.com/a/59832389
                             NavigationLink(
                                 destination: CountdownDetailView(countdown: fcd)
 
                             ) {
-                                EmptyView()
-                            }
+                                Rectangle().opacity(0)
+                            }.buttonStyle(.plain)
 
                             RoundedRectangle(cornerRadius: 24)
 
@@ -116,17 +166,15 @@ struct CountdownListView: View {
                                 VStack(spacing: 8) {
 
                                     Text(
-                                        filteredCountdowns.first?
+                                        fcd
                                             .formattedDateString
-                                            ?? "No date set"
                                     )
                                     .font(.subheadline)
                                     .opacity(0.5)
 
                                     Text(
-                                        filteredCountdowns.first?
+                                        fcd
                                             .timeRemainingString
-                                            ?? "No time remaining"
                                     )
                                     .font(.caption)
                                     .opacity(0.5)
@@ -169,23 +217,178 @@ struct CountdownListView: View {
                 //                    }
                 //                }
 
-                ForEach(restOfTheCountdowns, id: \.id) { countdown in
-                    NavigationLink(
-                        destination:
-                            //                            AddCountdownView(countdownToEdit: countdown)
-                            CountdownDetailView(countdown: countdown),
-                    ) {
-                        CountdownListItemView(item: countdown)
-                            .padding(.vertical, 6)
+                ForEach(Array(countdownsByMonth.keys.sorted()), id: \.self) { month in
+                    Section(header: Text(month, formatter: monthYearFormatter))
+                    {
+                        if let items = countdownsByMonth[month], !items.isEmpty
+                        {
+                            ForEach(items, id: \.id) { countdown in
+                                NavigationLink(
+                                    destination:
+                                        CountdownDetailView(
+                                            countdown: countdown
+                                        ),
+                                ) {
+                                    CountdownListItemView(item: countdown)
+                                        .padding(.vertical, 6)
+                                }
+                                .contextMenu {
+                                    Button("Pin") {
+                                        handlePin(countdown.id)
+                                    }
+                                }
+                            }
+                            .onDelete(perform: onDelete)
+                        } else {
+                            ZStack {
 
-                    }
-                    .contextMenu {
-                        Button("Pin") {
-                            handlePin(countdown.id)
+                                // https://stackoverflow.com/a/59832389
+                                NavigationLink(
+                                    destination: AddCountdownView(
+                                        countdownDate: month
+                                    )
+                                ) {
+                                    EmptyView()
+                                }
+
+                                HStack {
+                                    Spacer()
+                                    Label(
+                                        "Add countdown",
+                                        systemImage: "plus"
+                                    )
+                                    .frame(
+                                        maxWidth: .infinity,
+                                        maxHeight: 60
+
+                                    )
+                                    .font(.caption)
+                                    .padding(28)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .stroke(
+                                                style: StrokeStyle(
+                                                    lineWidth: 1,
+                                                    dash: [8]
+                                                )
+                                            )
+                                            .foregroundColor(.primary)
+                                    )
+                                    Spacer()
+                                }
+                                .opacity(0.4)
+                                .padding(.vertical, 4)
+                            }
+                            .foregroundStyle(.primary)
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(
+                                .init(
+                                    top: 0,
+                                    leading: 0,
+                                    bottom: 0,
+                                    trailing: 0
+                                )
+                            )
                         }
                     }
                 }
-                .onDelete(perform: onDelete)
+
+                // Iterate over the next 12 months and create a section for each
+                //                ForEach(next12Months, id: \.self) { month in
+                //                    Section(header: Text(month, formatter: monthYearFormatter))
+                //                    {
+                //                        if let items = countdownsByMonth[month], !items.isEmpty
+                //                        {
+                //                            ForEach(items, id: \.id) { countdown in
+                //                                NavigationLink(
+                //                                    destination:
+                //                                        CountdownDetailView(
+                //                                            countdown: countdown
+                //                                        ),
+                //                                ) {
+                //                                    CountdownListItemView(item: countdown)
+                //                                        .padding(.vertical, 6)
+                //                                }
+                //                                .contextMenu {
+                //                                    Button("Pin") {
+                //                                        handlePin(countdown.id)
+                //                                    }
+                //                                }
+                //                            }
+                //                            .onDelete(perform: onDelete)
+                //                        } else {
+                //                            ZStack {
+                //
+                //                                // https://stackoverflow.com/a/59832389
+                //                                NavigationLink(
+                //                                    destination: AddCountdownView(
+                //                                        countdownDate: month
+                //                                    )
+                //                                ) {
+                //                                    EmptyView()
+                //                                }
+                //
+                //                                HStack {
+                //                                    Spacer()
+                //                                    Label(
+                //                                        "Add countdown",
+                //                                        systemImage: "plus"
+                //                                    )
+                //                                    .frame(
+                //                                        maxWidth: .infinity,
+                //                                        maxHeight: 60
+                //
+                //                                    )
+                //                                    .font(.caption)
+                //                                    .padding(28)
+                //                                    .background(
+                //                                        RoundedRectangle(cornerRadius: 12)
+                //                                            .stroke(style: StrokeStyle(lineWidth: 1, dash: [8]))
+                //                                            .foregroundColor(.primary)
+                //                                    )
+                //                                    Spacer()
+                //                                }
+                //                                .opacity(0.4)
+                //                                .padding(.vertical, 4)
+                //                            }
+                //                            .foregroundStyle(.primary)
+                //                            .listRowBackground(Color.clear)
+                //                            .listRowInsets(
+                //                                .init(top: 0, leading: 0, bottom: 0, trailing: 0    )
+                //                            )
+                //                        }
+                //                    }
+                //                }
+
+                // Add sections for months outside the next 12 months
+                //                ForEach(extraMonths, id: \.self) { month in
+                //                    Section(header: Text(month, formatter: monthYearFormatter))
+                //                    {
+                //                        if let items = countdownsByMonth[month], !items.isEmpty
+                //                        {
+                //                            ForEach(items, id: \.id) { countdown in
+                //                                NavigationLink(
+                //                                    destination:
+                //                                        CountdownDetailView(
+                //                                            countdown: countdown
+                //                                        ),
+                //                                ) {
+                //                                    CountdownListItemView(item: countdown)
+                //                                        .padding(.vertical, 6)
+                //                                }
+                //                                .contextMenu {
+                //                                    Button("Pin") {
+                //                                        handlePin(countdown.id)
+                //                                    }
+                //                                }
+                //                            }
+                //                            .onDelete(perform: onDelete)
+                //                        } else {
+                //                            EmptyView()
+                //                        }
+                //                    }
+                //                }
+                //
             }
             .searchable(text: $searchText, prompt: "Search countdowns")
         }
