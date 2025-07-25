@@ -5,8 +5,8 @@
 //  Created by Nabil Ridhwan on 22/10/24.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 import WidgetKit
 
 struct ContentView: View {
@@ -14,64 +14,95 @@ struct ContentView: View {
     @State private var countdowns: [CountdownItem] = []
     @State private var showAddModal = false
     @State private var showCalendarModal = false
-    
-    @AppStorage("filterPast") private var filterPast = false
-    
-    private func handleFilterClick(){
-        filterPast.toggle()
+
+    @AppStorage("filterPast") private var showOnlyPastCountdowns = false
+
+    private func handleFilterClick() {
+        showOnlyPastCountdowns.toggle()
     }
-    
+
     private func deleteItems(offsets: IndexSet) {
-        
+
         for index in offsets {
             modelContext.delete(countdowns[index])
         }
-        
-        
+
         try? modelContext.save()
-        
+
         // Filter from countdowns
         fetchCountdowns()
-        
+
         print("Deleted item")
-        
+
         // Ensure widget updates after deletion
         WidgetCenter.shared.reloadAllTimelines()
     }
-    
-    private func fetchCountdowns(){
-        
+
+    private func fetchCountdowns() {
+
         let now = Date.now
-        
+
         var descriptor = FetchDescriptor<CountdownItem>(
-            
+
             sortBy: [
                 SortDescriptor(\.date, order: .forward)
             ]
         )
-        
-        if filterPast {
+
+        if showOnlyPastCountdowns {
+            descriptor.predicate = #Predicate<CountdownItem> {
+                $0.date <= now
+            }
+        }else{
             descriptor.predicate = #Predicate<CountdownItem> {
                 $0.date >= now
             }
         }
-        
+
         let fetchedItems = try? modelContext.fetch(descriptor)
-        
+
         countdowns = fetchedItems ?? []
     }
-    
+
     var body: some View {
         NavigationStack {
-            VStack{
+            VStack {
                 if countdowns.isEmpty {
                     Spacer(minLength: 0)
                     ContentUnavailableView(
                         "No Countdowns Yet :(",
                         systemImage: "calendar",
-                        description: Text("Add a countdown by tapping the plus button!"))
+                        description: Text(
+                            "Add a countdown by tapping the plus button!"
+                        )
+                    )
                     Spacer(minLength: 0)
                 } else {
+                    
+                    HStack {
+                        Button("Upcoming") {
+                            showOnlyPastCountdowns = false
+                        }
+                        .foregroundStyle(.primary)
+                        .padding()
+                        .background(
+                            showOnlyPastCountdowns ? Color.clear : Color.primary.opacity(0.2)
+                        )
+                        .clipShape(Capsule())
+                        
+                        
+                        Button("Passed") {
+                            showOnlyPastCountdowns = true
+                        }
+                        .foregroundStyle(.primary)
+                        .padding()
+                        .background(
+                            showOnlyPastCountdowns == false ? Color.clear : Color.primary.opacity(0.2)
+                        )
+                        .clipShape(Capsule())
+                    }
+                    
+                    
                     CountdownListView(
                         countdowns: countdowns,
                         onDelete: deleteItems
@@ -79,47 +110,55 @@ struct ContentView: View {
                 }
             }
             .toolbar {
-                
-                ToolbarItem{
-                    
+
+                ToolbarItem {
+
                     NavigationLink(destination: SettingsView()) {
                         Label("Settings", systemImage: "gearshape")
                             .labelStyle(.titleAndIcon)
                     }
                 }
-                
+
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Button(action: handleFilterClick) {
-                        Label("Filter", systemImage: filterPast ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
-                    }
-                    
-                    Spacer()
-                    
+//                    Button(action: handleFilterClick) {
+//                        Label(
+//                            "Filter",
+//                            systemImage: showOnlyPastCountdowns
+//                                ? "line.3.horizontal.decrease.circle.fill"
+//                                : "line.3.horizontal.decrease.circle"
+//                        )
+//                    }
+//
+//                    Spacer()
+
                     Menu {
                         Button(action: {
                             showCalendarModal = true
                         }) {
-                            Label("Add from calendar", systemImage: "calendar.badge.plus")
+                            Label(
+                                "Add from calendar",
+                                systemImage: "calendar.badge.plus"
+                            )
                         }
-                        
+
                         Button(action: {
                             showAddModal = true
                         }) {
                             Label("Custom", systemImage: "plus")
                                 .labelStyle(.titleAndIcon)
                         }
-                        
+
                     } label: {
                         Label("Add Countdown", systemImage: "plus")
                             .labelStyle(.titleAndIcon)
                     }
                 }
-                
+
             }
             .navigationTitle("Countie")
         }
         .sheet(isPresented: $showAddModal) {
-            NavigationView{
+            NavigationView {
                 AddCountdownView()
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
@@ -127,13 +166,13 @@ struct ContentView: View {
                                 showAddModal = false
                             }
                         }
-                        
+
                     }
             }
             .interactiveDismissDisabled()
         }
         .sheet(isPresented: $showCalendarModal) {
-            NavigationView{
+            NavigationView {
                 CalendarEventsView(
                     onSelectEvent: { _ in
                         showAddModal = false
@@ -147,13 +186,13 @@ struct ContentView: View {
                             showCalendarModal = false
                         }
                     }
-                    
+
                 }
             }
             .navigationTitle("Add from Calendar")
         }
-        .onChange(of: filterPast) { _, _ in
-            withAnimation{
+        .onChange(of: showOnlyPastCountdowns) { _, _ in
+            withAnimation {
                 fetchCountdowns()
             }
         }
@@ -163,16 +202,15 @@ struct ContentView: View {
                 fetchCountdowns()
             }
         }
-        .task{
+        .task {
             fetchCountdowns()
         }
     }
-    
-    
+
 }
 
 #Preview {
     ContentView()
         .modelContainer(CountieModelContainer.sharedModelContainer)
-    //        .modelContainer(for: CountdownItem.self, inMemory: false)
+//        .modelContainer(for: CountdownItem.self, inMemory: true)
 }
