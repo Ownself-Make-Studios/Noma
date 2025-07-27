@@ -12,6 +12,9 @@ struct CountdownDetailView: View {
     var countdown: CountdownItem
     var onClose: (() -> Void)? = nil
     
+    @State private var now: Date = Date()
+    @State private var timer: Timer? = nil
+
     var body: some View {
         ZStack {
 
@@ -63,7 +66,12 @@ struct CountdownDetailView: View {
                         .font(.subheadline)
                         .opacity(0.5)
 
-                    Text(countdown.timeRemainingString)
+                    Text(countdown.getTimeRemainingString(
+                        since: now,
+                        units: [.day, .hour, .minute, .second],
+                        unitsStyle: .full
+                        
+                    ))
                         .font(.subheadline)
                         .opacity(0.5)
                         .padding(.vertical, 10)
@@ -102,7 +110,15 @@ struct CountdownDetailView: View {
                         }
                     }
                 }
-
+        }
+        .onAppear {
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                now = Date()
+            }
+        }
+        .onDisappear {
+            timer?.invalidate()
+            timer = nil
         }
     }
 }

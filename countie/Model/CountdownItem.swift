@@ -89,6 +89,11 @@ class CountdownItem{
         return getTimeRemainingString(since: Date.now, units: [.day])
     }
     
+    var timeRemainingStringDetailed: String {
+        // This is the detailed version which includes years, months, days, hours, minutes and seconds
+        return getTimeRemainingString(since: Date.now, units: [.day, .hour, .minute, .second], unitsStyle: .full)
+    }
+    
     /**
      Returns the time remaining as a String for widget (which goes up to years, months, days, hours, minutes and seconds)
      */
@@ -110,7 +115,7 @@ class CountdownItem{
     }
     
     
-    private func getTimeRemainingString(since: Date = Date(), units: NSCalendar.Unit = [.year, .month, .day, .hour], unitsStyle: DateComponentsFormatter.UnitsStyle = .full) -> String{
+    func getTimeRemainingString(since: Date = Date(), units: NSCalendar.Unit = [.year, .month, .day, .hour], unitsStyle: DateComponentsFormatter.UnitsStyle = .full) -> String{
         
         let dateComponentsFormatter = DateComponentsFormatter()
         dateComponentsFormatter.allowedUnits = units
