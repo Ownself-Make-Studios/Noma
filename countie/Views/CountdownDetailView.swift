@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct CountdownDetailView: View {
+    @Environment(\.dismiss) private var dismiss
     var countdown: CountdownItem
+    var onClose: (() -> Void)? = nil
+    
     var body: some View {
         ZStack {
 
@@ -92,6 +95,13 @@ struct CountdownDetailView: View {
                     
                 }
             }
+            .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Close") {
+                            dismiss()
+                        }
+                    }
+                }
 
         }
     }

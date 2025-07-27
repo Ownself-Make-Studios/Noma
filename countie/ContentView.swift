@@ -9,11 +9,18 @@ import SwiftData
 import SwiftUI
 import WidgetKit
 
+enum Tabs {
+    case upcoming, passed, search
+
+}
+
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var countdowns: [CountdownItem] = []
     @State private var showAddModal = false
     @State private var showCalendarModal = false
+    @State private var searchText: String = ""
+    @State private var selectedTab: Tabs = .upcoming
 
     @AppStorage("filterPast") private var showOnlyPastCountdowns = false
 
@@ -49,19 +56,27 @@ struct ContentView: View {
             ]
         )
 
-        if showOnlyPastCountdowns {
-            descriptor.predicate = #Predicate<CountdownItem> {
-                $0.date <= now
-            }
-        }else{
-            descriptor.predicate = #Predicate<CountdownItem> {
-                $0.date >= now
-            }
-        }
+        //        if showOnlyPastCountdowns {
+        //            descriptor.predicate = #Predicate<CountdownItem> {
+        //                $0.date <= now
+        //            }
+        //        } else {
+        //            descriptor.predicate = #Predicate<CountdownItem> {
+        //                $0.date >= now
+        //            }
+        //        }
 
         let fetchedItems = try? modelContext.fetch(descriptor)
 
         countdowns = fetchedItems ?? []
+    }
+
+    var upcomingCountdowns: [CountdownItem] {
+        countdowns.filter { $0.date >= Date.now }
+    }
+
+    var passedCountdowns: [CountdownItem] {
+        countdowns.filter { $0.date < Date.now }
     }
 
     var body: some View {
@@ -78,35 +93,75 @@ struct ContentView: View {
                     )
                     Spacer(minLength: 0)
                 } else {
-                    
-                    HStack {
-                        Button("Upcoming") {
-                            showOnlyPastCountdowns = false
+
+                    TabView(selection: $selectedTab) {
+
+                        Tab(
+                            "Upcoming",
+                            systemImage: "calendar.badge.plus",
+                            value: .upcoming
+                        ) {
+                            CountdownListView(
+                                countdowns: upcomingCountdowns,
+                                onDelete: deleteItems
+                            )
                         }
-                        .foregroundStyle(.primary)
-                        .padding()
-                        .background(
-                            showOnlyPastCountdowns ? Color.clear : Color.primary.opacity(0.2)
-                        )
-                        .clipShape(Capsule())
-                        
-                        
-                        Button("Passed") {
-                            showOnlyPastCountdowns = true
+
+                        Tab(
+                            "Passed",
+                            systemImage: "calendar.badge.minus",
+                            value: .passed
+                        ) {
+                            CountdownListView(
+                                countdowns: passedCountdowns,
+                                onDelete: deleteItems
+                            )
+
                         }
-                        .foregroundStyle(.primary)
-                        .padding()
-                        .background(
-                            showOnlyPastCountdowns == false ? Color.clear : Color.primary.opacity(0.2)
-                        )
-                        .clipShape(Capsule())
+
+                        Tab(value: .search, role: .search) {
+                            ContentUnavailableView("Work in progress", systemImage: "magnifyingglass", description: Text("This page is a work in progess. Please check back later!"))
+
+                                //                            CountdownListView(
+                                //                                countdowns: countdowns,
+                                //                                onDelete: deleteItems
+                                //                            )
+                        }
                     }
-                    
-                    
-                    CountdownListView(
-                        countdowns: countdowns,
-                        onDelete: deleteItems
-                    )
+                    .tabViewStyle(.tabBarOnly)
+
+                    //                    HStack {
+                    //                        Button("Upcoming") {
+                    //                            withAnimation {
+                    //                                showOnlyPastCountdowns = false
+                    //                            }
+                    //                        }
+                    //                        .foregroundStyle(.primary)
+                    //                        .padding()
+                    //                        .background(
+                    //                            showOnlyPastCountdowns
+                    //                                ? Color.clear : Color.primary.opacity(0.2)
+                    //                        )
+                    //                        .clipShape(Capsule())
+                    //
+                    //                        Button("Passed") {
+                    //                            withAnimation {
+                    //                                showOnlyPastCountdowns = true
+                    //                            }
+                    //                        }
+                    //                        .foregroundStyle(.primary)
+                    //                        .padding()
+                    //                        .background(
+                    //                            showOnlyPastCountdowns == false
+                    //                                ? Color.clear : Color.primary.opacity(0.2)
+                    //                        )
+                    //                        .clipShape(Capsule())
+                    //                    }
+                    //
+                    //                    CountdownListView(
+                    //                        countdowns: countdowns,
+                    //                        onDelete: deleteItems
+                    //                    )
                 }
             }
             .toolbar {
@@ -119,17 +174,17 @@ struct ContentView: View {
                     }
                 }
 
-                ToolbarItemGroup(placement: .bottomBar) {
-//                    Button(action: handleFilterClick) {
-//                        Label(
-//                            "Filter",
-//                            systemImage: showOnlyPastCountdowns
-//                                ? "line.3.horizontal.decrease.circle.fill"
-//                                : "line.3.horizontal.decrease.circle"
-//                        )
-//                    }
-//
-//                    Spacer()
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    //                    Button(action: handleFilterClick) {
+                    //                        Label(
+                    //                            "Filter",
+                    //                            systemImage: showOnlyPastCountdowns
+                    //                                ? "line.3.horizontal.decrease.circle.fill"
+                    //                                : "line.3.horizontal.decrease.circle"
+                    //                        )
+                    //                    }
+                    //
+                    //                    Spacer()
 
                     Menu {
                         Button(action: {
@@ -212,5 +267,5 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .modelContainer(CountieModelContainer.sharedModelContainer)
-//        .modelContainer(for: CountdownItem.self, inMemory: true)
+    //        .modelContainer(for: CountdownItem.self, inMemory: true)
 }

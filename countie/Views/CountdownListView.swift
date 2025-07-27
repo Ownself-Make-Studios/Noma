@@ -10,9 +10,10 @@ import SwiftUI
 struct CountdownListView: View {
     var countdowns: [CountdownItem]
     @State private var searchText: String = ""
-    var onDelete: ((IndexSet) -> Void)? = nil
-
     @State private var selectedCountdown: CountdownItem? = nil
+
+    var onDelete: ((IndexSet) -> Void)? = nil
+    
 
     var filteredCountdowns: [CountdownItem] {
         if searchText.isEmpty {
@@ -85,112 +86,112 @@ struct CountdownListView: View {
         NavigationStack {
             List {
 
-                if let fcd = firstCountdown {
-
-                    Section {
-                        //                    Text("Look forward to...")
-                        //                        .opacity(0.5)
-                        //                        .listRowBackground(Color.clear)
-                        //                        .listRowInsets(
-                        //                            .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-                        //                        )
-                        //                        .listRowSeparator(.hidden)
-
-                        ZStack {
-
-                            // https://stackoverflow.com/a/59832389
-                            NavigationLink(
-                                destination: CountdownDetailView(countdown: fcd)
-
-                            ) {
-                                Rectangle().opacity(0)
-                            }.buttonStyle(.plain)
-
-                            RoundedRectangle(cornerRadius: 24)
-
-                                .fill(
-                                    LinearGradient(
-                                        gradient:
-                                            Gradient(
-                                                colors: [
-                                                    Color(
-                                                        vibrantDominantColorOf:
-                                                            fcd.emoji ?? "🎉"
-                                                    ) ?? .accentColor,
-                                                    Color
-                                                        .backgroundThemeRespectable
-                                                        .mix(
-                                                            with: .white,
-                                                            by: 0.16
-                                                        ),
-                                                ]
-                                            ),
-                                        startPoint: .top,
-                                        endPoint: .bottom
-                                    )
-                                )
-                                .stroke(
-                                    Color.primary.opacity(0.1),
-                                    lineWidth: 1.5
-                                )
-                                //                            .strokeBorder(style: .init(lineWidth: 1.3))
-
-                                .ignoresSafeArea(.all)
-                                .frame(
-                                    width: .infinity,
-                                    height: 230
-                                )
-
-                            VStack {
-                                CircularEmojiView(
-                                    emoji: fcd.emoji
-                                        ?? "🎉",
-                                    progress: Float(
-                                        fcd.progress
-                                    ),
-                                    width: 60,
-                                    brightness: 0.3,
-                                    lineWidth: 4,
-                                    gap: 10,
-                                    emojiSize: 24
-                                )
-
-                                .padding()
-
-                                Text(
-                                    fcd.name
-                                )
-                                .bold()
-                                .padding(.vertical, 3)
-
-                                VStack(spacing: 8) {
-
-                                    Text(
-                                        fcd
-                                            .formattedDateString
-                                    )
-                                    .font(.subheadline)
-                                    .opacity(0.5)
-
-                                    Text(
-                                        fcd
-                                            .timeRemainingString
-                                    )
-                                    .font(.caption)
-                                    .opacity(0.5)
-
-                                }
-
-                            }
-                        }
-                    }
-                    .listStyle(.plain)
-                    .listRowBackground(Color.clear)
-                    .listRowInsets(
-                        .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-                    )
-
-                }
+//                if let fcd = firstCountdown {
+//
+//                    Section {
+//                        //                    Text("Look forward to...")
+//                        //                        .opacity(0.5)
+//                        //                        .listRowBackground(Color.clear)
+//                        //                        .listRowInsets(
+//                        //                            .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+//                        //                        )
+//                        //                        .listRowSeparator(.hidden)
+//
+//                        ZStack {
+//
+//                            // https://stackoverflow.com/a/59832389
+//                            NavigationLink(
+//                                destination: CountdownDetailView(countdown: fcd)
+//
+//                            ) {
+//                                Rectangle().opacity(0)
+//                            }.buttonStyle(.plain)
+//
+//                            RoundedRectangle(cornerRadius: 24)
+//
+//                                .fill(
+//                                    LinearGradient(
+//                                        gradient:
+//                                            Gradient(
+//                                                colors: [
+//                                                    Color(
+//                                                        vibrantDominantColorOf:
+//                                                            fcd.emoji ?? "🎉"
+//                                                    ) ?? .accentColor,
+//                                                    Color
+//                                                        .backgroundThemeRespectable
+//                                                        .mix(
+//                                                            with: .white,
+//                                                            by: 0.16
+//                                                        ),
+//                                                ]
+//                                            ),
+//                                        startPoint: .top,
+//                                        endPoint: .bottom
+//                                    )
+//                                )
+//                                .stroke(
+//                                    Color.primary.opacity(0.1),
+//                                    lineWidth: 1.5
+//                                )
+//                                //                            .strokeBorder(style: .init(lineWidth: 1.3))
+//
+//                                .ignoresSafeArea(.all)
+//                                .frame(
+//                                    width: .infinity,
+//                                    height: 230
+//                                )
+//
+//                            VStack {
+//                                CircularEmojiView(
+//                                    emoji: fcd.emoji
+//                                        ?? "🎉",
+//                                    progress: Float(
+//                                        fcd.progress
+//                                    ),
+//                                    width: 60,
+//                                    brightness: 0.3,
+//                                    lineWidth: 4,
+//                                    gap: 10,
+//                                    emojiSize: 24
+//                                )
+//
+//                                .padding()
+//
+//                                Text(
+//                                    fcd.name
+//                                )
+//                                .bold()
+//                                .padding(.vertical, 3)
+//
+//                                VStack(spacing: 8) {
+//
+//                                    Text(
+//                                        fcd
+//                                            .formattedDateString
+//                                    )
+//                                    .font(.subheadline)
+//                                    .opacity(0.5)
+//
+//                                    Text(
+//                                        fcd
+//                                            .timeRemainingString
+//                                    )
+//                                    .font(.caption)
+//                                    .opacity(0.5)
+//
+//                                }
+//
+//                            }
+//                        }
+//                    }
+//                    .listStyle(.plain)
+//                    .listRowBackground(Color.clear)
+//                    .listRowInsets(
+//                        .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+//                    )
+//
+//                }
 
                 //                Section("Pinned"){
                 //                    ScrollView(.horizontal, showsIndicators: false){
@@ -223,20 +224,23 @@ struct CountdownListView: View {
                         if let items = countdownsByMonth[month], !items.isEmpty
                         {
                             ForEach(items, id: \.id) { countdown in
-                                NavigationLink(
-                                    destination:
-                                        CountdownDetailView(
-                                            countdown: countdown
-                                        ),
-                                ) {
+//                                NavigationLink(
+//                                    destination:
+//                                        CountdownDetailView(
+//                                            countdown: countdown
+//                                        ),
+//                                ) {
                                     CountdownListItemView(item: countdown)
                                         .padding(.vertical, 6)
-                                }
-                                .contextMenu {
-                                    Button("Pin") {
-                                        handlePin(countdown.id)
-                                    }
-                                }
+                                        .onTapGesture{
+                                            selectedCountdown = countdown
+                                        }
+//                                }
+//                                .contextMenu {
+//                                    Button("Pin") {
+//                                        handlePin(countdown.id)
+//                                    }
+//                                }
                             }
                             .onDelete(perform: onDelete)
                         } else {
@@ -391,6 +395,13 @@ struct CountdownListView: View {
                 //
             }
             .searchable(text: $searchText, prompt: "Search countdowns")
+            .sheet(item: $selectedCountdown) { countdown in
+                NavigationStack{
+                    CountdownDetailView(countdown: countdown){
+                        selectedCountdown = nil
+                    }
+                }
+            }
         }
     }
 

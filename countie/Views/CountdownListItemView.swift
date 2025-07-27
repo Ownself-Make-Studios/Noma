@@ -14,7 +14,7 @@ struct CountdownListItemView: View {
     @State var item: CountdownItem
 
     @State private var currentTime = Date()
-    @State private var timerCancellable: Cancellable?
+//    @State private var timerCancellable: Cancellable?
 
     var countdownHasEnded: Bool {
         item.date < currentTime
@@ -73,36 +73,35 @@ struct CountdownListItemView: View {
             }
         }
         .opacity(countdownHasEnded ? 0.5 : 1.0)
-        .onAppear {
-
-            if !countdownHasEnded {
-                // Start the timer when the view appears
-                timerCancellable = Timer.publish(
-                    every: 1,
-                    on: .main,
-                    in: .common
-                )
-                .autoconnect()
-                .sink { input in
-                    currentTime = input
-                }
-            } else {
-                // Start the timer when the view appears
-                timerCancellable = Timer.publish(
-                    every: 1 * 60 * 60,
-                    on: .main,
-                    in: .common
-                )
-                .autoconnect()
-                .sink { input in
-                    currentTime = input
-                }
-            }
-        }
-        .onDisappear {
+//        .onAppear {
+//            if !countdownHasEnded {
+//                // Start the timer when the view appears
+//                timerCancellable = Timer.publish(
+//                    every: 1,
+//                    on: .main,
+//                    in: .common
+//                )
+//                .autoconnect()
+//                .sink { input in
+//                    currentTime = input
+//                }
+//            } else {
+//                // Start the timer when the view appears
+//                timerCancellable = Timer.publish(
+//                    every: 1 * 60 * 60,
+//                    on: .main,
+//                    in: .common
+//                )
+//                .autoconnect()
+//                .sink { input in
+//                    currentTime = input
+//                }
+//            }
+//        }
+//        .onDisappear {
             // Cancel the timer when the view disappears to prevent memory leaks
-            timerCancellable?.cancel()
-        }
+//            timerCancellable?.cancel()
+//        }
     }
 }
 
