@@ -30,7 +30,8 @@ struct CountdownListView: View {
     }
 
     var restOfTheCountdowns: [CountdownItem] {
-        Array(filteredCountdowns.dropFirst())
+//        Array(filteredCountdowns.dropFirst())
+        filteredCountdowns
     }
 
     // Helper: next 12 months from current date
