@@ -28,10 +28,27 @@ struct ContentView: View {
         showOnlyPastCountdowns.toggle()
     }
 
-    private func deleteItems(offsets: IndexSet) {
+    private func deleteItemsUpcoming(offsets: IndexSet) {
 
         for index in offsets {
-            modelContext.delete(countdowns[index])
+            modelContext.delete(upcomingCountdowns[index])
+        }
+
+        try? modelContext.save()
+
+        // Filter from countdowns
+        fetchCountdowns()
+
+        print("Deleted item")
+
+        // Ensure widget updates after deletion
+        WidgetCenter.shared.reloadAllTimelines()
+    }
+
+    private func deleteItemsPassed(offsets: IndexSet) {
+
+        for index in offsets {
+            modelContext.delete(passedCountdowns[index])
         }
 
         try? modelContext.save()
@@ -103,29 +120,36 @@ struct ContentView: View {
                         ) {
                             CountdownListView(
                                 countdowns: upcomingCountdowns,
-                                onDelete: deleteItems
+                                onDelete: deleteItemsUpcoming
                             )
                         }
 
                         Tab(
                             "Past Events",
-                            systemImage: "clock.arrow.trianglehead.counterclockwise.rotate.90",
+                            systemImage:
+                                "clock.arrow.trianglehead.counterclockwise.rotate.90",
                             value: .pastevents
                         ) {
                             CountdownListView(
                                 countdowns: passedCountdowns,
-                                onDelete: deleteItems
+                                onDelete: deleteItemsPassed
                             )
 
                         }
 
                         Tab(value: .search, role: .search) {
-                            ContentUnavailableView("Work in progress", systemImage: "magnifyingglass", description: Text("This page is a work in progess. Please check back later!"))
+                            ContentUnavailableView(
+                                "Work in progress",
+                                systemImage: "magnifyingglass",
+                                description: Text(
+                                    "This page is a work in progess. Please check back later!"
+                                )
+                            )
 
-                                //                            CountdownListView(
-                                //                                countdowns: countdowns,
-                                //                                onDelete: deleteItems
-                                //                            )
+                            //                            CountdownListView(
+                            //                                countdowns: countdowns,
+                            //                                onDelete: deleteItems
+                            //                            )
                         }
                     }
                     .tabViewStyle(.tabBarOnly)
