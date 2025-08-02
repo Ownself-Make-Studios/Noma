@@ -75,31 +75,6 @@ struct CountdownDetailView: View {
                         .font(.subheadline)
                         .opacity(0.5)
                         .padding(.vertical, 10)
-
-                    
-                    NavigationLink(
-                        destination:
-                            AddCountdownView(countdownToEdit: countdown)
-                    ){
-//                        Button(action: {}) {}
-//                    .padding(.top, 50)
-                        
-                        
-                        Label(
-                            "Edit Countdown",
-                            systemImage: "square.and.pencil"
-                        )
-                        .font(.caption)
-                        .padding(14)
-                        .background(
-                            Color(vibrantDominantColorOf: countdown.emoji ?? "")?.opacity(0.7)
-                                ?? .accentColor
-                                .mix(with: Color.black, by: 0.2)
-                        )
-                        .foregroundColor(.white)
-                        .cornerRadius(.infinity)
-                    
-                    }
                     
                 }
             }
@@ -119,6 +94,14 @@ struct CountdownDetailView: View {
         .onDisappear {
             timer?.invalidate()
             timer = nil
+        }
+        .toolbar{
+            ToolbarItem{
+                NavigationLink(destination: AddCountdownView(countdownToEdit: countdown)){
+                    Label("Edit Countdown", systemImage: "square.and.pencil")
+                        .labelStyle(.titleAndIcon)
+                }
+            }
         }
     }
 }

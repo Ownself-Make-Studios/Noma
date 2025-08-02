@@ -86,6 +86,15 @@ class CountdownItem{
      */
     var timeRemainingString: String {
 //        return getTimeRemainingString(since: Date.now, units: [.year, .month, .day, .hour, .minute, .second])
+        
+        if getLeft(unit: .year) <= 0 && getLeft(unit: .day) <= 0 && getLeft(unit: .hour) >= 1 {
+            return getTimeRemainingString(since: Date.now, units: [.hour])
+        }
+        
+        if getLeft(unit: .year) <= 0 && getLeft(unit: .day) <= 0 && getLeft(unit: .hour) <= 0 {
+            return "Now"
+        }
+        
         return getTimeRemainingString(since: Date.now, units: [.day])
     }
     
