@@ -10,7 +10,7 @@ import SwiftUI
 import WidgetKit
 
 enum Tabs {
-    case upcoming, passed, search
+    case comingup, pastevents, search
 
 }
 
@@ -20,7 +20,7 @@ struct ContentView: View {
     @State private var showAddModal = false
     @State private var showCalendarModal = false
     @State private var searchText: String = ""
-    @State private var selectedTab: Tabs = .upcoming
+    @State private var selectedTab: Tabs = .comingup
 
     @AppStorage("filterPast") private var showOnlyPastCountdowns = false
 
@@ -97,9 +97,9 @@ struct ContentView: View {
                     TabView(selection: $selectedTab) {
 
                         Tab(
-                            "Upcoming",
-                            systemImage: "calendar.badge.plus",
-                            value: .upcoming
+                            "Coming Up",
+                            systemImage: "calendar.badge.clock",
+                            value: .comingup
                         ) {
                             CountdownListView(
                                 countdowns: upcomingCountdowns,
@@ -108,9 +108,9 @@ struct ContentView: View {
                         }
 
                         Tab(
-                            "Passed",
-                            systemImage: "calendar.badge.minus",
-                            value: .passed
+                            "Past Events",
+                            systemImage: "clock.arrow.trianglehead.counterclockwise.rotate.90",
+                            value: .pastevents
                         ) {
                             CountdownListView(
                                 countdowns: passedCountdowns,
