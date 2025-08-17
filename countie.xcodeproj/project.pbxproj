@@ -105,13 +105,6 @@
 			);
 			target = BD9807F32CC796090033C727 /* CountdownWidgetExtension */;
 		};
-		BDA1FBFF2E00778F0070455C /* Exceptions for "CountdownWidget" folder in "countie" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Views/LinearProgressView.swift,
-			);
-			target = BD92FC0E2CC73FE500D3FC20 /* countie */;
-		};
 		BDAE70632E0BF10200099A3A /* Exceptions for "MultipleCountdownWidget" folder in "MultipleCountdownWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -128,7 +121,14 @@
 			);
 			target = BDAE704F2E0BF10100099A3A /* MultipleCountdownWidgetExtension */;
 		};
-		BDCF46DC2E0CEBD800A409C1 /* Exceptions for "CountdownWidget" folder in "MultipleCountdownWidgetExtension" target */ = {
+		BDED7A4B2E42AF9A00FEEBCD /* Exceptions for "CountdownWidget" folder in "countie" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Views/LinearProgressView.swift,
+			);
+			target = BD92FC0E2CC73FE500D3FC20 /* countie */;
+		};
+		BDED7A4C2E42AF9A00FEEBCD /* Exceptions for "CountdownWidget" folder in "MultipleCountdownWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Views/LinearProgressView.swift,
@@ -161,9 +161,9 @@
 		BD9807FA2CC796090033C727 /* CountdownWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				BDA1FBFF2E00778F0070455C /* Exceptions for "CountdownWidget" folder in "countie" target */,
+				BDED7A4B2E42AF9A00FEEBCD /* Exceptions for "CountdownWidget" folder in "countie" target */,
 				BD98080B2CC7960B0033C727 /* Exceptions for "CountdownWidget" folder in "CountdownWidgetExtension" target */,
-				BDCF46DC2E0CEBD800A409C1 /* Exceptions for "CountdownWidget" folder in "MultipleCountdownWidgetExtension" target */,
+				BDED7A4C2E42AF9A00FEEBCD /* Exceptions for "CountdownWidget" folder in "MultipleCountdownWidgetExtension" target */,
 			);
 			path = CountdownWidget;
 			sourceTree = "<group>";

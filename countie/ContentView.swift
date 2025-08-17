@@ -22,11 +22,6 @@ struct ContentView: View {
     @State private var searchText: String = ""
     @State private var selectedTab: Tabs = .comingup
 
-    @AppStorage("filterPast") private var showOnlyPastCountdowns = false
-
-    private func handleFilterClick() {
-        showOnlyPastCountdowns.toggle()
-    }
 
     private func deleteItemsUpcoming(offsets: IndexSet) {
 
@@ -62,26 +57,14 @@ struct ContentView: View {
         WidgetCenter.shared.reloadAllTimelines()
     }
 
+    // TODO: Might do some pagination e.g. 12 months of countdowns or by calendar picker
     private func fetchCountdowns() {
-
-        let now = Date.now
-
-        var descriptor = FetchDescriptor<CountdownItem>(
+        let descriptor = FetchDescriptor<CountdownItem>(
 
             sortBy: [
                 SortDescriptor(\.date, order: .forward)
             ]
         )
-
-        //        if showOnlyPastCountdowns {
-        //            descriptor.predicate = #Predicate<CountdownItem> {
-        //                $0.date <= now
-        //            }
-        //        } else {
-        //            descriptor.predicate = #Predicate<CountdownItem> {
-        //                $0.date >= now
-        //            }
-        //        }
 
         let fetchedItems = try? modelContext.fetch(descriptor)
 
@@ -99,94 +82,71 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                if countdowns.isEmpty {
-                    Spacer(minLength: 0)
-                    ContentUnavailableView(
-                        "No Countdowns Yet :(",
-                        systemImage: "calendar",
-                        description: Text(
-                            "Add a countdown by tapping the plus button!"
-                        )
-                    )
-                    Spacer(minLength: 0)
-                } else {
 
-                    TabView(selection: $selectedTab) {
+                TabView(selection: $selectedTab) {
 
-                        Tab(
-                            "Coming Up",
-                            systemImage: "calendar.badge.clock",
-                            value: .comingup
-                        ) {
+                    Tab(
+                        "Coming Up",
+                        systemImage: "calendar.badge.clock",
+                        value: .comingup
+                    ) {
+                        if upcomingCountdowns.isEmpty {
+                            Spacer(minLength: 0)
+                            ContentUnavailableView(
+                                "No Countdowns Yet :(",
+                                systemImage: "calendar",
+                                description: Text(
+                                    "Add a countdown by tapping the plus button!"
+                                )
+                            )
+                            Spacer(minLength: 0)
+                        } else {
                             CountdownListView(
                                 countdowns: upcomingCountdowns,
                                 onDelete: deleteItemsUpcoming
                             )
                         }
+                    }
 
-                        Tab(
-                            "Past Events",
-                            systemImage:
-                                "clock.arrow.trianglehead.counterclockwise.rotate.90",
-                            value: .pastevents
-                        ) {
+                    Tab(
+                        "Past Events",
+                        systemImage:
+                            "clock.arrow.trianglehead.counterclockwise.rotate.90",
+                        value: .pastevents
+                    ) {
+                        
+                        if passedCountdowns.isEmpty {
+                            Spacer(minLength: 0)
+                            ContentUnavailableView(
+                                "No Past Countdowns",
+                                systemImage: "calendar",
+                                description: Text(
+                                    "Add one by tapping the plus button"
+                                )
+                            )
+                            Spacer(minLength: 0)
+                        } else {
+                            
                             CountdownListView(
                                 countdowns: passedCountdowns,
                                 onDelete: deleteItemsPassed
                             )
-
                         }
 
-                        Tab(value: .search, role: .search) {
-                            ContentUnavailableView(
-                                "Work in progress",
-                                systemImage: "magnifyingglass",
-                                description: Text(
-                                    "This page is a work in progess. Please check back later!"
-                                )
-                            )
-
-                            //                            CountdownListView(
-                            //                                countdowns: countdowns,
-                            //                                onDelete: deleteItems
-                            //                            )
-                        }
                     }
-                    .tabViewStyle(.tabBarOnly)
 
-                    //                    HStack {
-                    //                        Button("Upcoming") {
-                    //                            withAnimation {
-                    //                                showOnlyPastCountdowns = false
-                    //                            }
-                    //                        }
-                    //                        .foregroundStyle(.primary)
-                    //                        .padding()
-                    //                        .background(
-                    //                            showOnlyPastCountdowns
-                    //                                ? Color.clear : Color.primary.opacity(0.2)
-                    //                        )
-                    //                        .clipShape(Capsule())
+                    //                        Tab(value: .search, role: .search) {
+                    //                            ContentUnavailableView(
+                    //                                "Work in progress",
+                    //                                systemImage: "magnifyingglass",
+                    //                                description: Text(
+                    //                                    "This page is a work in progess. Please check back later!"
+                    //                                )
+                    //                            )
                     //
-                    //                        Button("Passed") {
-                    //                            withAnimation {
-                    //                                showOnlyPastCountdowns = true
-                    //                            }
                     //                        }
-                    //                        .foregroundStyle(.primary)
-                    //                        .padding()
-                    //                        .background(
-                    //                            showOnlyPastCountdowns == false
-                    //                                ? Color.clear : Color.primary.opacity(0.2)
-                    //                        )
-                    //                        .clipShape(Capsule())
-                    //                    }
-                    //
-                    //                    CountdownListView(
-                    //                        countdowns: countdowns,
-                    //                        onDelete: deleteItems
-                    //                    )
                 }
+
             }
             .toolbar {
 
@@ -199,17 +159,6 @@ struct ContentView: View {
                 }
 
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    //                    Button(action: handleFilterClick) {
-                    //                        Label(
-                    //                            "Filter",
-                    //                            systemImage: showOnlyPastCountdowns
-                    //                                ? "line.3.horizontal.decrease.circle.fill"
-                    //                                : "line.3.horizontal.decrease.circle"
-                    //                        )
-                    //                    }
-                    //
-                    //                    Spacer()
-
                     Menu {
                         Button(action: {
                             showCalendarModal = true
@@ -269,11 +218,6 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("Add from Calendar")
-        }
-        .onChange(of: showOnlyPastCountdowns) { _, _ in
-            withAnimation {
-                fetchCountdowns()
-            }
         }
         .onChange(of: showAddModal) { oldValue, newValue in
             if oldValue != newValue && newValue == false {
