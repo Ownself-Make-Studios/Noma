@@ -9,10 +9,11 @@ import SwiftUI
 
 struct CountdownListView: View {
     var countdowns: [CountdownItem]
+    var onClose: (() -> Void)? = nil
     @State private var searchText: String = ""
     @State private var selectedCountdown: CountdownItem? = nil
 
-    var onDelete: ((IndexSet) -> Void)? = nil
+//    var onDelete: ((IndexSet) -> Void)? = nil
     
 
     var filteredCountdowns: [CountdownItem] {
@@ -243,7 +244,6 @@ struct CountdownListView: View {
 //                                    }
 //                                }
                             }
-                            .onDelete(perform: onDelete)
                         } else {
                             ZStack {
 
@@ -403,6 +403,11 @@ struct CountdownListView: View {
                     }
                 }
             }
+           
+//            .onChange(of: selectedCountdown) {
+//                oldValue, newValue in
+//                onClose?()
+//            }
         }
     }
 

@@ -52,7 +52,11 @@ struct CountdownQuery: EntityQuery {
     @MainActor
     func fetchCountdownItems() async -> [CountdownSelection] {
         let modelContainer = CountieModelContainer.sharedModelContainer
-        let descriptor = FetchDescriptor<CountdownItem>(sortBy: [SortDescriptor(\CountdownItem.date, order: .forward)])
+        let descriptor = FetchDescriptor<CountdownItem>(
+            predicate: #Predicate<CountdownItem> { $0.isDeleted == false },
+            sortBy: [SortDescriptor(\CountdownItem.date, order: .forward)]
+            
+        )
         let items = (try? modelContainer.mainContext.fetch(descriptor)) ?? []
         return items.map { CountdownSelection(item: $0) }
         

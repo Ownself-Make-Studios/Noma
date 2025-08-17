@@ -24,20 +24,28 @@ struct ContentView: View {
 
 
     private func deleteItemsUpcoming(offsets: IndexSet) {
-
-        for index in offsets {
-            modelContext.delete(upcomingCountdowns[index])
+        
+        offsets.forEach { index in
+            print("Deleting item at index: \(index)")
         }
 
-        try? modelContext.save()
+//        for index in offsets {
+//            modelContext.delete(upcomingCountdowns[index])
+//        }
+
+//        try? modelContext.save()
 
         // Filter from countdowns
-        fetchCountdowns()
+//        fetchCountdowns()
 
-        print("Deleted item")
+        print("Deleted item from upcoming")
 
         // Ensure widget updates after deletion
-        WidgetCenter.shared.reloadAllTimelines()
+//        WidgetCenter.shared.reloadAllTimelines()
+    }
+    
+    private func onCloseModal() {
+        fetchCountdowns()
     }
 
     private func deleteItemsPassed(offsets: IndexSet) {
@@ -59,8 +67,11 @@ struct ContentView: View {
 
     // TODO: Might do some pagination e.g. 12 months of countdowns or by calendar picker
     private func fetchCountdowns() {
+        print("Fetching countdowns...")
         let descriptor = FetchDescriptor<CountdownItem>(
-
+            predicate: #Predicate { item in
+                item.isDeleted == false
+            },
             sortBy: [
                 SortDescriptor(\.date, order: .forward)
             ]
@@ -103,8 +114,10 @@ struct ContentView: View {
                         } else {
                             CountdownListView(
                                 countdowns: upcomingCountdowns,
-                                onDelete: deleteItemsUpcoming
-                            )
+                                onClose: onCloseModal
+                            ).refreshable {
+                                fetchCountdowns()
+                            }
                         }
                     }
 
@@ -129,8 +142,11 @@ struct ContentView: View {
                             
                             CountdownListView(
                                 countdowns: passedCountdowns,
-                                onDelete: deleteItemsPassed
+                                onClose: onCloseModal
                             )
+                            .refreshable {
+                                fetchCountdowns()
+                            }
                         }
 
                     }

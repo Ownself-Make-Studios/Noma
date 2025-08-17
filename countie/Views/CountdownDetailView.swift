@@ -10,10 +10,15 @@ import SwiftUI
 struct CountdownDetailView: View {
     @Environment(\.dismiss) private var dismiss
     var countdown: CountdownItem
+    @State private var isConfirmDeletePresented: Bool = false
     var onClose: (() -> Void)? = nil
-    
+
     @State private var now: Date = Date()
     @State private var timer: Timer? = nil
+
+    func handleDelete() {
+        countdown.isDeleted = true
+    }
 
     var body: some View {
         ZStack {
@@ -66,28 +71,31 @@ struct CountdownDetailView: View {
                         .font(.subheadline)
                         .opacity(0.5)
 
-                    Text(countdown.getTimeRemainingString(
-                        since: now,
-                        units: [.day, .hour, .minute, .second],
-                        unitsStyle: .full
-                        
-                    ))
-                        .font(.subheadline)
-                        .opacity(0.5)
-                        .padding(.vertical, 10)
-                    
+                    Text(
+                        countdown.getTimeRemainingString(
+                            since: now,
+                            units: [.day, .hour, .minute, .second],
+                            unitsStyle: .full
+
+                        )
+                    )
+                    .font(.subheadline)
+                    .opacity(0.5)
+                    .padding(.vertical, 10)
+
                 }
             }
             .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Close") {
-                            dismiss()
-                        }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Close") {
+                        dismiss()
                     }
                 }
+            }
         }
         .onAppear {
-            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) {
+                _ in
                 now = Date()
             }
         }
@@ -95,14 +103,43 @@ struct CountdownDetailView: View {
             timer?.invalidate()
             timer = nil
         }
-        .toolbar{
-            ToolbarItem{
-                NavigationLink(destination: AddCountdownView(countdownToEdit: countdown)){
+        .toolbar {
+
+            ToolbarItem {
+                Button(action: {
+//                                        handleDelete()
+                    isConfirmDeletePresented = true
+                }) {
+                    Label("Delete", systemImage: "trash")
+                        .labelStyle(.titleAndIcon)
+                        .foregroundColor(.red)
+                }
+                .confirmationDialog(
+                    "Are you sure you want to delete this countdown?",
+                    isPresented: $isConfirmDeletePresented,
+                    titleVisibility: .visible
+                ) {
+                    Button("Delete", role: .destructive) {
+                        print("Deleting countdown: \(countdown.name)")
+                        // Remove from the list or perform deletion in your data model
+                        
+                        handleDelete()
+                        onClose?()
+                        dismiss()
+                    }
+                }
+            }
+
+            ToolbarItem {
+                NavigationLink(
+                    destination: AddCountdownView(countdownToEdit: countdown)
+                ) {
                     Label("Edit Countdown", systemImage: "square.and.pencil")
                         .labelStyle(.titleAndIcon)
                 }
             }
         }
+
     }
 }
 

@@ -37,6 +37,7 @@ class CountdownItem {
     @Attribute var name: String
     @Attribute var includeTime: Bool = false
     @Attribute var date: Date
+    @Attribute var isDeleted: Bool = false
 
     @Attribute var createdAt: Date = Date.now
 
@@ -57,6 +58,7 @@ class CountdownItem {
         self.includeTime = includeTime
         self.date = date
         self.calendarEventIdentifier = calendarEventIdentifier
+        self.isDeleted = false
     }
 
     /**
