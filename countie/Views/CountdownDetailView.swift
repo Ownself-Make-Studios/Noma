@@ -68,10 +68,12 @@ struct CountdownDetailView: View {
                     Text(countdown.name)
                         .font(.title)
                         .bold()
+                        .multilineTextAlignment(.center)
 
                     Text(countdown.formattedDateString)
                         .font(.subheadline)
                         .opacity(0.5)
+                        .multilineTextAlignment(.center)
 
                     Text(
                         countdown.getTimeRemainingString(
@@ -81,6 +83,7 @@ struct CountdownDetailView: View {
 
                         )
                     )
+                    .multilineTextAlignment(.center)
                     .font(.subheadline)
                     .opacity(0.5)
                     .padding(.vertical, 10)
