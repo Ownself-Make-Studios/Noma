@@ -74,7 +74,7 @@ struct Provider: AppIntentTimelineProvider {
         let now = Date()
         
         var descriptor = FetchDescriptor<CountdownItem>(
-            predicate: #Predicate<CountdownItem> { $0.date >= now },
+            predicate: #Predicate<CountdownItem> { $0.date >= now && $0.isDeleted == false },
             sortBy: [SortDescriptor(\CountdownItem.date, order: .forward)],
         )
         
