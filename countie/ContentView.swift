@@ -15,6 +15,8 @@ enum Tabs {
 }
 
 struct ContentView: View {
+    @EnvironmentObject var store: CountdownStore
+
     @Environment(\.modelContext) private var modelContext
     @State private var countdowns: [CountdownItem] = []
     @State private var showAddModal = false
@@ -23,71 +25,8 @@ struct ContentView: View {
     @State private var selectedTab: Tabs = .comingup
 
 
-    private func deleteItemsUpcoming(offsets: IndexSet) {
-        
-        offsets.forEach { index in
-            print("Deleting item at index: \(index)")
-        }
-
-//        for index in offsets {
-//            modelContext.delete(upcomingCountdowns[index])
-//        }
-
-//        try? modelContext.save()
-
-        // Filter from countdowns
-//        fetchCountdowns()
-
-        print("Deleted item from upcoming")
-
-        // Ensure widget updates after deletion
-//        WidgetCenter.shared.reloadAllTimelines()
-    }
-    
     private func onCloseModal() {
-        fetchCountdowns()
-    }
-
-    private func deleteItemsPassed(offsets: IndexSet) {
-
-        for index in offsets {
-            modelContext.delete(passedCountdowns[index])
-        }
-
-        try? modelContext.save()
-
-        // Filter from countdowns
-        fetchCountdowns()
-
-        print("Deleted item")
-
-        // Ensure widget updates after deletion
-        WidgetCenter.shared.reloadAllTimelines()
-    }
-
-    // TODO: Might do some pagination e.g. 12 months of countdowns or by calendar picker
-    private func fetchCountdowns() {
-        print("Fetching countdowns...")
-        let descriptor = FetchDescriptor<CountdownItem>(
-            predicate: #Predicate { item in
-                item.isDeleted == false
-            },
-            sortBy: [
-                SortDescriptor(\.date, order: .forward)
-            ]
-        )
-
-        let fetchedItems = try? modelContext.fetch(descriptor)
-
-        countdowns = fetchedItems ?? []
-    }
-
-    var upcomingCountdowns: [CountdownItem] {
-        countdowns.filter { $0.date >= Date.now }
-    }
-
-    var passedCountdowns: [CountdownItem] {
-        countdowns.filter { $0.date < Date.now }
+        store.fetchCountdowns()
     }
 
     var body: some View {
@@ -101,7 +40,7 @@ struct ContentView: View {
                         systemImage: "calendar.badge.clock",
                         value: .comingup
                     ) {
-                        if upcomingCountdowns.isEmpty {
+                        if store.upcomingCountdowns.isEmpty {
                             Spacer(minLength: 0)
                             ContentUnavailableView(
                                 "No Countdowns Yet :(",
@@ -113,10 +52,10 @@ struct ContentView: View {
                             Spacer(minLength: 0)
                         } else {
                             CountdownListView(
-                                countdowns: upcomingCountdowns,
+                                countdowns: store.upcomingCountdowns,
                                 onClose: onCloseModal
                             ).refreshable {
-                                fetchCountdowns()
+                                store.fetchCountdowns()
                             }
                         }
                     }
@@ -128,7 +67,7 @@ struct ContentView: View {
                         value: .pastevents
                     ) {
                         
-                        if passedCountdowns.isEmpty {
+                        if store.passedCountdowns.isEmpty {
                             Spacer(minLength: 0)
                             ContentUnavailableView(
                                 "No Past Countdowns",
@@ -141,11 +80,11 @@ struct ContentView: View {
                         } else {
                             
                             CountdownListView(
-                                countdowns: passedCountdowns,
+                                countdowns: store.passedCountdowns,
                                 onClose: onCloseModal
                             )
                             .refreshable {
-                                fetchCountdowns()
+                                store.fetchCountdowns()
                             }
                         }
 
@@ -221,7 +160,7 @@ struct ContentView: View {
                     onSelectEvent: { _ in
                         showAddModal = false
                         showCalendarModal = false
-                        fetchCountdowns()
+                        store.fetchCountdowns()
                     }
                 )
                 .toolbar {
@@ -238,11 +177,8 @@ struct ContentView: View {
         .onChange(of: showAddModal) { oldValue, newValue in
             if oldValue != newValue && newValue == false {
                 // AddCountdownView was dismissed
-                fetchCountdowns()
+                store.fetchCountdowns()
             }
-        }
-        .task {
-            fetchCountdowns()
         }
     }
 

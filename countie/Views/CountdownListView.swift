@@ -13,9 +13,6 @@ struct CountdownListView: View {
     @State private var searchText: String = ""
     @State private var selectedCountdown: CountdownItem? = nil
 
-//    var onDelete: ((IndexSet) -> Void)? = nil
-    
-
     var filteredCountdowns: [CountdownItem] {
         if searchText.isEmpty {
             return countdowns

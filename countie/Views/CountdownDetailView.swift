@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CountdownDetailView: View {
+    @EnvironmentObject var store: CountdownStore
+    
     @Environment(\.dismiss) private var dismiss
     var countdown: CountdownItem
     @State private var isConfirmDeletePresented: Bool = false
@@ -17,7 +19,7 @@ struct CountdownDetailView: View {
     @State private var timer: Timer? = nil
 
     func handleDelete() {
-        countdown.isDeleted = true
+        store.deleteCountdown(countdown)
     }
 
     var body: some View {

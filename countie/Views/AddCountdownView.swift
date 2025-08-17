@@ -11,8 +11,11 @@ import MCEmojiPicker
 import EventKit
 
 struct AddCountdownView: View {
+    @EnvironmentObject var store: CountdownStore
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
+    
+    var onAdd: (() -> Void)? = nil
     
     // Optional countdown to edit
     var countdownToEdit: CountdownItem? = nil
@@ -28,8 +31,6 @@ struct AddCountdownView: View {
     
     @State private var showEmojiPicker: Bool = false
     @State private var linkedEvent: EKEvent? = nil
-    
-    var onAdd: (() -> Void)? = nil
     
     var isSubmitDisabled: Bool {
         name.isEmpty && emoji.isEmpty
@@ -101,6 +102,7 @@ struct AddCountdownView: View {
             try? modelContext.save()
         }
         WidgetCenter.shared.reloadAllTimelines()
+        store.fetchCountdowns()
         dismiss()
         onAdd?()
     }

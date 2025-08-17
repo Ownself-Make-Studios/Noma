@@ -5,7 +5,7 @@
 //  Created by Nabil Ridhwan on 29/10/24.
 //
 
-import Combine
+internal import Combine
 import SwiftUI
 
 struct CountdownListItemView: View {

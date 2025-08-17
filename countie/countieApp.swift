@@ -13,13 +13,19 @@ import WidgetKit
 struct countieApp: App {
     
     
+    @StateObject private var store: CountdownStore
+    
+    init() {
+        _store = StateObject(wrappedValue: CountdownStore(context: CountieModelContainer.sharedModelContainer.mainContext))
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
-//                .onAppear{
-//                    WidgetCenter.shared.reloadTimelines(ofKind: "CountdownWidget", )
-//                }
-            
+                .environmentObject(store)
+                .onAppear{
+                    store.fetchCountdowns()
+                }
         }
         .modelContainer(CountieModelContainer.sharedModelContainer)
     }
