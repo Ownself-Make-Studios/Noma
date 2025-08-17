@@ -96,6 +96,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets.xcassets,
+				CalendarAccessManager.swift,
 				Model/CountdownItem.swift,
 				Model/CountdownReminder.swift,
 				Model/CountdownStore.swift,
@@ -116,6 +117,7 @@
 		BDAE70652E0BF2F000099A3A /* Exceptions for "countie" folder in "MultipleCountdownWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				CalendarAccessManager.swift,
 				Model/CountdownItem.swift,
 				Model/CountdownReminder.swift,
 				Model/CountdownStore.swift,
