@@ -62,6 +62,12 @@ struct AddCountdownView: View {
             editing.date = countdownDate
             editing.countSince = countSinceDate
             
+            // if includeTime is false, set the time to start of day
+            if !hasTime {
+                editing.date = Calendar.current.startOfDay(for: countdownDate)
+                editing.countSince = Calendar.current.startOfDay(for: countSinceDate)
+            }
+            
             if let event = linkedEvent {
                 editing.calendarEventIdentifier = event.eventIdentifier
             } else {
@@ -79,6 +85,14 @@ struct AddCountdownView: View {
             )
             item.countSince = countSinceDate
             
+            
+            // if includeTime is false, set the time to start of day
+            
+            if !hasTime {
+                item.date = Calendar.current.startOfDay(for: countdownDate)
+                item.countSince = Calendar.current.startOfDay(for: countSinceDate)
+            }
+
             if let event = linkedEvent {
                 item.calendarEventIdentifier = event.eventIdentifier
             }
@@ -93,8 +107,6 @@ struct AddCountdownView: View {
     
     var body: some View {
         NavigationStack {
-            
-            
             Form {
                 HStack {
                     Spacer()
