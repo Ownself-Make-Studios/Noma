@@ -161,20 +161,34 @@ struct AddCountdownView: View {
                             }
                         }
 
-                        Button("Unlink Event") {
+                        VStack(alignment: .leading, spacing: 10) {
+
+                            Button("Unlink Event") {
+                                linkedEvent = nil
+                            }
+
+                            Text(
+                                "Unlinking the event will remove the link to the calendar event, and the countdown will not update if the event changes."
+                            )
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.leading)
+                            .frame(maxWidth: .infinity)
                         }
 
-                        Toggle(
-                            "Update countdown when event changes",
-                            isOn: $updateCountdownWhenEventChanges
-                        )
-                        .disabled(true)  // Disable this for now, as we don't have the logic implemented yet
+                        //                        Toggle(
+                        //                            "Update countdown when event changes",
+                        //                            isOn: $updateCountdownWhenEventChanges
+                        //                        )
+                        //                        .disabled(true)  // Disable this for now, as we don't have the logic implemented yet
 
                     }
                 }
 
                 Section("Countdown Settings") {
                     Toggle("Include time", isOn: $hasTime)
+                        .disabled(linkedEvent != nil)
+
                     DatePicker(
                         "Countdown Date\(hasTime ? " & Time" : "")",
                         selection: $countdownDate,
@@ -182,8 +196,9 @@ struct AddCountdownView: View {
                         displayedComponents: hasTime
                             ? [.date, .hourAndMinute] : [.date]
                     )
+                    .disabled(linkedEvent != nil)
 
-                    VStack {
+                    VStack(alignment: .leading, spacing: 10) {
 
                         DatePicker(
                             "Count since",
@@ -197,6 +212,8 @@ struct AddCountdownView: View {
                         )
                         .font(.footnote)
                         .foregroundColor(.secondary)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity)
                     }
                 }
 

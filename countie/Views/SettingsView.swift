@@ -53,7 +53,7 @@ struct SettingsView: View {
                         Label("Dark Mode", systemImage: "moon.fill")
                     }
                     
-                    VStack(spacing: 10){
+                    VStack(alignment: .leading, spacing: 10){
                         
                     Toggle(isOn: $showProgress) {
                         Label("Show Progress", systemImage: "clock.badge.questionmark.fill")
