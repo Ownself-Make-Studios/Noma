@@ -17,6 +17,10 @@ enum ChangeCountdownWhenCalendarEventChangedOption: String, CaseIterable, Identi
 }
 
 struct SettingsView: View {
+    
+    @EnvironmentObject var store: CountdownStore
+    @State private var deletedCountdowns: [CountdownItem] = []
+    
     @AppStorage("isDarkMode") private var isDarkMode: Bool = false
     @AppStorage("showProgress") private var showProgress: Bool = true
     @AppStorage("defaultCountSinceBehavior") private var defaultCountSinceBehaviorRaw: String = DefaultCountSinceBehavior.now.rawValue
@@ -86,7 +90,12 @@ struct SettingsView: View {
 //                        Text("Include time by default")
 //                    }
 //                }
-//                
+//
+                
+                Section(header: Text("Deleted Countdowns")) {
+                    CountdownListView(countdowns: deletedCountdowns)
+                        
+                }
                 Section(header: Text("Support & Feedback")) {
                     Link(destination: URL(string: "https://github.com/your-repo/issues/new?template=bug_report.md")!) {
                         Label("Submit Bug Issue", systemImage: "ladybug.circle")
@@ -100,6 +109,12 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Settings")
+        }
+        .task{
+            // Load deleted countdowns from the store
+            if let countdowns = store.fetchDeletedCountdowns(){
+                deletedCountdowns = countdowns
+            }
         }
     }
 }

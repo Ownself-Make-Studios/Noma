@@ -92,7 +92,7 @@ struct Provider: AppIntentTimelineProvider {
         let uuid: UUID = UUID(uuidString: id)!
         let modelContainer = CountieModelContainer.sharedModelContainer
         let descriptor = FetchDescriptor<CountdownItem>(
-            predicate: #Predicate<CountdownItem> { $0.id == uuid },
+            predicate: #Predicate<CountdownItem> { $0.id == uuid && !$0.isDeleted },
             sortBy: [SortDescriptor(\CountdownItem.date, order: .forward)]
         )
         let items = try? modelContainer.mainContext.fetch(descriptor)
@@ -105,7 +105,7 @@ struct Provider: AppIntentTimelineProvider {
         let modelContainer = CountieModelContainer.sharedModelContainer
         let now = Date()
         let descriptor = FetchDescriptor<CountdownItem>(
-            predicate: #Predicate<CountdownItem> { $0.date >= now },
+            predicate: #Predicate<CountdownItem> { $0.date >= now && !$0.isDeleted },
             sortBy: [SortDescriptor(\CountdownItem.date, order: .forward)]
         )
         let items = try? modelContainer.mainContext.fetch(descriptor)

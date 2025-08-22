@@ -89,6 +89,23 @@ class CountdownStore: ObservableObject {
         countdowns = fetchedItems ?? []
         upcomingCountdowns = countdowns.filter { $0.date >= Date() }
         passedCountdowns = countdowns.filter { $0.date < Date() }
+
+        WidgetCenter.shared.reloadAllTimelines()
+    }
+
+    func fetchDeletedCountdowns() -> [CountdownItem]? {
+        print("Fetching countdowns...")
+        let descriptor = FetchDescriptor<CountdownItem>(
+            predicate: #Predicate { item in
+                item.isDeleted == true
+            },
+            sortBy: [
+                SortDescriptor(\.date, order: .forward)
+            ]
+        )
+
+        let fetchedItems = try? context.fetch(descriptor)
+        return fetchedItems ?? []
     }
 
     func deleteCountdown(_ countdown: CountdownItem) {
