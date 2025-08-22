@@ -24,16 +24,17 @@ struct CountdownListItemView: View {
         VStack(alignment: .leading, spacing: 4) {
 
             HStack {
-                
-                
-                CircularEmojiView(emoji: item.emoji ?? "", progress: Float(showProgress ? item.progress : 0))
-                    .padding(.trailing, 6)
+
+                CircularEmojiView(
+                    emoji: item.emoji ?? "",
+                    progress: Float(showProgress ? item.progress : 0)
+                )
+                .padding(.trailing, 6)
 
                 VStack(alignment: .leading) {
-                    
 
                     Text("\(item.name)")
-//                        .font(.caption)
+                        //                        .font(.caption)
                         .font(.system(size: 15))
                         .bold()
 
@@ -41,34 +42,45 @@ struct CountdownListItemView: View {
                         .font(.caption)
                         .opacity(0.5)
 
-//                    showProgress
-//                        ? (HStack(spacing: 6) {
-//
-//                            LinearProgressView(
-//                                value: item.progress,
-//                                shape: Capsule()
-//                            )
-//                            .tint(Color(vibrantDominantColorOf: item.emoji ?? "") ?? .gray.opacity(0.3))
-//                            .frame(height: 4)
-//
-//                            Text("\(item.progressString)%")
-//                                .font(.caption2)
-//                                .opacity(0.4)
-//
-//                        }
-//                        .padding(.top, 4)) : nil
+                    //                    showProgress
+                    //                        ? (HStack(spacing: 6) {
+                    //
+                    //                            LinearProgressView(
+                    //                                value: item.progress,
+                    //                                shape: Capsule()
+                    //                            )
+                    //                            .tint(Color(vibrantDominantColorOf: item.emoji ?? "") ?? .gray.opacity(0.3))
+                    //                            .frame(height: 4)
+                    //
+                    //                            Text("\(item.progressString)%")
+                    //                                .font(.caption2)
+                    //                                .opacity(0.4)
+                    //
+                    //                        }
+                    //                        .padding(.top, 4)) : nil
 
                 }
-                
+
                 Spacer()
 
-                Text(
-                    countdownHasEnded
-                        ? item.getTimeRemainingPassedFn(since: currentTime)
-                        : item.getTimeRemainingFn(since: currentTime)
-                )
-                .font(.caption2)
-                .opacity(0.5)
+                HStack(spacing: 8) {
+
+                    item.calendarEventIdentifier != nil
+                        ? Image(systemName: "calendar")
+                            .resizable()
+                            .aspectRatio(1, contentMode: .fit)
+                            .frame(width: 12, height: 16)
+                            .opacity(0.5)
+                        : nil
+
+                    Text(
+                        countdownHasEnded
+                            ? item.getTimeRemainingPassedFn(since: currentTime)
+                            : item.getTimeRemainingFn(since: currentTime)
+                    )
+                    .font(.caption2)
+                    .opacity(0.5)
+                }
 
             }
         }
@@ -100,7 +112,7 @@ struct CountdownListItemView: View {
             }
         }
         .onDisappear {
-//             Cancel the timer when the view disappears to prevent memory leaks
+            //             Cancel the timer when the view disappears to prevent memory leaks
             timerCancellable?.cancel()
         }
     }
