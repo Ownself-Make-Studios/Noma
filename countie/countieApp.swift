@@ -11,8 +11,6 @@ import WidgetKit
 
 @main
 struct countieApp: App {
-    
-    
     @StateObject private var store: CountdownStore
     
     init() {

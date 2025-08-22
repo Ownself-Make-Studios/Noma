@@ -9,11 +9,6 @@ import SwiftData
 import SwiftUI
 import WidgetKit
 
-enum Tabs {
-    case comingup, pastevents, search
-
-}
-
 struct ContentView: View {
     @EnvironmentObject var store: CountdownStore
 
@@ -22,8 +17,7 @@ struct ContentView: View {
     @State private var showAddModal = false
     @State private var showCalendarModal = false
     @State private var searchText: String = ""
-    @State private var selectedTab: Tabs = .comingup
-
+    //    @State private var selectedTab: Tabs = .comingup
 
     private func onCloseModal() {
         store.fetchCountdowns()
@@ -33,80 +27,73 @@ struct ContentView: View {
         NavigationStack {
             VStack {
 
-                TabView(selection: $selectedTab) {
-
-                    Tab(
-                        "Coming Up",
-                        systemImage: "calendar.badge.clock",
-                        value: .comingup
-                    ) {
-                        if store.upcomingCountdowns.isEmpty {
-                            Spacer(minLength: 0)
-                            ContentUnavailableView(
-                                "No Countdowns Yet :(",
-                                systemImage: "calendar",
-                                description: Text(
-                                    "Add a countdown by tapping the plus button!"
-                                )
-                            )
-                            Spacer(minLength: 0)
-                        } else {
-                            CountdownListView(
-                                countdowns: store.upcomingCountdowns,
-                                onClose: onCloseModal
-                            ).refreshable {
-                                store.fetchCountdowns()
-                            }
-                        }
+                if store.upcomingCountdowns.isEmpty {
+                    Spacer(minLength: 0)
+                    ContentUnavailableView(
+                        "No Countdowns Yet :(",
+                        systemImage: "calendar",
+                        description: Text(
+                            "Add a countdown by tapping the plus button!"
+                        )
+                    )
+                    Spacer(minLength: 0)
+                } else {
+                    CountdownListView(
+                        countdowns: store.upcomingCountdowns,
+                        onClose: onCloseModal
+                    ).refreshable {
+                        store.fetchCountdowns()
                     }
-
-                    Tab(
-                        "Past Events",
-                        systemImage:
-                            "clock.arrow.trianglehead.counterclockwise.rotate.90",
-                        value: .pastevents
-                    ) {
-                        
-                        if store.passedCountdowns.isEmpty {
-                            Spacer(minLength: 0)
-                            ContentUnavailableView(
-                                "No Past Countdowns",
-                                systemImage: "calendar",
-                                description: Text(
-                                    "Add one by tapping the plus button"
-                                )
-                            )
-                            Spacer(minLength: 0)
-                        } else {
-                            
-                            CountdownListView(
-                                countdowns: store.passedCountdowns,
-                                onClose: onCloseModal
-                            )
-                            .refreshable {
-                                store.fetchCountdowns()
-                            }
-                        }
-
-                    }
-
-                    //                        Tab(value: .search, role: .search) {
-                    //                            ContentUnavailableView(
-                    //                                "Work in progress",
-                    //                                systemImage: "magnifyingglass",
-                    //                                description: Text(
-                    //                                    "This page is a work in progess. Please check back later!"
-                    //                                )
-                    //                            )
-                    //
-                    //                        }
                 }
+
+                //                TabView(selection: $selectedTab) {
+                //
+                //                    Tab(
+                //                        "Coming Up",
+                //                        systemImage: "calendar.badge.clock",
+                //                        value: .comingup
+                //                    ) {}
+                //
+                //                    Tab(
+                //                        "Past Events",
+                //                        systemImage:
+                //                            "clock.arrow.trianglehead.counterclockwise.rotate.90",
+                //                        value: .pastevents
+                //                    ) {}
+                //
+                //                    //                        Tab(value: .search, role: .search) {
+                //                    //                            ContentUnavailableView(
+                //                    //                                "Work in progress",
+                //                    //                                systemImage: "magnifyingglass",
+                //                    //                                description: Text(
+                //                    //                                    "This page is a work in progess. Please check back later!"
+                //                    //                                )
+                //                    //                            )
+                //                    //
+                //                    //                        }
+                //                }
 
             }
             .toolbar {
-
                 ToolbarItem {
+                    NavigationLink(
+                        destination:
+                            NavigationStack {
+                                PastCountdownsView(
+                                    onClose: onCloseModal
+                                )
+                            }.navigationTitle("Past Countdowns")
+                    ) {
+                        Label(
+                            "Past Countdowns",
+                            systemImage:
+                                "clock.arrow.trianglehead.counterclockwise.rotate.90"
+                        )
+                        .labelStyle(.titleAndIcon)
+                    }
+                }
 
+                ToolbarItem(placement: .topBarLeading) {
                     NavigationLink(destination: SettingsView()) {
                         Label("Settings", systemImage: "gearshape")
                             .labelStyle(.titleAndIcon)

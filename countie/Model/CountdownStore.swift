@@ -92,7 +92,7 @@ class CountdownStore: ObservableObject {
 
         WidgetCenter.shared.reloadAllTimelines()
     }
-
+    
     func fetchDeletedCountdowns() -> [CountdownItem]? {
         print("Fetching countdowns...")
         let descriptor = FetchDescriptor<CountdownItem>(
