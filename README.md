@@ -8,11 +8,15 @@
 <thead>
 <td>Home Page</td>
 <td>Add New Countdown</td>
+<td>Countdown Details</td>
+<td>Edit Countdown</td>
 <td>Widget Preview</td>
 </thead>
   <tr>
     <td><img src=".screenshots/home_page.png" alt="Home Page" width="100"/></td>
     <td><img src=".screenshots/add_new_countdown.png" alt="Add new countdown" width="100"/></td>
+<td><img src=".screenshots/countdown_details.png" alt="Countdown details" width="100"/></td>
+<td><img src=".screenshots/edit_countdown.png" alt="Countdown details" width="100"/></td>
 <td><img src=".screenshots/widget_preview.png" alt="Home screen widgets" width="100"/></td>
   </tr>
 </table>
