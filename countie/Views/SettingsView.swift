@@ -53,21 +53,20 @@ struct SettingsView: View {
                 //                .padding(.vertical, 8)
                 
                 Section(header: Text("Appearance")) {
-                    Toggle(isOn: $isDarkMode) {
-                        Label("Dark Mode", systemImage: "moon.fill")
-                    }
+//                    Toggle(isOn: $isDarkMode) {
+//                        Label("Dark Mode", systemImage: "moon.fill")
+//                    }
                     
-                    VStack(alignment: .leading, spacing: 10){
+                    VStack(alignment: .leading, spacing: 14){
                         
                     Toggle(isOn: $showProgress) {
-                        Label("Show Progress", systemImage: "clock.badge.questionmark.fill")
+                        Label("Display Progress", systemImage: "clock.badge.questionmark.fill")
                     }
                     
-                    Text("Progress shows how much time has passed since \"Count Since\" date.")
+                    Text("Displays progress from the Start Date (applies to the app only)")
                         .font(.footnote)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity)
                     }
                 }
                 
@@ -92,10 +91,11 @@ struct SettingsView: View {
 //                }
 //
                 
-                Section(header: Text("Deleted Countdowns")) {
-                    CountdownListView(countdowns: deletedCountdowns)
-                        
-                }
+//                Section(header: Text("Deleted Countdowns")) {
+//                    CountdownListView(countdowns: deletedCountdowns)
+//                        
+//                }
+                
                 Section(header: Text("Support & Feedback")) {
                     Link(destination: URL(string: "https://github.com/your-repo/issues/new?template=bug_report.md")!) {
                         Label("Submit Bug Issue", systemImage: "ladybug.circle")
@@ -121,4 +121,8 @@ struct SettingsView: View {
 
 #Preview {
     SettingsView()
+        .environmentObject(CountdownStore(
+            context: CountieModelContainer.sharedModelContainer.mainContext
+        ))
+
 }
