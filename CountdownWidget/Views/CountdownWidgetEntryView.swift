@@ -13,6 +13,13 @@ struct CountdownWidgetEntryView: View {
     var entry: Provider.Entry
     @Environment(\.widgetFamily) var family
 
+    var deeplinkURL: URL? {
+        if let countdownItem = entry.countdownItem {
+            return URL(string: "countie://countdown/\(countdownItem.id.uuidString)")
+        }
+        return nil
+    }
+
     var body: some View {
         Group {
             if let countdownItem = entry.countdownItem {
@@ -58,6 +65,7 @@ struct CountdownWidgetEntryView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
+        .widgetURL(deeplinkURL)
     }
 }
 

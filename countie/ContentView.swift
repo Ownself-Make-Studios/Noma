@@ -18,6 +18,7 @@ struct ContentView: View {
     @State private var showCalendarModal = false
     @State private var searchText: String = ""
     //    @State private var selectedTab: Tabs = .comingup
+    @Binding var selectedCountdown: CountdownItem?
 
     private func onCloseModal() {
         store.fetchCountdowns()
@@ -40,7 +41,8 @@ struct ContentView: View {
                 } else {
                     CountdownListView(
                         countdowns: store.upcomingCountdowns,
-                        onClose: onCloseModal
+                        onClose: onCloseModal,
+                        selectedCountdown: $selectedCountdown
                     ).refreshable {
                         store.fetchCountdowns()
                     }
@@ -172,7 +174,9 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView(
+        selectedCountdown: .constant(nil)
+    )
         .modelContainer(CountieModelContainer.sharedModelContainer)
     //        .modelContainer(for: CountdownItem.self, inMemory: true)
 }

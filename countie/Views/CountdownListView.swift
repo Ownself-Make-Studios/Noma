@@ -11,7 +11,7 @@ struct CountdownListView: View {
     var countdowns: [CountdownItem]
     var onClose: (() -> Void)? = nil
     @State private var searchText: String = ""
-    @State private var selectedCountdown: CountdownItem? = nil
+    @Binding var selectedCountdown: CountdownItem?
 
     var filteredCountdowns: [CountdownItem] {
         if searchText.isEmpty {
@@ -386,11 +386,6 @@ struct CountdownListView: View {
                     }
                 }
             }
-           
-//            .onChange(of: selectedCountdown) {
-//                oldValue, newValue in
-//                onClose?()
-//            }
         }
     }
 
@@ -408,7 +403,8 @@ struct CountdownListView: View {
             CountdownItem.SampleFutureTimer,
             CountdownItem.SampleFutureTimer,
             CountdownItem.SampleFutureTimer,
-        ]
+        ],
+        selectedCountdown: .constant(nil)
     )
     .environmentObject(
         CountdownStore(
