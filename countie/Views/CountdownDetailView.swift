@@ -10,7 +10,7 @@ import SwiftUI
 struct CountdownDetailView: View {
     @EnvironmentObject var store: CountdownStore
     @AppStorage("showProgress") private var showProgress: Bool = true
-    
+
     @Environment(\.dismiss) private var dismiss
     var countdown: CountdownItem
     @State private var isConfirmDeletePresented: Bool = false
@@ -114,7 +114,7 @@ struct CountdownDetailView: View {
 
             ToolbarItem {
                 Button(action: {
-//                                        handleDelete()
+                    //                                        handleDelete()
                     isConfirmDeletePresented = true
                 }) {
                     Label("Delete", systemImage: "trash")
@@ -129,7 +129,7 @@ struct CountdownDetailView: View {
                     Button("Delete", role: .destructive) {
                         print("Deleting countdown: \(countdown.name)")
                         // Remove from the list or perform deletion in your data model
-                        
+
                         handleDelete()
                         onClose?()
                         dismiss()
@@ -137,14 +137,21 @@ struct CountdownDetailView: View {
                 }
             }
 
-            ToolbarItem {
-                NavigationLink(
-                    destination: AddCountdownView(countdownToEdit: countdown)
-                ) {
-                    Label("Edit Countdown", systemImage: "square.and.pencil")
+            countdown.date < Date()
+                ? nil
+                : ToolbarItem {
+                    NavigationLink(
+                        destination: AddCountdownView(
+                            countdownToEdit: countdown
+                        )
+                    ) {
+                        Label(
+                            "Edit Countdown",
+                            systemImage: "square.and.pencil"
+                        )
                         .labelStyle(.titleAndIcon)
+                    }
                 }
-            }
         }
 
     }
