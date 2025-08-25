@@ -41,7 +41,7 @@ struct CircularEmojiView: View {
                     )
                 }
             }
-            .padding(.horizontal, 4)
+            .padding(.horizontal, showProgress ? 4 : 0)
 
     }
 }

@@ -84,7 +84,7 @@ struct CountdownListItemView: View {
 
             }
         }
-//        .padding(.trailing)
+        .padding(.vertical, 6)
         .opacity(countdownHasEnded ? 0.5 : 1.0)
         .onAppear {
             if !countdownHasEnded {
