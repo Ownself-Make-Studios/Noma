@@ -71,6 +71,7 @@ struct CountdownWidgetSmallView: View {
                 CircularEmojiView(
                     emoji: countdownItem.emoji ?? "",
                     progress: showProgress ? Float(countdownItem.progress) : 0,
+                    showProgress: showProgress,
                     width: 34
                 )
                 Spacer()
@@ -236,6 +237,7 @@ struct CountdownWidgetAccessoryRectangularView: View {
                 CircularEmojiView(
                     emoji: countdownItem.emoji ?? "",
                     progress: showProgress ? Float(countdownItem.progress) : 0,
+                    showProgress: showProgress,
                     width: 28,
                     emojiSize: 14
                     

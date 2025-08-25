@@ -230,7 +230,6 @@ struct CountdownListView: View {
 //                                        ),
 //                                ) {
                                     CountdownListItemView(item: countdown)
-                                        .padding(.vertical, 6)
                                         .onTapGesture{
                                             selectedCountdown = countdown
                                         }
@@ -423,5 +422,10 @@ struct CountdownListView: View {
             CountdownItem.SampleFutureTimer,
             CountdownItem.SampleFutureTimer,
         ]
+    )
+    .environmentObject(
+        CountdownStore(
+            context: CountieModelContainer.sharedModelContainer.mainContext
+        )
     )
 }

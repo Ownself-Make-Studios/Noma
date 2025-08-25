@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CountdownDetailView: View {
     @EnvironmentObject var store: CountdownStore
+    @AppStorage("showProgress") private var showProgress: Bool = true
     
     @Environment(\.dismiss) private var dismiss
     var countdown: CountdownItem
@@ -56,6 +57,7 @@ struct CountdownDetailView: View {
                 CircularEmojiView(
                     emoji: countdown.emoji ?? "",
                     progress: Float(countdown.progress),
+                    showProgress: true,
                     width: 200,
                     brightness: 0.3,
                     lineWidth: 14,

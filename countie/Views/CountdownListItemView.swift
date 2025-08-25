@@ -27,9 +27,9 @@ struct CountdownListItemView: View {
 
                 CircularEmojiView(
                     emoji: item.emoji ?? "",
-                    progress: Float(showProgress ? item.progress : 0)
+                    progress: Float(item.progress),
+                    showProgress: showProgress
                 )
-                .padding(.trailing, 6)
 
                 VStack(alignment: .leading) {
 
@@ -84,6 +84,7 @@ struct CountdownListItemView: View {
 
             }
         }
+//        .padding(.trailing)
         .opacity(countdownHasEnded ? 0.5 : 1.0)
         .onAppear {
             if !countdownHasEnded {
@@ -118,8 +119,9 @@ struct CountdownListItemView: View {
     }
 }
 
-#Preview {
+#Preview(traits: .sizeThatFitsLayout) {
     CountdownListItemView(
         item: .Graduation
     )
+    
 }
