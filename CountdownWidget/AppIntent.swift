@@ -69,13 +69,13 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource { "Countdown Widget" }
     static var description: IntentDescription { "Access your countdowns from this widget!" }
     
-    @Parameter(title: "Show Specific Countdown", default: false)
+    @Parameter(title: "Display Only Selected Countdown", default: false)
     var showSpecificCountdown: Bool?
     
-    @Parameter(title: "Show Progress", default: true)
+    @Parameter(title: "Show Countdown Progress Bar", default: true)
     var showProgress: Bool?
     
-    @Parameter(title: "Countdown to Show")
+    @Parameter(title: "Select Countdown to Display")
     var countdown: CountdownSelection?
     
     // Read "ParameterSummary"
