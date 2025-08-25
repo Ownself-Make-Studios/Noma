@@ -1,6 +1,6 @@
-<img src="https://raw.githubusercontent.com/nabilridhwan/Countie-iOS/main/countie/Assets.xcassets/AppIcon.appiconset/dark.png" alt="Countie Logo" width="80"/>
+<img src=".screenshots/noma_icon_default.png" alt="Noma Logo" width="80"/>
 
-# Countie
+# Noma
 > Track Life’s Milestones, One Countdown at a Time
 
 <!-- screenshot images -->
@@ -29,4 +29,4 @@
 - **Reminders as the Event Approaches**: Get a friendly reminder just before your big day to make sure you’re ready.
 
 ## Installation
-Countie is not yet available on the App Store. I'm currently working on it, perfecting the app to ensure it meets the highest standards before release.
+Noma is not yet available on the App Store. I'm currently working on it, perfecting the app to ensure it meets the highest standards before release.

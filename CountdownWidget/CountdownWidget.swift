@@ -11,7 +11,7 @@ import SwiftData
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        let countdownItem: CountdownItem = .init(emoji: "🎉", name: "Welcome to Countie!", includeTime: false, date: .now.addingTimeInterval(60 * 60 * 24 * 3))
+        let countdownItem: CountdownItem = .init(emoji: "🎉", name: "Welcome to Noma!", includeTime: false, date: .now.addingTimeInterval(60 * 60 * 24 * 3))
         
         countdownItem.countSince = Date.now.addingTimeInterval(60 * 60 * 24 * 2) // 2 days ago
         
@@ -27,7 +27,7 @@ struct Provider: AppIntentTimelineProvider {
         var countdownItem: CountdownItem? = await getLatestActiveCountdown()
         
         if countdownItem == nil {
-            countdownItem = .init(emoji: "🎉", name: "Welcome to Countie!", includeTime: false, date: .now.addingTimeInterval(60 * 60 * 24 * 3))
+            countdownItem = .init(emoji: "🎉", name: "Welcome to Noma!", includeTime: false, date: .now.addingTimeInterval(60 * 60 * 24 * 3))
         }
         
         return SimpleEntry(
@@ -90,7 +90,7 @@ struct Provider: AppIntentTimelineProvider {
     @MainActor
     private func getCountdownItem(by id: String) -> CountdownItem? {
         let uuid: UUID = UUID(uuidString: id)!
-        let modelContainer = CountieModelContainer.sharedModelContainer
+        let modelContainer = NomaModelContainer.sharedModelContainer
         let descriptor = FetchDescriptor<CountdownItem>(
             predicate: #Predicate<CountdownItem> { $0.id == uuid && !$0.isDeleted },
             sortBy: [SortDescriptor(\CountdownItem.date, order: .forward)]
@@ -102,7 +102,7 @@ struct Provider: AppIntentTimelineProvider {
     // Fetch the latest countdown that has not passed
     @MainActor
     private func getLatestActiveCountdown() -> CountdownItem? {
-        let modelContainer = CountieModelContainer.sharedModelContainer
+        let modelContainer = NomaModelContainer.sharedModelContainer
         let now = Date()
         let descriptor = FetchDescriptor<CountdownItem>(
             predicate: #Predicate<CountdownItem> { $0.date >= now && !$0.isDeleted },
@@ -131,7 +131,7 @@ struct CountdownWidget: Widget {
                     for: .widget
                 )
                 .modelContainer(
-                    CountieModelContainer.sharedModelContainer
+                    NomaModelContainer.sharedModelContainer
                 )
         }
         .configurationDisplayName("Countdown Widget")

@@ -53,7 +53,7 @@ struct CountdownQuery: EntityQuery {
     func fetchCountdownItems() async -> [CountdownSelection] {
         let now = Date()
         
-        let modelContainer = CountieModelContainer.sharedModelContainer
+        let modelContainer = NomaModelContainer.sharedModelContainer
         let descriptor = FetchDescriptor<CountdownItem>(
             predicate: #Predicate<CountdownItem> { $0.isDeleted == false && $0.date >= now},
             sortBy: [SortDescriptor(\CountdownItem.date, order: .forward)]

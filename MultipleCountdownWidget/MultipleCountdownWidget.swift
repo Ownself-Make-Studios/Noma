@@ -14,7 +14,7 @@ struct Provider: AppIntentTimelineProvider {
         SimpleEntry(
             date: Date(),
             countdowns: [
-                .init(emoji: "🎉", name: "Welcome to Countie!", includeTime: false, date: Date().addingTimeInterval(60 * 60 * 24 * 3)),
+                .init(emoji: "🎉", name: "Welcome to Noma!", includeTime: false, date: Date().addingTimeInterval(60 * 60 * 24 * 3)),
                 .init(emoji: "🎂", name: "My Birthday", includeTime: true, date: Date().addingTimeInterval(60 * 60 * 24 * 5)),
                 .init(emoji: "🎈", name: "Party Time!", includeTime: false, date: Date().addingTimeInterval(60 * 60 * 24 * 7)),
                 .init(emoji: "🎊", name: "New Year Celebration", includeTime: false, date: Date().addingTimeInterval(60 * 60 * 24 * 10))
@@ -27,7 +27,7 @@ struct Provider: AppIntentTimelineProvider {
         SimpleEntry(
             date: Date(),
             countdowns: [
-                .init(emoji: "🎉", name: "Welcome to Countie!", includeTime: false, date: Date().addingTimeInterval(60 * 60 * 24 * 3)),
+                .init(emoji: "🎉", name: "Welcome to Noma!", includeTime: false, date: Date().addingTimeInterval(60 * 60 * 24 * 3)),
                 .init(emoji: "🎂", name: "My Birthday", includeTime: true, date: Date().addingTimeInterval(60 * 60 * 24 * 5)),
                 .init(emoji: "🎈", name: "Party Time!", includeTime: false, date: Date().addingTimeInterval(60 * 60 * 24 * 7)),
                 .init(emoji: "🎊", name: "New Year Celebration", includeTime: false, date: Date().addingTimeInterval(60 * 60 * 24 * 10))
@@ -69,7 +69,7 @@ struct Provider: AppIntentTimelineProvider {
     @MainActor
     private func getLatestCountdowns(count: Int = 4) -> [CountdownItem]? {
         
-        let modelContainer = CountieModelContainer.sharedModelContainer
+        let modelContainer = NomaModelContainer.sharedModelContainer
         
         let now = Date()
         
@@ -109,7 +109,7 @@ struct MultipleCountdownWidget: Widget {
         AppIntentConfiguration(kind: kind, intent: MultipleCountdownConfigurationAppIntent.self, provider: Provider()) { entry in
             MultipleCountdownWidgetEntryView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
-                .modelContainer(CountieModelContainer.sharedModelContainer)
+                .modelContainer(NomaModelContainer.sharedModelContainer)
             
             
             
@@ -131,7 +131,7 @@ struct MultipleCountdownWidget: Widget {
     SimpleEntry(
         date:.now,
         countdowns: [
-            .init(emoji: "🎉", name: "Welcome to Countie!", includeTime: false, date: Date().addingTimeInterval(60 * 60 * 24 * 3)),
+            .init(emoji: "🎉", name: "Welcome to Noma!", includeTime: false, date: Date().addingTimeInterval(60 * 60 * 24 * 3)),
             .init(emoji: "🎂", name: "My Birthday", includeTime: true, date: Date().addingTimeInterval(60 * 60 * 24 * 5)),
             .init(emoji: "🎈", name: "Party Time!", includeTime: false, date: Date().addingTimeInterval(60 * 60 * 24 * 7)),
             .init(emoji: "🎊", name: "New Year Celebration", includeTime: false, date: Date().addingTimeInterval(60 * 60 * 24 * 10))
