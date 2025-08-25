@@ -12,6 +12,7 @@ struct CountdownListItemView: View {
 
     @AppStorage("showProgress") private var showProgress: Bool = true
     @State var item: CountdownItem
+    var onTap: (() -> Void)? = nil
 
     @State private var currentTime = Date()
     @State private var timerCancellable: Cancellable?
@@ -82,6 +83,10 @@ struct CountdownListItemView: View {
                     .opacity(0.5)
                 }
 
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                onTap?()
             }
         }
         .padding(.vertical, 6)

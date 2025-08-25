@@ -223,22 +223,9 @@ struct CountdownListView: View {
                         if let items = countdownsByMonth[month], !items.isEmpty
                         {
                             ForEach(items, id: \.id) { countdown in
-//                                NavigationLink(
-//                                    destination:
-//                                        CountdownDetailView(
-//                                            countdown: countdown
-//                                        ),
-//                                ) {
-                                    CountdownListItemView(item: countdown)
-                                        .onTapGesture{
-                                            selectedCountdown = countdown
-                                        }
-//                                }
-//                                .contextMenu {
-//                                    Button("Pin") {
-//                                        handlePin(countdown.id)
-//                                    }
-//                                }
+                                CountdownListItemView(item: countdown, onTap: {
+                                    selectedCountdown = countdown
+                                })
                             }
                         } else {
                             ZStack {
