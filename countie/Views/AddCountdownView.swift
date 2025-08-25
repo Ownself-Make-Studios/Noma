@@ -22,9 +22,10 @@ struct AddCountdownView: View {
 
     @State var emoji: String = ""
     @State var name: String = ""
-    @State var countdownDate: Date = Calendar.current.startOfDay(for: Date.now)
-    @State var countSinceDate: Date = Calendar.current.startOfDay(for: Date.now)
-    @State var hasTime: Bool = false
+    @State var countdownDate: Date = Calendar.current.startOfDay(for: Date.now).addingTimeInterval(7 * 24 * 60 * 60)
+//    @State var countSinceDate: Date = Calendar.current.startOfDay(for: Date.now)
+    @State var countSinceDate: Date = Date.now
+    @State var hasTime: Bool = true
     @State var updateCountdownWhenEventChanges: Bool = false
     @State var reminders: [CountdownReminder] = []
     @State private var selectedReminder: CountdownReminder = .FIVE_MIN
@@ -143,7 +144,7 @@ struct AddCountdownView: View {
                 }
                 .listRowBackground(Color.clear)
 
-                Section("Name") {
+                Section("Countdown Name") {
                     TextField("Graduation, Anniversary, etc.", text: $name)
                 }
 
@@ -186,11 +187,11 @@ struct AddCountdownView: View {
                 }
 
                 Section("Countdown Settings") {
-                    Toggle("Include time", isOn: $hasTime)
+                    Toggle("Include Time of day", isOn: $hasTime)
                         .disabled(linkedEvent != nil)
 
                     DatePicker(
-                        "Countdown Date\(hasTime ? " & Time" : "")",
+                        "Countdown Target Date\(hasTime ? " & Time" : "")",
                         selection: $countdownDate,
                         in: Date.now...,
                         displayedComponents: hasTime
@@ -201,19 +202,20 @@ struct AddCountdownView: View {
                     VStack(alignment: .leading, spacing: 10) {
 
                         DatePicker(
-                            "Count since",
+                            "Countdown Start Date\(hasTime ? " & Time" : "")",
                             selection: $countSinceDate,
+                            in: ...countdownDate,
                             displayedComponents: hasTime
                                 ? [.date, .hourAndMinute] : [.date]
                         )
 
                         Text(
-                            "Progress will be calculated from the date selected in \"Count Since\"."
+                            "Progress starts from this date."
                         )
                         .font(.footnote)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity)
+                        .frame(width: .infinity)
                     }
                 }
 
