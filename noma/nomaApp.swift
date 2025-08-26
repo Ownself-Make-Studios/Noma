@@ -12,17 +12,19 @@ import WidgetKit
 @main
 struct nomaApp: App {
     @StateObject private var store: CountdownStore
-    @State private var selectedCountdown: CountdownItem? = nil
+    @StateObject private var modalStore: ModalStore
     @Environment(\.scenePhase) private var scenePhase
     
     init() {
         _store = StateObject(wrappedValue: CountdownStore(context: NomaModelContainer.sharedModelContainer.mainContext))
+        _modalStore = StateObject(wrappedValue: ModalStore())
     }
     
     var body: some Scene {
         WindowGroup {
-            ContentView(selectedCountdown: $selectedCountdown)
+            ContentView()
                 .environmentObject(store)
+                .environmentObject(modalStore)
                 .onAppear{
                     store.fetchCountdowns()
                 }
@@ -40,16 +42,19 @@ struct nomaApp: App {
                         if let uuid = UUID(uuidString: uuidString) {
                             // Search for countdown in store
                             if let found = store.countdowns.first(where: { $0.id == uuid }) {
-                                selectedCountdown = found
+                                modalStore.isSelectedCountdown = found
+                                
                                 print("Countdown found: \(found.name)")
                             } else {
                                 // Optionally handle not found
-                                selectedCountdown = nil
+                                modalStore.isSelectedCountdown = nil
+                                
                                 print("Countdown with UUID \(uuid) not found.")
                             }
                         } else {
                             // Optionally handle invalid UUID
-                            selectedCountdown = nil
+                            
+                            modalStore.isSelectedCountdown = nil
                             print("Invalid UUID string: \(uuidString)")
                         }
                     }

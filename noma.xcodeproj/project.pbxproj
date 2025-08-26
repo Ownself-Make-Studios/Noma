@@ -101,6 +101,7 @@
 				Model/CountdownReminder.swift,
 				Model/CountdownStore.swift,
 				Model/EmojiDominantColor.swift,
+				Model/ModalStore.swift,
 				Model/ModelContainer.swift,
 				Views/CircularEmojiView.swift,
 				Views/CircularProgressBar.swift,
@@ -121,6 +122,7 @@
 				Model/CountdownItem.swift,
 				Model/CountdownReminder.swift,
 				Model/CountdownStore.swift,
+				Model/ModalStore.swift,
 				Model/ModelContainer.swift,
 			);
 			target = BDAE704F2E0BF10100099A3A /* MultipleCountdownWidgetExtension */;

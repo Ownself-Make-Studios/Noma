@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CountdownDetailView: View {
     @EnvironmentObject var store: CountdownStore
+    
     @AppStorage("showProgress") private var showProgress: Bool = true
 
     @Environment(\.dismiss) private var dismiss

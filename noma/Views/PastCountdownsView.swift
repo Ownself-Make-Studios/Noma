@@ -25,8 +25,7 @@ struct PastCountdownsView: View {
         } else {
             CountdownListView(
                 countdowns: store.passedCountdowns,
-                onClose: onClose,
-                selectedCountdown: .constant(nil)
+                onClose: onClose
             )
             .refreshable {
                 store.fetchCountdowns()

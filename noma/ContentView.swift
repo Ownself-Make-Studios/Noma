@@ -11,6 +11,7 @@ import WidgetKit
 
 struct ContentView: View {
     @EnvironmentObject var store: CountdownStore
+    @EnvironmentObject var modalStore: ModalStore
 
     @Environment(\.modelContext) private var modelContext
     @State private var countdowns: [CountdownItem] = []
@@ -18,7 +19,6 @@ struct ContentView: View {
     @State private var showCalendarModal = false
     @State private var searchText: String = ""
     //    @State private var selectedTab: Tabs = .comingup
-    @Binding var selectedCountdown: CountdownItem?
 
     private func onCloseModal() {
         store.fetchCountdowns()
@@ -42,7 +42,6 @@ struct ContentView: View {
                     CountdownListView(
                         countdowns: store.upcomingCountdowns,
                         onClose: onCloseModal,
-                        selectedCountdown: $selectedCountdown
                     ).refreshable {
                         store.fetchCountdowns()
                     }
@@ -163,6 +162,16 @@ struct ContentView: View {
             }
             .navigationTitle("Add from Calendar")
         }
+        .sheet(item: $modalStore.isSelectedCountdown) { countdown in
+            NavigationView {
+                CountdownDetailView(
+                    countdown: countdown,
+                ) {
+                    store.fetchCountdowns()
+                }
+
+            }
+        }
         .onChange(of: showAddModal) { oldValue, newValue in
             if oldValue != newValue && newValue == false {
                 // AddCountdownView was dismissed
@@ -174,9 +183,7 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(
-        selectedCountdown: .constant(nil)
-    )
+    ContentView()
         .modelContainer(NomaModelContainer.sharedModelContainer)
     //        .modelContainer(for: CountdownItem.self, inMemory: true)
 }

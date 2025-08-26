@@ -11,7 +11,7 @@ struct CountdownListView: View {
     var countdowns: [CountdownItem]
     var onClose: (() -> Void)? = nil
     @State private var searchText: String = ""
-    @Binding var selectedCountdown: CountdownItem?
+    @EnvironmentObject var modalStore: ModalStore
 
     var filteredCountdowns: [CountdownItem] {
         if searchText.isEmpty {
@@ -224,7 +224,7 @@ struct CountdownListView: View {
                         {
                             ForEach(items, id: \.id) { countdown in
                                 CountdownListItemView(item: countdown, onTap: {
-                                    selectedCountdown = countdown
+                                    modalStore.isSelectedCountdown = countdown
                                 })
                             }
                         } else {
@@ -379,13 +379,6 @@ struct CountdownListView: View {
                 //
             }
             .searchable(text: $searchText, prompt: "Search countdowns")
-            .sheet(item: $selectedCountdown) { countdown in
-                NavigationStack{
-                    CountdownDetailView(countdown: countdown){
-                        selectedCountdown = nil
-                    }
-                }
-            }
         }
     }
 
@@ -404,7 +397,6 @@ struct CountdownListView: View {
             CountdownItem.SampleFutureTimer,
             CountdownItem.SampleFutureTimer,
         ],
-        selectedCountdown: .constant(nil)
     )
     .environmentObject(
         CountdownStore(
