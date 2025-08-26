@@ -21,9 +21,31 @@ class CountdownStore: ObservableObject {
 
     private var context: ModelContext
 
+    func syncCountdownsWithEvents() {
+        if let countdowns = self.fetchCalendarLinkedCountdowns() {
+            for countdown in countdowns {
+                if let eventIdentifier = countdown.calendarEventIdentifier,
+                   let event = self.eventStore.event(withIdentifier: eventIdentifier) {
+                    // Update countdown date to match event's start date
+                    if countdown.date != event.startDate {
+                        countdown.date = event.startDate
+                    }
+                } else {
+                    // Event was deleted or not found, mark countdown as deleted
+                    countdown.isDeleted = true
+                }
+            }
+            // Persist changes to the model context
+            try? self.context.save()
+            // Refresh countdown arrays and UI
+            self.fetchCountdowns()
+        }
+    }
+
     init(context: ModelContext) {
         self.context = context
         fetchCountdowns()
+        syncCountdownsWithEvents() // Sync at launch
 
         let token = NotificationCenter.default.addObserver(
             forName: .EKEventStoreChanged,
@@ -31,22 +53,9 @@ class CountdownStore: ObservableObject {
             queue: .main
         ) { [weak self] _ in
             guard let self else { return }
-
-            if let countdowns = fetchCalendarLinkedCountdowns() {
-                countdowns.forEach { countdown in
-                    if let event = self.eventStore.event(
-                        withIdentifier: countdown.calendarEventIdentifier ?? ""
-                    ) {
-                        if event.startDate >= Date() {
-                            countdown.date = event.startDate
-                        }
-                    }
-                }
-            }
-
+            self.syncCountdownsWithEvents()
             WidgetCenter.shared.reloadAllTimelines()
         }
-
         cancellables.append(token)
     }
 

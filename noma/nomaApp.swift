@@ -13,6 +13,7 @@ import WidgetKit
 struct nomaApp: App {
     @StateObject private var store: CountdownStore
     @State private var selectedCountdown: CountdownItem? = nil
+    @Environment(\.scenePhase) private var scenePhase
     
     init() {
         _store = StateObject(wrappedValue: CountdownStore(context: NomaModelContainer.sharedModelContainer.mainContext))
@@ -53,6 +54,11 @@ struct nomaApp: App {
                         }
                     }
                 }
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
+                store.syncCountdownsWithEvents()
+            }
         }
         .modelContainer(NomaModelContainer.sharedModelContainer)
     }
