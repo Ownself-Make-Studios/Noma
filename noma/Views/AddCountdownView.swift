@@ -10,6 +10,10 @@ import MCEmojiPicker
 import SwiftUI
 import WidgetKit
 
+extension UIKeyboardType {
+    static let emoji = UIKeyboardType(rawValue: 124)
+}
+
 struct AddCountdownView: View {
     @EnvironmentObject var store: CountdownStore
     @Environment(\.modelContext) private var modelContext
@@ -21,9 +25,11 @@ struct AddCountdownView: View {
     var countdownToEdit: CountdownItem? = nil
 
     @State var emoji: String = ""
+    @FocusState private var emojiFieldFocused: Bool
     @State var name: String = ""
-    @State var countdownDate: Date = Calendar.current.startOfDay(for: Date.now).addingTimeInterval(7 * 24 * 60 * 60)
-//    @State var countSinceDate: Date = Calendar.current.startOfDay(for: Date.now)
+    @State var countdownDate: Date = Calendar.current.startOfDay(for: Date.now)
+        .addingTimeInterval(7 * 24 * 60 * 60)
+    //    @State var countSinceDate: Date = Calendar.current.startOfDay(for: Date.now)
     @State var countSinceDate: Date = Date.now
     @State var hasTime: Bool = true
     @State var updateCountdownWhenEventChanges: Bool = false
@@ -134,12 +140,11 @@ struct AddCountdownView: View {
                             }
                         )
                         .onTapGesture {
-                            showEmojiPicker = true
+                            withAnimation {
+                                print("Show emoji picker")
+                                emojiFieldFocused = true
+                            }
                         }
-                        .emojiPicker(
-                            isPresented: $showEmojiPicker,
-                            selectedEmoji: $emoji
-                        )
                     Spacer()
                 }
                 .listRowBackground(Color.clear)
@@ -215,7 +220,6 @@ struct AddCountdownView: View {
                         .font(.footnote)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.leading)
-                        .frame(width: .infinity)
                     }
                 }
 
@@ -224,6 +228,23 @@ struct AddCountdownView: View {
                 //
                 //                    }
                 //                }
+
+                // Keyboard for the emoji picker!
+                TextField("Emoji", text: $emoji)
+                    .keyboardType(.emoji!)
+                    .focused($emojiFieldFocused)
+                    .frame(width: 0, height: 0)
+                    .opacity(0)
+                    .onChange(of: emoji) { _, newVal in
+                        if !newVal.isEmpty {
+
+                            emoji = newVal.last.map { String($0) } ?? ""
+                            withAnimation {
+                                emojiFieldFocused = false  // Close keyboard when emoji selected
+                            }
+                        }
+                    }
+                    .listRowBackground(Color.clear)
 
             }
             .navigationTitle(
