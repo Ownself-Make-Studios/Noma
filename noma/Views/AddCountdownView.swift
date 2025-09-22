@@ -6,7 +6,6 @@
 //
 
 import EventKit
-import MCEmojiPicker
 import SwiftUI
 import WidgetKit
 

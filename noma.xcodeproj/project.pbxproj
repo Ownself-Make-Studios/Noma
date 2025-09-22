@@ -11,7 +11,6 @@
 		BD9807F72CC796090033C727 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9807F62CC796090033C727 /* WidgetKit.framework */; };
 		BD9807F92CC796090033C727 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9807F82CC796090033C727 /* SwiftUI.framework */; };
 		BD98080A2CC7960B0033C727 /* CountdownWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BD9807F42CC796090033C727 /* CountdownWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		BDA1FBFD2E0069590070455C /* MCEmojiPicker in Frameworks */ = {isa = PBXBuildFile; productRef = BDA1FBFC2E0069590070455C /* MCEmojiPicker */; };
 		BDAE70512E0BF10100099A3A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9807F62CC796090033C727 /* WidgetKit.framework */; };
 		BDAE70522E0BF10100099A3A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9807F82CC796090033C727 /* SwiftUI.framework */; };
 		BDAE705F2E0BF10200099A3A /* MultipleCountdownWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BDAE70502E0BF10100099A3A /* MultipleCountdownWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -189,7 +188,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDA1FBFD2E0069590070455C /* MCEmojiPicker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,7 +287,6 @@
 			);
 			name = noma;
 			packageProductDependencies = (
-				BDA1FBFC2E0069590070455C /* MCEmojiPicker */,
 			);
 			productName = noma;
 			productReference = BD92FC0F2CC73FE500D3FC20 /* Noma.app */;
@@ -424,7 +421,6 @@
 			mainGroup = BD92FC062CC73FE500D3FC20;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				BDA1FBFB2E0069590070455C /* XCRemoteSwiftPackageReference "MCEmojiPicker" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BD92FC102CC73FE500D3FC20 /* Products */;
@@ -970,25 +966,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		BDA1FBFB2E0069590070455C /* XCRemoteSwiftPackageReference "MCEmojiPicker" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/izyumkin/MCEmojiPicker";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.3;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		BDA1FBFC2E0069590070455C /* MCEmojiPicker */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BDA1FBFB2E0069590070455C /* XCRemoteSwiftPackageReference "MCEmojiPicker" */;
-			productName = MCEmojiPicker;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BD92FC072CC73FE500D3FC20 /* Project object */;
 }
