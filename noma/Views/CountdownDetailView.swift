@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CountdownDetailView: View {
     @EnvironmentObject var store: CountdownStore
-    
+
     @AppStorage("showProgress") private var showProgress: Bool = true
 
     @Environment(\.dismiss) private var dismiss
@@ -73,7 +73,7 @@ struct CountdownDetailView: View {
                         .bold()
                         .multilineTextAlignment(.center)
 
-                    Text(countdown.formattedDateString)
+                    Text(countdown.formattedDateTimeString)
                         .font(.subheadline)
                         .opacity(0.5)
                         .multilineTextAlignment(.center)

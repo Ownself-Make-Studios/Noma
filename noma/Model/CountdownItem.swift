@@ -191,6 +191,16 @@ class CountdownItem {
         dateFormatter.timeStyle = .none
         return dateFormatter.string(from: date)
     }
+    
+    /**
+     Formatted date and time string
+     */
+    var formattedDateTimeString: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .long
+        dateFormatter.timeStyle = .short
+        return dateFormatter.string(from: date)
+    }
 
     /**
      Calculates the percentage of time elapsed between countSince and date.
