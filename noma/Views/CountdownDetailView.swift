@@ -78,17 +78,56 @@ struct CountdownDetailView: View {
                         .opacity(0.5)
                         .multilineTextAlignment(.center)
 
-                    Text(
-                        countdown.getTimeRemainingString(
-                            since: now,
-                            units: [.day, .hour, .minute, .second],
-                            unitsStyle: .full
-
-                        )
+                    // Segregated countdown display
+                    let components = Calendar.current.dateComponents(
+                        [.day, .hour, .minute, .second],
+                        from: now,
+                        to: countdown.date
                     )
-                    .multilineTextAlignment(.center)
-                    .font(.subheadline)
-                    .opacity(0.5)
+                    let values = [
+                        max(0, components.day ?? 0),
+                        max(0, components.hour ?? 0),
+                        max(0, components.minute ?? 0),
+                        max(0, components.second ?? 0),
+                    ]
+                    let units = ["days", "hours", "minutes", "seconds"]
+
+                    VStack(spacing: 4) {
+                        HStack(spacing: 8) {
+                            ForEach(0..<values.count, id: \.self) { idx in
+                                VStack {
+                                    Text(
+                                        "\(values[idx] < 10 ? "0" : "")\(values[idx])"
+                                    )
+                                    .font(.title2.monospacedDigit())
+                                    .bold()
+                                    .frame(minWidth: 36, minHeight: 36)
+                                    .padding(3)
+                                    .padding(.horizontal, 6)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(
+                                                Color.primary.opacity(0.2),
+                                                lineWidth: 1
+                                            )
+                                            .background(
+                                                RoundedRectangle(
+                                                    cornerRadius: 8
+                                                ).fill(
+                                                    Color(.systemBackground)
+                                                        .opacity(0.7)
+                                                )
+                                            )
+                                    )
+                                    
+                                    Text(units[idx])
+                                     .font(.caption2)
+                                    .foregroundColor(.secondary)
+                                    .frame(minWidth: 36)
+                                }
+                            }
+                        }
+                    }
                     .padding(.vertical, 10)
 
                 }
@@ -160,6 +199,6 @@ struct CountdownDetailView: View {
 
 #Preview {
     CountdownDetailView(
-        countdown: .SampleFutureTimer
+        countdown: .Graduation
     )
 }
