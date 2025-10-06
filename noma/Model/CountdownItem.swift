@@ -65,7 +65,7 @@ class CountdownItem {
             let days = roundedUpDaysRemaining(since: since)
             if days > 0 { return "\(days) day" + (days > 1 ? "s" : "") }
         }
-        return getTimeRemainingString(since: since, units: [.hour])
+        return getTimeRemainingString(since: since, units: [.day, .hour])
     }
 
     func getTimeRemainingString(
