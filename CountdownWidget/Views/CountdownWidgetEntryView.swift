@@ -92,7 +92,7 @@ struct CountdownWidgetSmallView: View {
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
                 .minimumScaleFactor(0.5)
-            Text(countdownItem.timeRemainingWidgetString)
+            Text(countdownItem.getTimeRemainingFn())
                 .font(.caption)
                 .opacity(0.6)
                 .multilineTextAlignment(.leading)
@@ -139,7 +139,7 @@ struct CountdownWidgetMediumView: View {
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
                 .minimumScaleFactor(0.5)
-            Text(countdownItem.timeRemainingWidgetString)
+            Text(countdownItem.getTimeRemainingFn())
                 .font(.caption)
                 .opacity(0.6)
                 .minimumScaleFactor(0.5)
@@ -190,7 +190,7 @@ struct CountdownWidgetLargeView: View {
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
                 .minimumScaleFactor(0.5)
-            Text(countdownItem.timeRemainingWidgetString)
+            Text(countdownItem.getTimeRemainingFn())
                 .font(.caption)
                 .opacity(0.6)
                 .minimumScaleFactor(0.5)
@@ -230,7 +230,7 @@ struct CountdownWidgetAccessoryRectangularView: View {
 
     // Show time remaining with progress percentage if showProgress is true
     var timeRemainingWidgetString: String {
-        return countdownItem.timeRemainingWidgetString
+        return countdownItem.getTimeRemainingFn()
 //        if showProgress {
 //            return countdownItem.timeRemainingWidgetString
 //                + " (\(countdownItem.progressString)%)"
@@ -281,10 +281,10 @@ struct CountdownWidgetAccessoryInlineView: View {
     // Show time remaining with progress percentage if showProgress is true
     var timeRemainingWidgetString: String {
         if showProgress {
-            return countdownItem.timeRemainingWidgetString
+            return countdownItem.getTimeRemainingFn()
                 + " (\(countdownItem.progressString)%)"
         } else {
-            return countdownItem.timeRemainingWidgetString
+            return countdownItem.getTimeRemainingFn()
         }
     }
 

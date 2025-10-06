@@ -54,7 +54,7 @@ struct MultipleCountdownWidgetEntryView : View {
                     
                     
                     Text(
-                        "\(countdownItem.timeRemainingWidgetString)"
+                        "\(countdownItem.getTimeRemainingFn())"
                     )
                         .opacity(0.5)
                         .font(.caption2)

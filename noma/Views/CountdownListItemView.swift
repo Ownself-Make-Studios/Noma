@@ -75,9 +75,7 @@ struct CountdownListItemView: View {
                         : nil
 
                     Text(
-                        countdownHasEnded
-                            ? item.getTimeRemainingPassedFn(since: currentTime)
-                            : item.getTimeRemainingFn(since: currentTime)
+                             item.getTimeRemainingFn(since: currentTime)
                     )
                     .font(.caption2)
                     .opacity(0.5)
