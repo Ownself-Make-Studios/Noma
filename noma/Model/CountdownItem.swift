@@ -60,12 +60,27 @@ class CountdownItem {
     }
 
     func getTimeRemainingFn(since: Date = .now) -> String {
+        let calendar = Calendar.current
+        let startOfSince = calendar.startOfDay(for: since)
+        let startOfDate = calendar.startOfDay(for: date)
+        let isToday = calendar.isDate(startOfDate, inSameDayAs: startOfSince)
         let interval = date.timeIntervalSince(since)
-        if interval > 0 {
-            let days = roundedUpDaysRemaining(since: since)
-            if days > 0 { return "\(days) day" + (days > 1 ? "s" : "") }
+//        if isToday && interval >= 0 {
+        if isToday {
+            // Show 'Today' if event is today and in the future
+            return "Today"
         }
-        return getTimeRemainingString(since: since, units: [.day, .hour])
+        if interval > 0 {
+            // Future event: show the number of full days left (ignore time)
+            let daysLeft = calendar.dateComponents([.day], from: startOfSince, to: startOfDate).day ?? 0
+            if daysLeft > 0 { return "\(daysLeft) day" + (daysLeft > 1 ? "s" : "") }
+            // fallback to hours if less than a day (should not happen, but for safety)
+            return getTimeRemainingString(since: since, units: [.hour])
+        } else {
+            // Past event: show the number of full days ago
+            let daysAgo = calendar.dateComponents([.day], from: startOfDate, to: startOfSince).day ?? 0
+            return "\(daysAgo) day" + (daysAgo != 1 ? "s" : "") + " ago"
+        }
     }
 
     func getTimeRemainingString(
